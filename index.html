@@ -41,6 +41,7 @@
       // Update the page title
       if (e.detail.pageTitle) {
         document.getElementById('wrapper-page-title').innerText = e.detail.pageTitle;
+        document.title = e.detail.pageTitle;
       }
 
       if (e.detail.breadcrumbStack) {
