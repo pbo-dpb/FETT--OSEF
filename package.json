@@ -1,5 +1,5 @@
 {
-  "name": "pbotool-ce-sample",
+  "name": "pbotool-ce-panoramafp",
   "private": true,
   "version": "0.1.0",
   "scripts": {
@@ -12,10 +12,9 @@
     "vue": "^3.5.22"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.16",
+    "@tailwindcss/vite": "^4.1.16",
     "@tailwindcss/typography": "^0.5.19",
     "@vitejs/plugin-vue": "^6.0.1",
-    "postcss": "^8.5.6",
     "tailwindcss": "^4.1.16",
     "vite": "^7.1.12"
   }

@@ -1,52 +1,43 @@
 <template>
   <DebugBar v-if="debug"></DebugBar>
   <div class="flex flex-col justify-center items-center gap-8">
-    <img alt="PBO-DBP" :src="logoUrl" class="w-64" />
+    <img alt="PBO-DBP" :src="logoUrlComputed" class="w-64" />
     <ToolSplash />
   </div>
 </template>
 
-<script>
-import { defineAsyncComponent } from 'vue'
+<script setup>
+import { defineAsyncComponent, computed, onMounted, watch, getCurrentInstance } from 'vue'
 import logoUrl from "./assets/logo.svg?url";
 import ToolSplash from './components/ToolSplash.vue'
 import WrapperEventDispatcher from "./WrapperEventDispatcher.js"
-import { mapState, mapWritableState } from 'pinia'
-import Localizations from './stores/localizations.js'
+import { storeToRefs } from 'pinia'
+import useLocalizationsStore from './stores/localizations.js'
+
 const DebugBar = defineAsyncComponent(() =>
   import("./components/DebugBar.vue")
 );
 
-export default {
-  computed: {
-    logoUrl() {
-      return logoUrl
-    },
-    ...mapWritableState(Localizations, ['language']),
-    ...mapState(Localizations, ['strings']),
-    debug() {
-      return this.$root.debug;
-    },
-  },
+const instance = getCurrentInstance()
 
-  components: {
-    ToolSplash,
-    DebugBar
-  },
-  mounted() {
-    this.setPageTitle();
-  },
-  methods: {
-    setPageTitle() {
-      (new WrapperEventDispatcher(this.strings.title, null)).dispatch();
-    }
-  },
-  watch: {
-    language() {
-      this.setPageTitle();
-    }
-  }
-};
+const localizationsStore = useLocalizationsStore()
+const { language, strings } = storeToRefs(localizationsStore)
+
+const logoUrlComputed = computed(() => logoUrl)
+const debug = computed(() => instance.proxy.$root.debug)
+
+const setPageTitle = () => {
+  (new WrapperEventDispatcher(strings.value.title, null)).dispatch();
+}
+
+
+onMounted(() => {
+  setPageTitle();
+})
+
+watch(language, () => {
+  setPageTitle();
+})
 </script>
 <style>
 @import "./index.css";
