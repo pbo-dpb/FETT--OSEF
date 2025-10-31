@@ -1,16 +1,14 @@
-# Vue 3 + Vite + Web Components (composants web)
+# PS Panorama
 
 ## Description
 
 ### English
 
-This code provides a starting point for the development of research tools/interactive components that can be embedded on the PBO's main website.
-This template should help get you started developing with Vue 3 in Vite with the intent of building a standalone [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
+This tool provides an overview of the Canadian public service workforce trends.
 
 ### Français
 
-Ce code fournit un point de départ pour le développement d'outils de recherche/composants interactifs qui peuvent être intégrés au site Web principal du DPB.
-Ce modèle devrait vous aider à commencer à développer avec Vue 3 dans Vite avec l'intention de construire un [composant Web  (Web Component)](https://developer.mozilla.org/en-US/docs/Web/Web_Components) autonome.
+Cet outil fournit un aperçu des tendances de la main-d'œuvre de la fonction publique canadienne.
 
 ## Project setup // Mise en route
 ```
@@ -33,12 +31,8 @@ npm run build
 
 ### English
 
-A single component can be embedded in an ABCMS web page. An example of how the component is loaded in available in `index.html`.
-
-The web component can raise a `navigation-context-update` event to update the wrapper's UI. See `WrapperEventDispatcher.js` for more information on how to format this `CustomEvent`.
+Insert this web component using the `<pbotool-pspanorama></pbotool-pspanorama>` tag. An example of how the component is loaded is available in `index.html`.
 
 ### Français
 
-Un seul composant peut être intégré dans une page web ABCMS. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
-
-Le composant Web peut déclencher un événement `navigation-context-update` pour mettre à jour l'interface utilisateur de la page ABCMS englobante. Voir `WrapperEventDispatcher.js` pour plus d'informations sur la façon de formater ce `CustomEvent`.
+Insérez ce composant web en utilisant la balise `<pbotool-pspanorama></pbotool-pspanorama>`. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
