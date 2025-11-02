@@ -58,7 +58,7 @@ const handleStringsIo = function (worksheet) {
             }
         })
 
-        fs.writeFileSync(outputFilePath, JSON.stringify(existingStrings, null, 2), 'utf8')
+        fs.writeFileSync(outputFilePath, JSON.stringify(existingStrings), 'utf8')
     })
 }
 
@@ -128,7 +128,7 @@ const saveDepartments = function () {
 
     Object.values(departments).forEach(dept => {
         const outputFilePath = path.join(deptOutputDir, `${dept.id}.json`)
-        fs.writeFileSync(outputFilePath, JSON.stringify(dept, null, 2), 'utf8')
+        fs.writeFileSync(outputFilePath, JSON.stringify(dept), 'utf8')
     })
 
 }
@@ -152,7 +152,7 @@ const saveCorePayload = function () {
     }
 
     const outputFilePath = path.join(__dirname, 'src', 'assets', 'payload.json')
-    fs.writeFileSync(outputFilePath, JSON.stringify(payload, null, 2), 'utf8')
+    fs.writeFileSync(outputFilePath, JSON.stringify(payload), 'utf8')
 }
 
 
