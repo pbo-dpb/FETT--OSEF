@@ -16,6 +16,7 @@ module.exports = function (worksheet, departments) {
     };
 
     const tenures = {
+        'missing': 'unknown',
         'Indeterminate': 'indeterminate',
         'Term': 'term',
         'Casual': 'casual',
@@ -42,8 +43,8 @@ module.exports = function (worksheet, departments) {
 
         const ym = row['file_date'];
 
-        const year = String(ym).substring(0, 4);
-        const month = String(ym).substring(4, 6).padStart(2, '0');
+        const year = parseInt(String(ym).substring(0, 4));
+        const month = parseInt(String(ym).substring(4, 6).padStart(2, '0'));
 
         const tenure = tenures[row['tenure']];
 
