@@ -60,7 +60,7 @@ module.exports = function (worksheet, departments) {
             'quarter': quarters[parseInt(month)],
             'tenure': tenure,
             'pop': parseInt(row['Pop']),
-            'fte': parseInt(row['FTE']),
+            'fte': parseFloat(row['FTE']),
             //'assigned_h': row['assigned_h'], //TODO clarify with Marianne if needed
             //'normal_h': row['normal_h'],//TODO clarify with Marianne if needed
             // 'fte_ratio': row['fte_ratio'],//TODO clarify with Marianne if needed

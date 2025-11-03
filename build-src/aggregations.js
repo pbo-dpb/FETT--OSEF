@@ -43,6 +43,7 @@ function totalFtesPerQuarter(settings, datapoints) {
             combined: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'combined' ? dp.fte : 0), 0),
         };
 
+
         const firstReportingMonthInPeriod = datapoints
             .filter(dp => dp.year === year && dp.quarter === quarter)
             .map(dp => dp.month)
