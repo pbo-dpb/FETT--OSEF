@@ -1,13 +1,14 @@
 <template>
   <DebugBar v-if="debug"></DebugBar>
   <div class="flex flex-col justify-center items-center gap-8">
-    <ToolSplash />
+
+    <RouterView />
+
   </div>
 </template>
 
 <script setup>
 import { defineAsyncComponent, computed, onMounted, watch, getCurrentInstance } from 'vue'
-import ToolSplash from './components/ToolSplash.vue'
 import WrapperEventDispatcher from "./WrapperEventDispatcher.js"
 import { storeToRefs } from 'pinia'
 import useLocalizationsStore from './stores/localizations.js'

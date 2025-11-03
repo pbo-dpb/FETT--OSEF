@@ -1,1 +1,5 @@
-{"title":"PS Panorama","cta":"Click me!","message":"Hello, world!"}
+{
+    "title": "PS Barometer",
+    "cta": "Click me!",
+    "message": "Hello, world!"
+}

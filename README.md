@@ -1,4 +1,4 @@
-# PS Panorama
+# PS Barometer // Baromètre FP
 
 ## Description
 
@@ -52,8 +52,8 @@ npm run build
 
 ### English
 
-Insert this web component using the `<pbotool-pspanorama></pbotool-pspanorama>` tag. An example of how the component is loaded is available in `index.html`.
+Insert this web component using the `<pbotool-psbarometer></pbotool-psbarometer>` tag. An example of how the component is loaded is available in `index.html`.
 
 ### Français
 
-Insérez ce composant web en utilisant la balise `<pbotool-pspanorama></pbotool-pspanorama>`. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
+Insérez ce composant web en utilisant la balise `<pbotool-psbarometer></pbotool-psbarometer>`. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
