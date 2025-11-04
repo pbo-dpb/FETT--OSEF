@@ -4,14 +4,14 @@
 
             <button :id="uid + '-header'" :aria-controls="uid = '-panel'" :aria-expanded="!shouldCollapse"
                 @click="toggle"
-                class=" flex flex-row gap-2 items-center text-blue-800 dark:text-blue-100 font-semibold cursor-pointer">
+                class=" flex flex-row gap-2 items-center text-slate-800 dark:text-slate-100 font-semibold cursor-pointer">
                 <ChevronRight class="w-6 h-6" v-if="shouldCollapse"></ChevronRight>
                 <ChevronDown class="w-6 h-6" v-else></ChevronDown>
                 {{ strings.collapsible_component_handle }}
             </button>
         </h3>
         <section :id="uid + '-panel'" :aria-labelledby="uid + '-header'" :hidden="shouldCollapse"
-            class="px-4 prose dark:prose-invert max-w-none prose-headings:mt-0 prose-headings:font-light prose-a:text-blue-800 dark:prose-a:text-blue-200">
+            class="px-4 prose dark:prose-invert max-w-none prose-headings:mt-0 prose-headings:font-light prose-a:text-slate-800 dark:prose-a:text-slate-200">
             <div v-if="collapsibleContent" class="flex flex-col">
                 <div v-html="collapsibleContent"></div>
 
@@ -44,7 +44,6 @@ const settingsStore = useSettingStore()
 const { last_updated } = storeToRefs(settingsStore)
 
 const displayableLastUpdated = computed(() => {
-    console.log('last_updated', last_updated.value)
     return new Date(last_updated.value).toLocaleDateString(`${language.value}-CA`, {
         year: 'numeric',
         month: 'long',

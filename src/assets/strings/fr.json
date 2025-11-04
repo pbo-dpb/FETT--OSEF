@@ -1,5 +1,6 @@
 {
     "title": "Effectif 360",
     "collapsible_component_handle": "À propos",
-    "last_updated": " Dernière mise à jour : "
+    "last_updated": " Dernière mise à jour : ",
+    "tab_navigation_aria_label": "Onglets de navigation principaux"
 }

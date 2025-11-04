@@ -1,5 +1,7 @@
 {
     "title": "Workforce 360",
     "collapsible_component_handle": "About",
-    "last_updated": " Last updated: "
+    "last_updated": " Last updated: ",
+    "tab_navigation_aria_label": "Main Navigation Tabs",
+    "tab_navigation_overview_label": "Public Service Overview"
 }

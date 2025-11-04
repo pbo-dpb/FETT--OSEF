@@ -1,13 +1,15 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHashHistory, createRouter } from 'vue-router'
 
-import HomeView from './components/HomeView.vue'
+import PublicServiceOverview from './components/PublicServiceOverview.vue'
+import DepartmentsOverview from './components/DepartmentsOverview.vue'
 
 
 const routes = [
-    { path: '/', component: HomeView }
+    { path: '/', component: PublicServiceOverview, name: 'overview' },
+    { path: '/departments-and-agencies--ministeres-et-organismes/:departments*', component: DepartmentsOverview, name: 'departments' },
 ]
 
 export const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHashHistory(),
     routes,
 })

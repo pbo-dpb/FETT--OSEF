@@ -3,6 +3,9 @@
   <div class="flex flex-col gap-8">
 
     <AboutAccordion />
+
+    <Tabs />
+
     <RouterView />
 
   </div>
@@ -14,6 +17,7 @@ import WrapperEventDispatcher from "./WrapperEventDispatcher.js"
 import { storeToRefs } from 'pinia'
 import useLocalizationsStore from './stores/localizations.js'
 import AboutAccordion from './components/AboutAccordion.vue';
+import Tabs from './components/Tabs.vue';
 
 const DebugBar = defineAsyncComponent(() =>
   import("./components/DebugBar.vue")
