@@ -3,7 +3,9 @@ import settings from '../assets/settings.json'
 
 export default defineStore('settings', {
     state: () => ({
-        ...settings
+        preferredTimeframe: "3Y",
+        ...settings,
+
     }),
 
 })

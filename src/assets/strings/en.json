@@ -3,5 +3,15 @@
     "collapsible_component_handle": "About",
     "last_updated": " Last updated: ",
     "tab_navigation_aria_label": "Main Navigation Tabs",
-    "tab_navigation_overview_label": "Public Service Overview"
+    "tab_navigation_overview_label": "Public Service Overview",
+    "indeterminate_label": "Indeterminate",
+    "term_label": "Term",
+    "casual_label": "Casual",
+    "student_label": "Student",
+    "combined_label": "Combined",
+    "preferred_timeframe_1y": "1 Year",
+    "preferred_timeframe_3y": "3 Years",
+    "preferred_timeframe_5y": "5 Years",
+    "preferred_timeframe_10y": "10 Years",
+    "preferred_timeframe_max": "Max"
 }
