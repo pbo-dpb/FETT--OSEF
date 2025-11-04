@@ -36,7 +36,7 @@ import {
     GridComponent,
     DatasetComponent,
     TransformComponent,
-    LegendComponent
+    LegendComponent,
 } from 'echarts/components';
 
 echarts.use([
@@ -53,22 +53,22 @@ echarts.use([
 
 const dataset = computed(() => {
 
-    let baseData = aggregations.value?.total_ftes_per_quarter || [];
+    let baseData = aggregations.value?.total_ftes_per_month || [];
 
     if (preferredTimeframe.value === '1Y') {
-        baseData = baseData.slice(-4);
-    } else if (preferredTimeframe.value === '3Y') {
         baseData = baseData.slice(-12);
+    } else if (preferredTimeframe.value === '3Y') {
+        baseData = baseData.slice(-36);
     } else if (preferredTimeframe.value === '5Y') {
-        baseData = baseData.slice(-20);
+        baseData = baseData.slice(-60);
     } else if (preferredTimeframe.value === '10Y') {
-        baseData = baseData.slice(-40);
+        baseData = baseData.slice(-120);
     }
 
 
     return {
         dimensions: [
-            'quarteryear',
+            'yearmonth',
             'indeterminate',
             'term',
             'casual',
@@ -77,7 +77,7 @@ const dataset = computed(() => {
         source: baseData.map(item => {
 
             return {
-                quarteryear: `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
+                yearmonth: `${item.year}-${String(item.month).padStart(2, '0')}`,
                 indeterminate: item.indeterminate,
                 term: item.term,
                 casual: item.casual,
@@ -144,6 +144,7 @@ const chartOptions = computed(() => {
     options['legend'] = {
         data: options.series.map(serie => serie.name),
     }
+
 
 
     return options;
