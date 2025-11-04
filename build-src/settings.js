@@ -1,4 +1,6 @@
 const XLSX = require('xlsx')
+const fs = require('fs')
+const path = require('path')
 
 const defaults = {
     start_quarter: 1,
@@ -18,10 +20,19 @@ module.exports = function (worksheet) {
     jsonData.forEach(row => {
         const key = row['key']
         const value = row['value']
-        if (key && value) {
+        if (key === 'last_updated' && value) {
+            // Date values need to be adjusted from Excel serial date format.
+            settings[key] = XLSX.SSF.format("yyyy-mm-dd", value)
+        } else if (key && value) {
             settings[key] = value
         }
     })
+
+
+
+
+
+    fs.writeFileSync(path.join(__dirname, "..", 'src', 'assets', 'settings.json'), JSON.stringify(settings, null, 2))
 
     return { ...defaults, ...settings }
 }

@@ -29,6 +29,6 @@ module.exports = function (worksheet) {
             }
         })
 
-        fs.writeFileSync(outputFilePath, JSON.stringify(existingStrings), 'utf8')
+        fs.writeFileSync(outputFilePath, JSON.stringify(existingStrings, null, 4), 'utf8')
     })
 }

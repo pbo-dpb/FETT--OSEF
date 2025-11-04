@@ -16,7 +16,7 @@ const fs = require('fs')
 const path = require('path')
 
 const handleStringsIo = require('./build-src/strings');
-const readSettings = require('./build-src/settings');
+const handleSettingsIo = require('./build-src/settings');
 const { importDepartments, saveDepartments } = require('./build-src/department');
 const importDataSheet = require('./build-src/datasheets');
 const { totalFtesPerQuarter } = require('./build-src/aggregations');
@@ -45,7 +45,7 @@ if (!settingsWorksheet) {
     console.error('The input .xlsx file is missing the required "settings" sheet.')
     process.exit(1)
 }
-const settings = readSettings(settingsWorksheet)
+const settings = handleSettingsIo(settingsWorksheet)
 
 const departmentsWorksheet = workbook.Sheets['departments']
 if (!departmentsWorksheet) {

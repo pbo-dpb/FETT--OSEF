@@ -1,5 +1,5 @@
 {
     "title": "Effectif 360",
-    "cta": "Cliquez-moi !",
-    "message": "Bonjour, le monde !"
+    "collapsible_component_handle": "À propos",
+    "last_updated": " Dernière mise à jour : "
 }

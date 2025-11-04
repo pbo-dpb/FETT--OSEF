@@ -1,5 +1,5 @@
 {
     "title": "Workforce 360",
-    "cta": "Click me!",
-    "message": "Hello, world!"
+    "collapsible_component_handle": "About",
+    "last_updated": " Last updated: "
 }
