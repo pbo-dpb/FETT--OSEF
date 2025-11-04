@@ -8,7 +8,7 @@ import App from "./App.ce.vue"
 
 const plugins = [];
 
-customElements.define('pbotool-psbarometer', defineCustomElement({
+customElements.define('pbotool-workforce360', defineCustomElement({
     render: () => h(App),
     styles: [stl],
     props: {

@@ -1,4 +1,4 @@
-# PS Barometer // Baromètre FP
+# Workforce 360 // Effectif 360
 
 ## Description
 
@@ -52,8 +52,8 @@ npm run build
 
 ### English
 
-Insert this web component using the `<pbotool-psbarometer></pbotool-psbarometer>` tag. An example of how the component is loaded is available in `index.html`.
+Insert this web component using the `<pbotool-workforce360></pbotool-workforce360>` tag. An example of how the component is loaded is available in `index.html`.
 
 ### Français
 
-Insérez ce composant web en utilisant la balise `<pbotool-psbarometer></pbotool-psbarometer>`. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
+Insérez ce composant web en utilisant la balise `<pbotool-workforce360></pbotool-workforce360>`. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
