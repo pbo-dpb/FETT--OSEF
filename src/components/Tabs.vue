@@ -6,7 +6,7 @@
             'pb-2 border-b-2  border-solid flex flex-row gap-2 items-center  font-medium ': true,
             'border-transparent hover:border-gray-300 text-gray-500 hover:text-gray-600': !tab.selected,
             'text-slate-800 border-slate-600  -mb-0.25 border-b-3 pb-2.25': tab.selected
-        }">
+        }" :aria-selected="tab.selected.toString()">
             {{ tab.label }}
         </RouterLink>
 
