@@ -17,7 +17,7 @@ const { language, strings } = storeToRefs(localizationsStore)
 
 import useSettingsStore from '../../stores/settings.js'
 const settingsStore = useSettingsStore()
-const { preferredTimeframe } = storeToRefs(settingsStore)
+const { preferredTimeframe, preferredGranularity } = storeToRefs(settingsStore)
 
 const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
 const componentRoot = useTemplateRef('componentRoot');
@@ -53,22 +53,27 @@ echarts.use([
 
 const dataset = computed(() => {
 
-    let baseData = aggregations.value?.total_ftes_per_month || [];
+    let baseData = [];
+    if (preferredGranularity.value === 'month') {
+        baseData = aggregations.value.total_ftes_per_month;
+    } else if (preferredGranularity.value === 'quarter') {
+        baseData = aggregations.value.total_ftes_per_quarter;
+    }
 
     if (preferredTimeframe.value === '1Y') {
-        baseData = baseData.slice(-12);
+        baseData = baseData.slice(preferredGranularity.value === 'month' ? -12 : -4);
     } else if (preferredTimeframe.value === '3Y') {
-        baseData = baseData.slice(-36);
+        baseData = baseData.slice(preferredGranularity.value === 'month' ? -36 : -12);
     } else if (preferredTimeframe.value === '5Y') {
-        baseData = baseData.slice(-60);
+        baseData = baseData.slice(preferredGranularity.value === 'month' ? -60 : -20);
     } else if (preferredTimeframe.value === '10Y') {
-        baseData = baseData.slice(-120);
+        baseData = baseData.slice(preferredGranularity.value === 'month' ? -120 : -40);
     }
 
 
     return {
         dimensions: [
-            'yearmonth',
+            'timestamp',
             'indeterminate',
             'term',
             'casual',
@@ -77,7 +82,7 @@ const dataset = computed(() => {
         source: baseData.map(item => {
 
             return {
-                yearmonth: `${item.year}-${String(item.month).padStart(2, '0')}`,
+                timestamp: preferredGranularity.value === 'month' ? `${item.year}-${String(item.month).padStart(2, '0')}` : `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
                 indeterminate: item.indeterminate,
                 term: item.term,
                 casual: item.casual,
@@ -195,7 +200,7 @@ const redrawChart = () => {
 };
 
 
-watch([preferredTimeframe], () => {
+watch([preferredTimeframe, preferredGranularity], () => {
     redrawChart();
 });
 

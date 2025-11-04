@@ -3,9 +3,13 @@
 
     <div class="flex flex-col lg:grid grid-cols-5 gap-4">
         <template v-if="readyToRender">
-            <div class="w-full lg:col-span-3 flex flex-col gap-2">
-                <div class="flex flex-row justify-between items-center">
+            <div class="w-full lg:col-span-3 flex flex-col">
+                <div class="flex flex-row items-center">
                     <PreferredTimeFramePicker />
+                    <div role="separator" class="w-8 text-center cursor-default select-none text-slate-500">
+                        •
+                    </div>
+                    <PreferredGranularityPicker />
                 </div>
                 <MainChart />
             </div>
@@ -27,6 +31,7 @@ import LoadingIndicator from '../LoadingIndicator.vue';
 
 import usePayloadsStore from '../../stores/payloads.js'
 import PreferredTimeFramePicker from '../PreferredTimeFramePicker.vue';
+import PreferredGranularityPicker from '../PreferredGranularityPicker.vue';
 const payloadsStore = usePayloadsStore()
 const { aggregations } = storeToRefs(payloadsStore)
 

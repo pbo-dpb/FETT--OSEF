@@ -4,6 +4,7 @@ import settings from '../assets/settings.json'
 export default defineStore('settings', {
     state: () => ({
         preferredTimeframe: "3Y",
+        preferredGranularity: "quarter",
         ...settings,
 
     }),

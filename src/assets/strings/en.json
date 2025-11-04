@@ -13,5 +13,7 @@
     "preferred_timeframe_3y": "3 Years",
     "preferred_timeframe_5y": "5 Years",
     "preferred_timeframe_10y": "10 Years",
-    "preferred_timeframe_max": "Max"
+    "preferred_timeframe_max": "Max",
+    "preferred_granularity_quarter": "Quarterly",
+    "preferred_granularity_month": "Monthly"
 }

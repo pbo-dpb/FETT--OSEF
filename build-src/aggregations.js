@@ -53,7 +53,7 @@ function loopFunctionOverPeriod(settings, period, runnable) {
  */
 function totalFtesPerQuarter(settings, datapoints) {
 
-    return loopFunctionOverQuarter(settings, 'quarter', (year, quarter) => {
+    return loopFunctionOverPeriod(settings, 'quarter', (year, quarter) => {
 
         const total = {
             unknown: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'unknown' ? dp.fte : 0), 0),
@@ -139,5 +139,6 @@ function totalFtesPerMonth(settings, datapoints) {
 
 
 module.exports = {
+    totalFtesPerQuarter,
     totalFtesPerMonth
 }
