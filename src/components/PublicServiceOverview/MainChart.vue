@@ -13,7 +13,7 @@ import useLocalizationsStore from '../../stores/localizations.js'
 const localizationsStore = useLocalizationsStore()
 const { language, strings } = storeToRefs(localizationsStore)
 
-const uniqueId = `chart-${Math.random().toString(36).substr(2, 9)}`;
+const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
 const componentRoot = useTemplateRef('componentRoot');
 const resObserver = shallowRef(null);
 

@@ -82,7 +82,7 @@ saveDepartments(departments, datapoints);
  */
 (function () {
 
-    const payload = {
+    const payloads = {
         departments: Object.values(departments).map(dept => {
             return {
                 id: dept.id,
@@ -95,8 +95,12 @@ saveDepartments(departments, datapoints);
         }
     }
 
-    const outputFilePath = path.join(__dirname, 'src', 'assets', 'payload.json')
-    fs.writeFileSync(outputFilePath, JSON.stringify(payload), 'utf8')
+    Object.keys(payloads).forEach(key => {
+        const outputFilePath = path.join(__dirname, 'src', 'assets', `${key}.json`)
+        fs.writeFileSync(outputFilePath, JSON.stringify(payloads[key]), 'utf8')
+
+    })
+
 })()
 
 
