@@ -53,44 +53,36 @@ function loopFunctionOverPeriod(settings, period, runnable) {
  */
 function totalFtesPerQuarter(settings, datapoints) {
 
+    let monthlyTotals = totalFtesPerMonth(settings, datapoints);
+
     return loopFunctionOverPeriod(settings, 'quarter', (year, quarter) => {
 
-        const total = {
-            unknown: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'unknown' ? dp.fte : 0), 0),
-            indeterminate: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'indeterminate' ? dp.fte : 0), 0),
-            term: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'term' ? dp.fte : 0), 0),
-            casual: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'casual' ? dp.fte : 0), 0),
-            student: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'student' ? dp.fte : 0), 0),
-            combined: datapoints.filter(dp => dp.year === year && dp.quarter === quarter).reduce((sum, dp) => sum + (dp.tenure === 'combined' ? dp.fte : 0), 0),
-        };
+        const quarterMonths = {
+            1: [1, 2, 3],
+            2: [4, 5, 6],
+            3: [7, 8, 9],
+            4: [10, 11, 12],
+        }[quarter];
 
-
-        const firstReportingMonthInPeriod = datapoints
-            .filter(dp => dp.year === year && dp.quarter === quarter)
-            .map(dp => dp.month)
-            .sort((a, b) => a - b)[0];
-
-        const lastReportingMonthInPeriod = datapoints
-            .filter(dp => dp.year === year && dp.quarter === quarter)
-            .map(dp => dp.month)
-            .sort((a, b) => b - a)[0];
-
-        const reportingForNMonths = lastReportingMonthInPeriod - firstReportingMonthInPeriod + 1;
-
-        if (reportingForNMonths === 0) {
-            return total; // No data for this period; avoid division by zero
-        }
-
-        return {
+        const totals = {
             year: year,
             quarter: quarter,
-            unknown: Math.round(total.unknown / reportingForNMonths),
-            indeterminate: Math.round(total.indeterminate / reportingForNMonths),
-            term: Math.round(total.term / reportingForNMonths),
-            casual: Math.round(total.casual / reportingForNMonths),
-            student: Math.round(total.student / reportingForNMonths),
-            combined: Math.round(total.combined / reportingForNMonths),
         };
+
+        Object.keys(monthlyTotals[0]).forEach(tenureType => {
+            if (tenureType === 'year' || tenureType === 'month') {
+                return;
+            }
+
+            const monthlyTotalsForTenureArray = monthlyTotals.filter(mt => mt.year === year && quarterMonths.includes(mt.month)).map((val) => val[tenureType] || 0);
+            if (monthlyTotalsForTenureArray.length) {
+                // Average over all months in the quarter
+                totals[tenureType] = monthlyTotalsForTenureArray.reduce((a, b) => a + b, 0) / monthlyTotalsForTenureArray.length;
+            } else {
+                totals[tenureType] = 0;
+            }
+        })
+        return totals;
 
     });
 
@@ -106,36 +98,63 @@ function totalFtesPerMonth(settings, datapoints) {
 
     // We keep track of the last month as to keep a rolling number for unreported/missing months
     let priorMonthTotals = {
-        unknown: 0,
-        indeterminate: 0,
-        term: 0,
-        casual: 0,
-        student: 0,
-        combined: 0,
+        unknown: {},
+        indeterminate: {},
+        term: {},
+        casual: {},
+        student: {},
+        combined: {},
     }
 
     return loopFunctionOverPeriod(settings, 'month', (year, month) => {
 
-        const total = {
-            unknown: datapoints.filter(dp => dp.year === year && dp.month === month).reduce((sum, dp) => sum + (dp.tenure === 'unknown' ? dp.fte : 0), 0) || priorMonthTotals.unknown,
-            indeterminate: datapoints.filter(dp => dp.year === year && dp.month === month).reduce((sum, dp) => sum + (dp.tenure === 'indeterminate' ? dp.fte : 0), 0) || priorMonthTotals.indeterminate,
-            term: datapoints.filter(dp => dp.year === year && dp.month === month).reduce((sum, dp) => sum + (dp.tenure === 'term' ? dp.fte : 0), 0) || priorMonthTotals.term,
-            casual: datapoints.filter(dp => dp.year === year && dp.month === month).reduce((sum, dp) => sum + (dp.tenure === 'casual' ? dp.fte : 0), 0) || priorMonthTotals.casual,
-            student: datapoints.filter(dp => dp.year === year && dp.month === month).reduce((sum, dp) => sum + (dp.tenure === 'student' ? dp.fte : 0), 0) || priorMonthTotals.student,
-            combined: datapoints.filter(dp => dp.year === year && dp.month === month).reduce((sum, dp) => sum + (dp.tenure === 'combined' ? dp.fte : 0), 0) || priorMonthTotals.combined,
-        };
+        const totalsPerTenurePerDepartment = {};
+        Object.keys(priorMonthTotals).forEach(tenureType => {
+            totalsPerTenurePerDepartment[tenureType] = datapoints.filter(dp => dp.year === year && dp.month === month).filter(dp => dp.tenure === tenureType);
+        });
 
-        priorMonthTotals = total;
+        const totals = {};
 
-        return {
+        Object.keys(totalsPerTenurePerDepartment).forEach(tenureType => {
+            if (totals[tenureType] === undefined) {
+                totals[tenureType] = {};
+            }
+            const departmentRows = totalsPerTenurePerDepartment[tenureType];
+
+            // Sum up totals per department, carrying forward prior month totals for unreported departments
+            departmentRows.forEach(row => {
+                totals[tenureType][row.department_id] = { fte: row.fte, source_of_dept: row.source };
+            });
+
+            // Carry forward prior month totals for unreported departments
+            Object.keys(priorMonthTotals[tenureType]).forEach(department_id => {
+                if (totals[tenureType][department_id] === undefined) {
+                    totals[tenureType][department_id] = priorMonthTotals[tenureType][department_id];
+
+                    // When importing from data-main, we will set skipped month-tenure-dept combinations to zero. This will not be true for other sheets, as they may report sporadically.
+                    if (totals[tenureType][department_id].source_of_dept === 'data-main') {
+                        totals[tenureType][department_id].fte = 0;
+                    }
+
+                }
+            });
+
+            priorMonthTotals[tenureType] = totals[tenureType];
+        });
+
+        const result = {
             year: year,
             month: month,
-            ...total
         };
 
-    });
+        Object.keys(totals).forEach(tenureType => {
+            result[tenureType] = Object.values(totals[tenureType]).reduce((sum, val) => sum + val.fte, 0);
+        });
 
-}
+        return result;
+    })
+};
+
 
 
 module.exports = {

@@ -61,7 +61,7 @@ workbook.SheetNames.forEach(sheetName => {
     if (sheetName.toLowerCase().startsWith('data-')) {
         datapoints = [
             ...datapoints,
-            ...importDataSheet(worksheet, departments)
+            ...importDataSheet(sheetName, worksheet, departments)
         ];
         return;
     }

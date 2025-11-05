@@ -4,7 +4,7 @@ const idForDepartmentName = require('./department').idForDepartmentName;
 /**
  * Import data from a given `data-*` worksheet.
  */
-module.exports = function (worksheet, departments) {
+module.exports = function (sheetName, worksheet, departments) {
 
     let datapoints = [];
     const rows = XLSX.utils.sheet_to_json(worksheet)
@@ -61,6 +61,7 @@ module.exports = function (worksheet, departments) {
             'tenure': tenure,
             'pop': parseInt(row['Pop']),
             'fte': parseFloat(row['FTE']),
+            'source': sheetName,
             //'assigned_h': row['assigned_h'], //TODO clarify with Marianne if needed
             //'normal_h': row['normal_h'],//TODO clarify with Marianne if needed
             // 'fte_ratio': row['fte_ratio'],//TODO clarify with Marianne if needed
