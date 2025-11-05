@@ -9,9 +9,9 @@
         <ToggleGroupItem value="5Y" :class="toggleGroupItemClasses" :disabled="preferredTimeframe === '5Y'">
             {{ strings.preferred_timeframe_5y }}
         </ToggleGroupItem>
-        <ToggleGroupItem value="10Y" :class="toggleGroupItemClasses" :disabled="preferredTimeframe === '10Y'">
+        <!--<ToggleGroupItem value="10Y" :class="toggleGroupItemClasses" :disabled="preferredTimeframe === '10Y'">
             {{ strings.preferred_timeframe_10y }}
-        </ToggleGroupItem>
+        </ToggleGroupItem>-->
         <ToggleGroupItem value="MAX" :class="toggleGroupItemClasses" :disabled="preferredTimeframe === 'MAX'">
             {{ strings.preferred_timeframe_max }}
         </ToggleGroupItem>

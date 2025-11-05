@@ -1,10 +1,25 @@
 <template>
-    <div ref="componentRoot" class="w-full">
+    <div ref="componentRoot" class="w-full flex flex-col gap-2">
         <div :id="uniqueId" class="w-full h-128"></div>
+
+        <label class="flex gap-2 items-center rounded p-2 bg-slate-100 border-solid w-fit self-end">
+            <div class="text-stone-700 dark:text-white leading-none pr-2 select-none text-xs font-medium">
+                {{ strings.include_combined_data_label }}
+            </div>
+
+
+            <SwitchRoot id="airplane-mode" v-model="shouldIncludeCombinedData"
+                class="w-[32px] h-[20px] shadow-sm flex data-[state=unchecked]:bg-stone-300 data-[state=checked]:bg-stone-800 dark:data-[state=unchecked]:bg-stone-800 dark:data-[state=checked]:bg-stone-700 border border-stone-300 data-[state=checked]:border-stone-700  dark:border-stone-700 rounded-full relative transition-[background] focus-within:outline-none focus-within:shadow-[0_0_0_1px] focus-within:border-stone-800 focus-within:shadow-stone-800">
+                <SwitchThumb
+                    class="w-3.5 h-3.5 my-auto bg-white text-xs flex items-center justify-center shadow-xl rounded-full transition-transform translate-x-0.5 will-change-transform data-[state=checked]:translate-x-full" />
+            </SwitchRoot>
+        </label>
+
     </div>
 </template>
 <script setup>
-import { onMounted, onBeforeUnmount, useTemplateRef, shallowRef, computed, watch } from 'vue';
+import { SwitchRoot, SwitchThumb } from 'reka-ui'
+import { onMounted, onBeforeUnmount, useTemplateRef, shallowRef, computed, watch, ref } from 'vue';
 import { storeToRefs } from 'pinia'
 
 import usePayloadsStore from '../../stores/payloads.js'
@@ -22,6 +37,8 @@ const { preferredTimeframe, preferredGranularity } = storeToRefs(settingsStore)
 const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
 const componentRoot = useTemplateRef('componentRoot');
 const resObserver = shallowRef(null);
+
+const shouldIncludeCombinedData = ref(false);
 
 import * as echarts from 'echarts/core';
 import { LineChart } from 'echarts/charts';
@@ -93,28 +110,38 @@ const dataset = computed(() => {
         baseData = aggregations.value.total_ftes_per_quarter;
     }
 
+    let dimensions = [
+        'timestamp',
+        'indeterminate',
+        'term',
+        'casual',
+        'student'
+    ];
+
+    if (shouldIncludeCombinedData.value) {
+        dimensions.push('combined');
+    }
+
     return {
-        dimensions: [
-            'timestamp',
-            'indeterminate',
-            'term',
-            'casual',
-            'student'
-        ],
+        dimensions,
         source: baseData.map(item => {
 
-            return {
+            let dims = {
                 timestamp: preferredGranularity.value === 'month' ? `${item.year}-${String(item.month).padStart(2, '0')}` : `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
                 indeterminate: item.indeterminate,
                 term: item.term,
                 casual: item.casual,
                 student: item.student,
+                combined: item.combined,
             }
+
+            return dims;
         })
     };
 });
 
 const chartOptions = computed(() => {
+
 
     const baseSerie = {
         type: 'line',
@@ -125,6 +152,30 @@ const chartOptions = computed(() => {
             width: 0
         },
         showSymbol: false
+    }
+
+    let series = [{
+        ...baseSerie,
+        name: strings.value.indeterminate_label,
+    },
+    {
+        ...baseSerie,
+        name: strings.value.term_label,
+    },
+    {
+        ...baseSerie,
+        name: strings.value.casual_label,
+    },
+    {
+        ...baseSerie,
+        name: strings.value.student_label,
+    }];
+
+    if (shouldIncludeCombinedData.value) {
+        series.push({
+            ...baseSerie,
+            name: strings.value.combined_label,
+        });
     }
 
     const options = {
@@ -148,32 +199,16 @@ const chartOptions = computed(() => {
         yAxis: {
         },
         dataset: dataset.value,
-        series: [
-            {
-                ...baseSerie,
-                name: strings.value.indeterminate_label,
-            },
-            {
-                ...baseSerie,
-                name: strings.value.term_label,
-            },
-            {
-                ...baseSerie,
-                name: strings.value.casual_label,
-            },
-            {
-                ...baseSerie,
-                name: strings.value.student_label,
-            },
-        ]
-
+        series: series
     };
+
+
 
     options['legend'] = {
         data: options.series.map(serie => serie.name),
     }
 
-
+    console.log(options);
 
     return options;
 });
@@ -223,9 +258,19 @@ const redrawChart = () => {
 };
 
 
-watch([preferredTimeframe, preferredGranularity], () => {
+watch([preferredGranularity, preferredTimeframe], () => {
     redrawChart();
 });
+
+watch([shouldIncludeCombinedData], () => {
+    // For some reason, echart can't redraw properly after a dataset change
+    // see https://github.com/apache/echarts/issues/6202
+    chart.value.setOption(chartOptions.value, {
+        replaceMerge: ['series'],
+    })
+});
+
+
 
 
 </script>
