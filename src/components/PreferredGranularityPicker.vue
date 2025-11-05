@@ -28,6 +28,7 @@ const toggleGroupItemClasses = [
     "font-medium",
     "text-slate-700",
     "rounded",
+    "select-none",
     "data-[state=on]:bg-slate-300",
     "data-[state=off]:cursor-pointer",
 ]

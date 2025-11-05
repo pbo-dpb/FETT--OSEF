@@ -37,6 +37,7 @@ import {
     DatasetComponent,
     TransformComponent,
     LegendComponent,
+    DataZoomComponent
 } from 'echarts/components';
 
 echarts.use([
@@ -48,8 +49,40 @@ echarts.use([
     LegendComponent,
     LabelLayout,
     UniversalTransition,
-    SVGRenderer
+    SVGRenderer,
+    DataZoomComponent
 ]);
+
+const dataZoom = computed(() => {
+    let start = 0;
+    let end = 100;
+
+    let numberOfXAxisPoints = dataset.value.source.length;
+
+    const oneYearGranularity = (preferredGranularity.value === 'month' ? 12 : 4);
+
+    if (preferredTimeframe.value === '1Y') {
+        start = 100 - oneYearGranularity / numberOfXAxisPoints * 100;
+        end = 100;
+    } else if (preferredTimeframe.value === '3Y') {
+        start = 100 - (3 * oneYearGranularity) / numberOfXAxisPoints * 100;
+        end = 100;
+    } else if (preferredTimeframe.value === '5Y') {
+        start = 100 - (5 * oneYearGranularity) / numberOfXAxisPoints * 100;
+        end = 100;
+    } else if (preferredTimeframe.value === '10Y') {
+        start = 100 - (10 * oneYearGranularity) / numberOfXAxisPoints * 100;
+        end = 100;
+    } else if (preferredTimeframe.value === 'MAX') {
+        start = 0;
+        end = 100;
+    }
+    return {
+        type: 'inside',
+        start,
+        end
+    };
+});
 
 const dataset = computed(() => {
 
@@ -59,17 +92,6 @@ const dataset = computed(() => {
     } else if (preferredGranularity.value === 'quarter') {
         baseData = aggregations.value.total_ftes_per_quarter;
     }
-
-    if (preferredTimeframe.value === '1Y') {
-        baseData = baseData.slice(preferredGranularity.value === 'month' ? -12 : -4);
-    } else if (preferredTimeframe.value === '3Y') {
-        baseData = baseData.slice(preferredGranularity.value === 'month' ? -36 : -12);
-    } else if (preferredTimeframe.value === '5Y') {
-        baseData = baseData.slice(preferredGranularity.value === 'month' ? -60 : -20);
-    } else if (preferredTimeframe.value === '10Y') {
-        baseData = baseData.slice(preferredGranularity.value === 'month' ? -120 : -40);
-    }
-
 
     return {
         dimensions: [
@@ -108,8 +130,9 @@ const chartOptions = computed(() => {
     const options = {
         grid: {
             left: 0,
-            right: 0,
+            right: 16,
         },
+        dataZoom: [dataZoom.value],
         tooltip: {
             trigger: 'axis',
             /*axisPointer: {
@@ -203,5 +226,6 @@ const redrawChart = () => {
 watch([preferredTimeframe, preferredGranularity], () => {
     redrawChart();
 });
+
 
 </script>
