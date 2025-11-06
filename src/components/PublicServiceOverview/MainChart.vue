@@ -77,8 +77,9 @@ import { LineChart } from 'echarts/charts';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { SVGRenderer } from 'echarts/renderers';
 import darkTheme from "../../assets/echarts/dark.json?json"
-
 echarts.registerTheme('dark', darkTheme);
+import lightTheme from "../../assets/echarts/light.json?json"
+echarts.registerTheme('light', lightTheme);
 
 import {
     TooltipComponent,
@@ -184,7 +185,6 @@ const dataset = computed(() => {
                 if (shouldDisplayYearlyAverages.value) {
                     dims.yearly_average = Math.round(preferredGranularity.value === 'month' ? arrayMapForTotalFtesInYear[item.year + (item.month >= 4 ? 1 : 0)] : arrayMapForTotalFtesInYear[item.year + (item.quarter >= 2 ? 1 : 0)]);
                 }
-                console.log('dims', dims);
 
                 return dims;
             })
@@ -275,7 +275,7 @@ const series = computed(() => {
 
         }
     };
-    console.log('yearlyAveragesSerie', yearlyAveragesSerie);
+
 
     if (!shouldSplitByTenure.value) {
         return [
@@ -362,6 +362,8 @@ onMounted(() => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         theme = 'dark';
         useDarkTheme.value = true;
+    } else {
+        theme = 'light';
     }
 
     chart.value = echarts.init(componentRoot.value.querySelector(`#${uniqueId}`), theme, {
