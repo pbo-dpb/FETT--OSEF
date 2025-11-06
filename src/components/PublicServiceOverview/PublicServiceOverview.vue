@@ -13,9 +13,6 @@
                 </div>
                 <MainChart />
             </div>
-            <!--<div class="w-full lg:col-span-2">
-                Insights Panel
-            </div>-->
         </template>
         <LoadingIndicator v-else class="col-span-5 size-8" />
     </div>

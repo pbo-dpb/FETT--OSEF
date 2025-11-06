@@ -1,6 +1,6 @@
 <template>
     <div ref="componentRoot" class="w-full flex flex-col gap-2">
-        <div :id="uniqueId" class="w-full h-128"></div>
+        <div :id="uniqueId" class="w-full h-[80vh]"></div>
 
 
         <div class="flex xl:flex-row items-center gap-4 justify-end">
@@ -177,12 +177,12 @@ const dataset = computed(() => {
 
                 let dims = {
                     timestamp: preferredGranularity.value === 'month' ? `${item.year}-${String(item.month).padStart(2, '0')}` : `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
-                    total: dimensions.reduce((sum, dim) => sum + item[dim], 0),
+                    total: Math.round(dimensions.reduce((sum, dim) => sum + item[dim], 0)),
                 }
 
 
                 if (shouldDisplayYearlyAverages.value) {
-                    dims.yearly_average = preferredGranularity.value === 'month' ? arrayMapForTotalFtesInYear[item.year + (item.month >= 4 ? 1 : 0)] : arrayMapForTotalFtesInYear[item.year + (item.quarter >= 2 ? 1 : 0)];
+                    dims.yearly_average = Math.round(preferredGranularity.value === 'month' ? arrayMapForTotalFtesInYear[item.year + (item.month >= 4 ? 1 : 0)] : arrayMapForTotalFtesInYear[item.year + (item.quarter >= 2 ? 1 : 0)]);
                 }
                 console.log('dims', dims);
 
@@ -198,15 +198,15 @@ const dataset = computed(() => {
 
             let dims = {
                 timestamp: preferredGranularity.value === 'month' ? `${item.year}-${String(item.month).padStart(2, '0')}` : `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
-                indeterminate: item.indeterminate,
-                term: item.term,
-                casual: item.casual,
-                student: item.student,
-                combined: item.combined,
+                indeterminate: Math.round(item.indeterminate),
+                term: Math.round(item.term),
+                casual: Math.round(item.casual),
+                student: Math.round(item.student),
+                combined: Math.round(item.combined),
             }
 
             if (shouldDisplayYearlyAverages.value) {
-                dims.yearly_average = preferredGranularity.value === 'month' ? arrayMapForTotalFtesInYear[item.year + (item.month >= 4 ? 1 : 0)] : arrayMapForTotalFtesInYear[item.year + (item.quarter >= 2 ? 1 : 0)];
+                dims.yearly_average = Math.round(preferredGranularity.value === 'month' ? arrayMapForTotalFtesInYear[item.year + (item.month >= 4 ? 1 : 0)] : arrayMapForTotalFtesInYear[item.year + (item.quarter >= 2 ? 1 : 0)]);
             }
 
             return dims;
