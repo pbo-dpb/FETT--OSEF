@@ -70,6 +70,7 @@ const resObserver = shallowRef(null);
 const shouldIncludeCombinedData = ref(false);
 const shouldSplitByTenure = ref(true);
 const shouldDisplayYearlyAverages = ref(false);
+const useDarkTheme = ref(false);
 
 import * as echarts from 'echarts/core';
 import { LineChart } from 'echarts/charts';
@@ -85,7 +86,8 @@ import {
     DatasetComponent,
     TransformComponent,
     LegendComponent,
-    DataZoomComponent
+    DataZoomComponent,
+    MarkAreaComponent
 } from 'echarts/components';
 
 echarts.use([
@@ -98,7 +100,8 @@ echarts.use([
     LabelLayout,
     UniversalTransition,
     SVGRenderer,
-    DataZoomComponent
+    DataZoomComponent,
+    MarkAreaComponent
 ]);
 
 const baseData = computed(() => {
@@ -228,8 +231,51 @@ const series = computed(() => {
         name: strings.value.yearly_average_label,
         type: 'line',
         step: 'middle',
-        showSymbol: false
+        showSymbol: false,
+        markArea: {
+            silent: true,
+            data:
+                Object.values(dataset.value.source.reduce((accumulator, currentValue) => {
+
+                    let year = parseInt(currentValue.timestamp.match(/(\d{4})/)[1]);
+
+                    if (!year || accumulator[year]) return accumulator;
+
+                    const nextYear = year + 1
+                    accumulator[year] = [
+                        {
+
+                            name: `${year}-${language.value === 'fr' ? nextYear : String(nextYear).substring(2)}`,
+                            xAxis: preferredGranularity.value === 'month' ? `${year}-04` : `${language.value === 'fr' ? 'T' : 'Q'}2 ${year}`,
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                    offset: 0,
+                                    color: useDarkTheme.value ? 'rgba(0, 0, 0, 0)' : 'rgba(255,255,255,0)',
+                                },
+                                {
+                                    offset: 0.5,
+                                    color: useDarkTheme.value ? 'rgba(255, 255, 255, 0.1)' : 'oklch(55.4% 0.046 257.417 / 15%)',
+                                },
+
+                                {
+                                    offset: 1,
+                                    color: useDarkTheme.value ? 'rgba(0, 0, 0, 0)' : 'rgba(255,255,255,0)',
+                                },
+                                ]),
+                            },
+                        },
+                        {
+                            xAxis: preferredGranularity.value === 'month' ? `${nextYear}-03` : `${language.value === 'fr' ? 'T' : 'Q'}1 ${nextYear}`,
+                        }
+                    ];
+                    return accumulator;
+
+                }, {})),
+
+
+        }
     };
+    console.log('yearlyAveragesSerie', yearlyAveragesSerie);
 
     if (!shouldSplitByTenure.value) {
         return [
@@ -315,6 +361,7 @@ onMounted(() => {
     let theme = null;
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         theme = 'dark';
+        useDarkTheme.value = true;
     }
 
     chart.value = echarts.init(componentRoot.value.querySelector(`#${uniqueId}`), theme, {
