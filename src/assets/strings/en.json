@@ -9,6 +9,7 @@
     "casual_label": "Casual",
     "student_label": "Student",
     "combined_label": "CAF & RCMP Members",
+    "total_label": "Total",
     "preferred_timeframe_1y": "1 Year",
     "preferred_timeframe_3y": "3 Years",
     "preferred_timeframe_5y": "5 Years",
@@ -17,5 +18,7 @@
     "preferred_granularity_quarter": "Quarterly",
     "preferred_granularity_month": "Monthly",
     "include_combined_data_label": "Include CAF & RCMP Members",
-    "include_combined_data_tooltip": "Toggle to include or exclude combined data from CAF and RCMP members in the chart."
+    "include_combined_data_tooltip": "Toggle to include or exclude combined data from CAF and RCMP members in the chart.",
+    "should_split_by_tenure_label": "Split by Tenure",
+    "display_yearly_averages_label": "Display Yearly Averages"
 }

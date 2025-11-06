@@ -2,19 +2,48 @@
     <div ref="componentRoot" class="w-full flex flex-col gap-2">
         <div :id="uniqueId" class="w-full h-128"></div>
 
-        <label class="flex gap-2 items-center rounded p-2 bg-slate-100 border-solid w-fit self-end">
-            <div class="text-stone-700 dark:text-white leading-none pr-2 select-none text-xs font-medium">
-                {{ strings.include_combined_data_label }}
-            </div>
+
+        <div class="flex xl:flex-row items-center gap-4 justify-end">
 
 
-            <SwitchRoot id="airplane-mode" v-model="shouldIncludeCombinedData"
-                class="w-[32px] h-[20px] shadow-sm flex data-[state=unchecked]:bg-stone-300 data-[state=checked]:bg-stone-800 dark:data-[state=unchecked]:bg-stone-800 dark:data-[state=checked]:bg-stone-700 border border-stone-300 data-[state=checked]:border-stone-700  dark:border-stone-700 rounded-full relative transition-[background] focus-within:outline-none focus-within:shadow-[0_0_0_1px] focus-within:border-stone-800 focus-within:shadow-stone-800">
-                <SwitchThumb
-                    class="w-3.5 h-3.5 my-auto bg-white text-xs flex items-center justify-center shadow-xl rounded-full transition-transform translate-x-0.5 will-change-transform data-[state=checked]:translate-x-full" />
-            </SwitchRoot>
-        </label>
+            <label class="flex gap-2 items-center rounded p-2 bg-slate-100 border-solid w-fit self-end">
+                <div class="text-stone-700 dark:text-white leading-none pr-2 select-none text-xs font-medium">
+                    {{ strings.display_yearly_averages_label }}
+                </div>
+                <SwitchRoot id="airplane-mode" v-model="shouldDisplayYearlyAverages"
+                    class="w-[32px] h-[20px] shadow-sm flex data-[state=unchecked]:bg-stone-300 data-[state=checked]:bg-stone-800 dark:data-[state=unchecked]:bg-stone-800 dark:data-[state=checked]:bg-stone-700 border border-stone-300 data-[state=checked]:border-stone-700  dark:border-stone-700 rounded-full relative transition-[background] focus-within:outline-none focus-within:shadow-[0_0_0_1px] focus-within:border-stone-800 focus-within:shadow-stone-800">
+                    <SwitchThumb
+                        class="w-3.5 h-3.5 my-auto bg-white text-xs flex items-center justify-center shadow-xl rounded-full transition-transform translate-x-0.5 will-change-transform data-[state=checked]:translate-x-full" />
+                </SwitchRoot>
+            </label>
 
+
+
+            <label class="flex gap-2 items-center rounded p-2 bg-slate-100 border-solid w-fit self-end">
+                <div class="text-stone-700 dark:text-white leading-none pr-2 select-none text-xs font-medium">
+                    {{ strings.include_combined_data_label }}
+                </div>
+                <SwitchRoot id="airplane-mode" v-model="shouldIncludeCombinedData"
+                    class="w-[32px] h-[20px] shadow-sm flex data-[state=unchecked]:bg-stone-300 data-[state=checked]:bg-stone-800 dark:data-[state=unchecked]:bg-stone-800 dark:data-[state=checked]:bg-stone-700 border border-stone-300 data-[state=checked]:border-stone-700  dark:border-stone-700 rounded-full relative transition-[background] focus-within:outline-none focus-within:shadow-[0_0_0_1px] focus-within:border-stone-800 focus-within:shadow-stone-800">
+                    <SwitchThumb
+                        class="w-3.5 h-3.5 my-auto bg-white text-xs flex items-center justify-center shadow-xl rounded-full transition-transform translate-x-0.5 will-change-transform data-[state=checked]:translate-x-full" />
+                </SwitchRoot>
+            </label>
+
+            <label class="flex gap-2 items-center rounded p-2 bg-slate-100 border-solid w-fit self-end">
+                <div class="text-stone-700 dark:text-white leading-none pr-2 select-none text-xs font-medium">
+                    {{ strings.should_split_by_tenure_label }}
+                </div>
+                <SwitchRoot id="airplane-mode" v-model="shouldSplitByTenure"
+                    class="w-[32px] h-[20px] shadow-sm flex data-[state=unchecked]:bg-stone-300 data-[state=checked]:bg-stone-800 dark:data-[state=unchecked]:bg-stone-800 dark:data-[state=checked]:bg-stone-700 border border-stone-300 data-[state=checked]:border-stone-700  dark:border-stone-700 rounded-full relative transition-[background] focus-within:outline-none focus-within:shadow-[0_0_0_1px] focus-within:border-stone-800 focus-within:shadow-stone-800">
+                    <SwitchThumb
+                        class="w-3.5 h-3.5 my-auto bg-white text-xs flex items-center justify-center shadow-xl rounded-full transition-transform translate-x-0.5 will-change-transform data-[state=checked]:translate-x-full" />
+                </SwitchRoot>
+            </label>
+
+
+
+        </div>
     </div>
 </template>
 <script setup>
@@ -39,6 +68,8 @@ const componentRoot = useTemplateRef('componentRoot');
 const resObserver = shallowRef(null);
 
 const shouldIncludeCombinedData = ref(false);
+const shouldSplitByTenure = ref(true);
+const shouldDisplayYearlyAverages = ref(false);
 
 import * as echarts from 'echarts/core';
 import { LineChart } from 'echarts/charts';
@@ -111,7 +142,6 @@ const dataset = computed(() => {
     }
 
     let dimensions = [
-        'timestamp',
         'indeterminate',
         'term',
         'casual',
@@ -122,8 +152,26 @@ const dataset = computed(() => {
         dimensions.push('combined');
     }
 
+    if (!shouldSplitByTenure.value) {
+
+
+        return {
+            dimensions: ["timestamp", "total"],
+            source: baseData.map(item => {
+
+                let dims = {
+                    timestamp: preferredGranularity.value === 'month' ? `${item.year}-${String(item.month).padStart(2, '0')}` : `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
+                    total: dimensions.reduce((sum, dim) => sum + item[dim], 0),
+                }
+
+                return dims;
+            })
+        };
+
+    }
+
     return {
-        dimensions,
+        dimensions: ['timestamp', ...dimensions],
         source: baseData.map(item => {
 
             let dims = {
@@ -140,8 +188,7 @@ const dataset = computed(() => {
     };
 });
 
-const chartOptions = computed(() => {
-
+const series = computed(() => {
 
     const baseSerie = {
         type: 'line',
@@ -153,6 +200,14 @@ const chartOptions = computed(() => {
         },
         showSymbol: false
     }
+
+    if (!shouldSplitByTenure.value) {
+        return [{
+            ...baseSerie,
+            name: strings.value.total_label,
+        }];
+    }
+
 
     let series = [{
         ...baseSerie,
@@ -177,6 +232,10 @@ const chartOptions = computed(() => {
             name: strings.value.combined_label,
         });
     }
+    return series;
+})
+
+const chartOptions = computed(() => {
 
     const options = {
         grid: {
@@ -199,7 +258,7 @@ const chartOptions = computed(() => {
         yAxis: {
         },
         dataset: dataset.value,
-        series: series
+        series: series.value,
     };
 
 
@@ -262,7 +321,7 @@ watch([preferredGranularity, preferredTimeframe], () => {
     redrawChart();
 });
 
-watch([shouldIncludeCombinedData], () => {
+watch([shouldIncludeCombinedData, shouldSplitByTenure, shouldDisplayYearlyAverages], () => {
     // For some reason, echart can't redraw properly after a dataset change
     // see https://github.com/apache/echarts/issues/6202
     chart.value.setOption(chartOptions.value, {

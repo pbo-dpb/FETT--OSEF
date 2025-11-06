@@ -53,7 +53,15 @@ function loopFunctionOverPeriod(settings, period, runnable) {
  */
 function totalFtesPerQuarter(settings, datapoints) {
 
-    let monthlyTotals = totalFtesPerMonth(settings, datapoints);
+    let monthlyTotals = totalFtesPerMonth({
+        ...settings,
+        // We need to pad the period to prevent the month filter to cut off data needed for quarterly calculations
+        start_quarter: 1,
+        start_year: settings.start_year - 1,
+        end_quarter: 4,
+        end_year: settings.end_year + 1
+    }, datapoints);
+
 
     return loopFunctionOverPeriod(settings, 'quarter', (year, quarter) => {
 
@@ -106,7 +114,13 @@ function totalFtesPerMonth(settings, datapoints) {
         combined: {},
     }
 
-    return loopFunctionOverPeriod(settings, 'month', (year, month) => {
+    // We need to cheat on the period to avoid missing data points not being reported for months
+
+    return loopFunctionOverPeriod({
+        ...settings,
+        start_year: settings.start_year - 1,
+        start_quarter: 1,
+    }, 'month', (year, month) => {
 
         const totalsPerTenurePerDepartment = {};
         Object.keys(priorMonthTotals).forEach(tenureType => {
@@ -135,12 +149,11 @@ function totalFtesPerMonth(settings, datapoints) {
                     if (totals[tenureType][department_id].source_of_dept === 'data-main') {
                         totals[tenureType][department_id].fte = 0;
                     }
-
                 }
             });
 
             priorMonthTotals[tenureType] = totals[tenureType];
-        });
+        })
 
         const result = {
             year: year,
@@ -152,6 +165,17 @@ function totalFtesPerMonth(settings, datapoints) {
         });
 
         return result;
+    }).filter(dp => {
+        // Make sure we only return datapoints within the original requested range
+        if (dp.year < settings.start_year) {
+            return false;
+        }
+        const quarterBottomMonth = { 1: 1, 2: 4, 3: 7, 4: 10 }[parseInt(settings.start_quarter)];
+        if (dp.year === settings.start_year && dp.month < quarterBottomMonth) {
+            return false;
+        }
+        return true;
+
     })
 };
 
