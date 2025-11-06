@@ -19,7 +19,7 @@ const handleStringsIo = require('./build-src/strings');
 const handleSettingsIo = require('./build-src/settings');
 const { importDepartments, saveDepartments } = require('./build-src/department');
 const importDataSheet = require('./build-src/datasheets');
-const { totalFtesPerMonth, totalFtesPerQuarter } = require('./build-src/aggregations');
+const Aggregator = require('./build-src/aggregations');
 
 
 
@@ -82,6 +82,7 @@ saveDepartments(departments, datapoints);
  */
 (function () {
 
+    const aggregator = new Aggregator(settings, datapoints);
     const payloads = {
         departments: Object.values(departments).map(dept => {
             return {
@@ -91,8 +92,8 @@ saveDepartments(departments, datapoints);
             }
         }),
         aggregations: {
-            total_ftes_per_quarter: totalFtesPerQuarter(settings, datapoints),
-            total_ftes_per_month: totalFtesPerMonth(settings, datapoints)
+            total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
+            total_ftes_per_month: aggregator.totalFtesPerMonth()
         }
     }
 

@@ -267,7 +267,6 @@ const chartOptions = computed(() => {
         data: options.series.map(serie => serie.name),
     }
 
-    console.log(options);
 
     return options;
 });
