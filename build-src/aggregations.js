@@ -162,8 +162,35 @@ module.exports = class Aggregator {
         return output;
     }
 
-    totalFtesYearlyAverages = function (settings, datapoints) {
+    totalFtesPerYear = function () {
 
+        let monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod(this.settings);
+
+        let yearCursor = this.settings.start_year;
+        let years = [];
+        while (yearCursor <= this.settings.end_year) {
+
+            let datapointsForYear = monthlyTotals.filter(mt => mt.year === yearCursor);
+
+            let totals = {};
+            Object.keys(monthlyTotals[0]).forEach(tenureType => {
+                if (tenureType === 'year' || tenureType === 'month') {
+                    return;
+                }
+
+                totals[tenureType] = datapointsForYear.map((val) => val[tenureType] || 0).reduce((a, b) => a + b, 0) / datapointsForYear.length;
+            })
+
+            years.push({
+                year: yearCursor,
+                ...totals
+            });
+
+            yearCursor++;
+        }
+
+        console.log(years);
+        return years;
     }
 
 
