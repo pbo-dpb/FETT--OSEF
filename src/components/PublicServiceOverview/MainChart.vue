@@ -101,6 +101,16 @@ echarts.use([
     DataZoomComponent
 ]);
 
+const baseData = computed(() => {
+    if (preferredGranularity.value === 'month') {
+        return aggregations.value.total_ftes_per_month;
+    } else if (preferredGranularity.value === 'quarter') {
+        return aggregations.value.total_ftes_per_quarter;
+    }
+    return [];
+});
+
+
 const dataZoom = computed(() => {
     let start = 0;
     let end = 100;
@@ -134,35 +144,44 @@ const dataZoom = computed(() => {
 
 const dataset = computed(() => {
 
-    let baseData = [];
-    if (preferredGranularity.value === 'month') {
-        baseData = aggregations.value.total_ftes_per_month;
-    } else if (preferredGranularity.value === 'quarter') {
-        baseData = aggregations.value.total_ftes_per_quarter;
-    }
-
     let dimensions = [
         'indeterminate',
         'term',
         'casual',
-        'student'
-    ];
+        'student',
+        shouldIncludeCombinedData.value ? 'combined' : null
+    ].filter(Boolean);
 
-    if (shouldIncludeCombinedData.value) {
-        dimensions.push('combined');
+
+    const arrayMapForTotalFtesInYear = {};
+    if (shouldDisplayYearlyAverages.value) {
+        aggregations.value.total_ftes_per_fiscal_year.forEach(item => {
+            if (arrayMapForTotalFtesInYear[item.year] === undefined) {
+                arrayMapForTotalFtesInYear[item.year] = dimensions.reduce((sum, key) => {
+                    return sum + (item[key] || 0);
+                }, 0)
+            }
+        });
     }
+
 
     if (!shouldSplitByTenure.value) {
 
 
         return {
-            dimensions: ["timestamp", "total"],
-            source: baseData.map(item => {
+            dimensions: ["timestamp", "total", (shouldDisplayYearlyAverages.value ? "yearly_average" : null)].filter(Boolean),
+            source: baseData.value.map(item => {
 
                 let dims = {
                     timestamp: preferredGranularity.value === 'month' ? `${item.year}-${String(item.month).padStart(2, '0')}` : `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
                     total: dimensions.reduce((sum, dim) => sum + item[dim], 0),
                 }
+
+
+                if (shouldDisplayYearlyAverages.value) {
+                    dims.yearly_average = preferredGranularity.value === 'month' ? arrayMapForTotalFtesInYear[item.year + (item.month >= 4 ? 1 : 0)] : arrayMapForTotalFtesInYear[item.year + (item.quarter >= 2 ? 1 : 0)];
+                }
+                console.log('dims', dims);
 
                 return dims;
             })
@@ -171,8 +190,8 @@ const dataset = computed(() => {
     }
 
     return {
-        dimensions: ['timestamp', ...dimensions],
-        source: baseData.map(item => {
+        dimensions: ['timestamp', ...dimensions, (shouldDisplayYearlyAverages.value ? "yearly_average" : null)].filter(Boolean),
+        source: baseData.value.map(item => {
 
             let dims = {
                 timestamp: preferredGranularity.value === 'month' ? `${item.year}-${String(item.month).padStart(2, '0')}` : `${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`,
@@ -181,6 +200,10 @@ const dataset = computed(() => {
                 casual: item.casual,
                 student: item.student,
                 combined: item.combined,
+            }
+
+            if (shouldDisplayYearlyAverages.value) {
+                dims.yearly_average = preferredGranularity.value === 'month' ? arrayMapForTotalFtesInYear[item.year + (item.month >= 4 ? 1 : 0)] : arrayMapForTotalFtesInYear[item.year + (item.quarter >= 2 ? 1 : 0)];
             }
 
             return dims;
@@ -199,13 +222,23 @@ const series = computed(() => {
             width: 0
         },
         showSymbol: false
-    }
+    };
+
+    const yearlyAveragesSerie = {
+        name: strings.value.yearly_average_label,
+        type: 'line',
+        step: 'middle',
+        showSymbol: false
+    };
 
     if (!shouldSplitByTenure.value) {
-        return [{
-            ...baseSerie,
-            name: strings.value.total_label,
-        }];
+        return [
+            {
+                ...baseSerie,
+                name: strings.value.total_label,
+            },
+            shouldDisplayYearlyAverages.value ? yearlyAveragesSerie : null,
+        ].filter(Boolean);
     }
 
 
@@ -224,14 +257,15 @@ const series = computed(() => {
     {
         ...baseSerie,
         name: strings.value.student_label,
-    }];
+    },
+    shouldIncludeCombinedData.value ? {
+        ...baseSerie,
+        name: strings.value.combined_label,
+    } : null,
+    shouldDisplayYearlyAverages.value ? yearlyAveragesSerie : null,
+    ].filter(Boolean);
 
-    if (shouldIncludeCombinedData.value) {
-        series.push({
-            ...baseSerie,
-            name: strings.value.combined_label,
-        });
-    }
+
     return series;
 })
 
@@ -264,9 +298,8 @@ const chartOptions = computed(() => {
 
 
     options['legend'] = {
-        data: options.series.map(serie => serie.name),
+        data: options.series.map(serie => serie.name).filter(name => name !== strings.value.yearly_average_label),
     }
-
 
     return options;
 });

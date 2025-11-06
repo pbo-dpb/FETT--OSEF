@@ -46,6 +46,8 @@ module.exports = function (sheetName, worksheet, departments) {
         const year = parseInt(String(ym).substring(0, 4));
         const month = parseInt(String(ym).substring(4, 6).padStart(2, '0'));
 
+        const fy = month >= 4 ? year + 1 : year;
+
         const tenure = tenures[row['tenure']];
 
         if (!tenure) {
@@ -58,6 +60,7 @@ module.exports = function (sheetName, worksheet, departments) {
             'year': year,
             'month': month,
             'quarter': quarters[parseInt(month)],
+            'fy': fy,
             'tenure': tenure,
             'pop': parseInt(row['Pop']),
             'fte': parseFloat(row['FTE']),

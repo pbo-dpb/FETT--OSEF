@@ -94,7 +94,7 @@ saveDepartments(departments, datapoints);
         aggregations: {
             total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
             total_ftes_per_month: aggregator.totalFtesPerMonth(),
-            total_ftes_per_year: aggregator.totalFtesPerYear(),
+            total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
         }
     }
 

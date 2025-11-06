@@ -162,15 +162,18 @@ module.exports = class Aggregator {
         return output;
     }
 
-    totalFtesPerYear = function () {
+    totalFtesPerFiscalYear = function () {
 
         let monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod(this.settings);
 
-        let yearCursor = this.settings.start_year;
-        let years = [];
-        while (yearCursor <= this.settings.end_year) {
+        let fiscalYearCursor = this.settings.start_year;
+        let fiscalYears = [];
+        while (fiscalYearCursor <= this.settings.end_year + (this.settings.end_quarter > 1 ? 1 : 0)) {
 
-            let datapointsForYear = monthlyTotals.filter(mt => mt.year === yearCursor);
+            let datapointsForYear = monthlyTotals.filter(mt => {
+                let fiscalYearForMonth = mt.month >= 4 ? mt.year + 1 : mt.year;
+                return fiscalYearForMonth === fiscalYearCursor;
+            });
 
             let totals = {};
             Object.keys(monthlyTotals[0]).forEach(tenureType => {
@@ -178,19 +181,23 @@ module.exports = class Aggregator {
                     return;
                 }
 
+                if (datapointsForYear.length === 0) {
+                    totals[tenureType] = 0; // Avoid division by zero
+                    return;
+                }
+
                 totals[tenureType] = datapointsForYear.map((val) => val[tenureType] || 0).reduce((a, b) => a + b, 0) / datapointsForYear.length;
             })
 
-            years.push({
-                year: yearCursor,
+            fiscalYears.push({
+                year: fiscalYearCursor,
                 ...totals
             });
 
-            yearCursor++;
+            fiscalYearCursor++;
         }
 
-        console.log(years);
-        return years;
+        return fiscalYears;
     }
 
 
