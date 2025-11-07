@@ -93,6 +93,8 @@ saveDepartments(departments, aggregator);
                 id: dept.id,
                 name_en: dept.name_en,
                 name_fr: dept.name_fr,
+                acronym_en: dept.acronym_en,
+                acronym_fr: dept.acronym_fr,
                 latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id)
             }
         }),

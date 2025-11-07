@@ -58,13 +58,13 @@ const saveDepartments = function (departments, aggregator) {
     }
 
     Object.values(departments).forEach(dept => {
+        const deptDetails = {};
+        deptDetails.total_ftes_per_month = aggregator.totalFtesPerMonthForDepartment(dept.id);
+        deptDetails.total_ftes_per_quarter = aggregator.totalFtesPerQuarterForDepartment(dept.id);
+        deptDetails.total_ftes_per_fiscal_year = aggregator.totalFtesPerFiscalYear(dept.id);
 
-        dept.total_ftes_per_month = aggregator.totalFtesPerMonthForDepartment(dept.id);
-        dept.total_ftes_per_quarter = aggregator.totalFtesPerQuarterForDepartment(dept.id);
-        dept.total_ftes_per_fiscal_year = aggregator.totalFtesPerFiscalYear(dept.id);
-
-        const outputFilePath = path.join(deptOutputDir, `${dept.id}.json`)
-        fs.writeFileSync(outputFilePath, JSON.stringify(dept), 'utf8')
+        const outputFilePath = path.join(deptOutputDir, `${deptDetails.id}.json`)
+        fs.writeFileSync(outputFilePath, JSON.stringify(deptDetails), 'utf8')
     })
 
 }
