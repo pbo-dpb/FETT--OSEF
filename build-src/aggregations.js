@@ -4,16 +4,76 @@ module.exports = class Aggregator {
     constructor(settings, datapoints) {
         this.settings = settings;
         this.datapoints = datapoints;
+
+        this.preparePaddedMonthlyTotals();
+        this.preparedPaddedMonthlyDepartmentTotals();
     }
 
+    preparedPaddedMonthlyDepartmentTotals = function () {
+
+        this.paddedMonthlyDepartmentTotals = {};
 
 
-    getPaddedMonthlyTotals = function () {
-        if (this.paddedMonthlyTotals !== null) {
-            return this.paddedMonthlyTotals;
-        }
+        this.datapoints.map(dp => dp.department_id).filter((value, index, self) => self.indexOf(value) === index).forEach(department_id => {
+            this.paddedMonthlyDepartmentTotals[department_id] = [];
+
+            this.loopFunctionOverPeriod({
+                ...this.settings,
+                start_year: this.settings.start_year - 1,
+                start_quarter: 1,
+                end_year: this.settings.end_year + 1,
+                end_quarter: 4
+            }, 'month', (year, month) => {
+
+                const previousMonthForDept = this.paddedMonthlyDepartmentTotals[department_id].length > 0 ? this.paddedMonthlyDepartmentTotals[department_id][this.paddedMonthlyDepartmentTotals[department_id].length - 1] : null;
+
+                const monthEntry = {
+                    year: year,
+                    month: month,
+                    unreported: true,
+                    shouldFillWithZeros: false
+                };
+                ["unknown",
+                    "indeterminate",
+                    "term",
+                    "casual",
+                    "student",
+                    "combined"].forEach(tenureType => {
+
+                        let dataPointsForMonthDeptTenure = this.datapoints.filter(dp => dp.year === year && dp.month === month && dp.department_id === department_id && dp.tenure === tenureType);
+                        if (dataPointsForMonthDeptTenure.length === 0) {
+                            if (previousMonthForDept && previousMonthForDept.shouldFillWithZeros) {
+                                monthEntry[tenureType] = 0;
+                            } else if (previousMonthForDept) {
+                                monthEntry[tenureType] = previousMonthForDept[tenureType] || 0;
+                            }
+                        } else {
+                            // If we have one data point, mark this month as reported
+                            monthEntry["unreported"] = false;
+                            monthEntry[tenureType] = dataPointsForMonthDeptTenure.map((val) => val.fte).reduce((a, b) => a + b, 0);
+
+                            // When we find a datapoint, we can check its source to see if we need to fill future missing months with zeros
+                            if (dataPointsForMonthDeptTenure.find(dp => dp.source === 'data-main')) {
+                                monthEntry.shouldFillWithZeros = true;
+                            }
+                        }
+                    });
+
+                this.paddedMonthlyDepartmentTotals[department_id].push(monthEntry);
+            });
+
+            this.paddedMonthlyDepartmentTotals[department_id] = this.paddedMonthlyDepartmentTotals[department_id].map(dp => {
+                // Clean up by removing the helper property
+                const { shouldFillWithZeros, ...rest } = dp;
+                return rest;
+            })
+
+        })
 
 
+    }
+
+    preparePaddedMonthlyTotals = function () {
         // We keep track of the last month as to keep a rolling number for unreported/missing months
         let priorMonthTotals = {
             unknown: {},
@@ -24,8 +84,8 @@ module.exports = class Aggregator {
             combined: {},
         }
 
-        // We need to cheat on the period to avoid missing data points not being reported for months
 
+        // We need to cheat on the period to avoid missing data points not being reported for months
         this.paddedMonthlyTotals = this.loopFunctionOverPeriod({
             ...this.settings,
             start_year: this.settings.start_year - 1,
@@ -54,6 +114,7 @@ module.exports = class Aggregator {
 
                 // Carry forward prior month totals for unreported departments
                 Object.keys(priorMonthTotals[tenureType]).forEach(department_id => {
+
                     if (totals[tenureType][department_id] === undefined) {
                         totals[tenureType][department_id] = priorMonthTotals[tenureType][department_id];
 
@@ -62,6 +123,7 @@ module.exports = class Aggregator {
                             totals[tenureType][department_id].fte = 0;
                         }
                     }
+
                 });
 
                 priorMonthTotals[tenureType] = totals[tenureType];
@@ -89,6 +151,9 @@ module.exports = class Aggregator {
             return true;
 
         })
+    }
+
+    getPaddedMonthlyTotals = function () {
         return this.paddedMonthlyTotals;
     }
 
@@ -260,7 +325,20 @@ module.exports = class Aggregator {
         return this.trimmedPaddedMonthlyTotalsToPeriod(this.settings);
     }
 
+
+    currentTotalFtesForDepartment = function (department_id) {
+        const reports = this.paddedMonthlyDepartmentTotals[department_id].filter(monthEntry => monthEntry.unreported === false);
+        let latestReport = reports.length > 0 ? reports[reports.length - 1] : null;
+
+        // Clean up the "unreported" field before returning
+        if (latestReport) {
+            const { unreported, ...rest } = latestReport;
+            return rest;
+        } else {
+            return null;
+        }
+
+    }
+
 }
-
-
 

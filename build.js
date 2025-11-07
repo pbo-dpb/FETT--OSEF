@@ -52,6 +52,7 @@ if (!departmentsWorksheet) {
     console.error('The input .xlsx file is missing the required "departments" sheet.')
     process.exit(1)
 }
+
 const departments = importDepartments(departmentsWorksheet)
 
 // Loop through all sheets to find data sheets
@@ -72,6 +73,9 @@ workbook.SheetNames.forEach(sheetName => {
  * EXPORT TO JSON FILES
  */
 
+const aggregator = new Aggregator(settings, datapoints);
+
+
 saveDepartments(departments, datapoints);
 
 /**
@@ -82,13 +86,14 @@ saveDepartments(departments, datapoints);
  */
 (function () {
 
-    const aggregator = new Aggregator(settings, datapoints);
+
     const payloads = {
         departments: Object.values(departments).map(dept => {
             return {
                 id: dept.id,
                 name_en: dept.name_en,
-                name_fr: dept.name_fr
+                name_fr: dept.name_fr,
+                latest_ftes: aggregator.currentTotalFtesForDepartment(dept.id)
             }
         }),
         aggregations: {
