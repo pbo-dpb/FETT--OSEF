@@ -74,6 +74,9 @@ module.exports = class Aggregator {
     }
 
     preparePaddedMonthlyTotals = function () {
+
+        // TODO This function should be refactored to remove duplication with the per-department version (newer and cleaner)
+
         // We keep track of the last month as to keep a rolling number for unreported/missing months
         let priorMonthTotals = {
             unknown: {},
@@ -273,24 +276,8 @@ module.exports = class Aggregator {
         return fiscalYears;
     }
 
-
-    /**
-     * A sum of all FTEs for each quarter across all departments. Will break down by tenure type and
-     * order the results by year and quarter.
-     * [{'year': '2020', 'quarter':1, 'indeterminate': 1, 'term':2, 'casual':3, 'student':4, 'combined':10}, ...]
-     */
-    totalFtesPerQuarter = function (settings, datapoints) {
-
-        let monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod({
-            ...this.settings,
-            // We need to pad the period to prevent the month filter to cut off data needed for quarterly calculations
-            start_quarter: 1,
-            start_year: this.settings.start_year - 1,
-            end_quarter: 4,
-            end_year: this.settings.end_year + 1
-        });
-
-        return this.loopFunctionOverPeriod(this.settings, 'quarter', (year, quarter) => {
+    transformMonthlyTotalsToQuarterlyTotals = function (settings, monthlyTotals) {
+        return this.loopFunctionOverPeriod(settings, 'quarter', (year, quarter) => {
 
             const quarterMonths = {
                 1: [1, 2, 3],
@@ -304,8 +291,9 @@ module.exports = class Aggregator {
                 quarter: quarter,
             };
 
-            Object.keys(monthlyTotals[0]).forEach(tenureType => {
-                if (tenureType === 'year' || tenureType === 'month') {
+            Object.keys(monthlyTotals.find(x => !x.unreported)).forEach(tenureType => {
+
+                if (tenureType === 'year' || tenureType === 'month' || tenureType === 'unreported') {
                     return;
                 }
 
@@ -320,6 +308,27 @@ module.exports = class Aggregator {
             return totals;
 
         });
+
+    }
+
+
+    /**
+     * A sum of all FTEs for each quarter across all departments. Will break down by tenure type and
+     * order the results by year and quarter.
+     * [{'year': '2020', 'quarter':1, 'indeterminate': 1, 'term':2, 'casual':3, 'student':4, 'combined':10}, ...]
+     */
+    totalFtesPerQuarter = function () {
+
+        let monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod({
+            ...this.settings,
+            // We need to pad the period to prevent the month filter to cut off data needed for quarterly calculations
+            start_quarter: 1,
+            start_year: this.settings.start_year - 1,
+            end_quarter: 4,
+            end_year: this.settings.end_year + 1
+        });
+
+        return this.transformMonthlyTotalsToQuarterlyTotals(this.settings, monthlyTotals);
 
     }
 
@@ -345,6 +354,22 @@ module.exports = class Aggregator {
         } else {
             return null;
         }
+
+    }
+
+
+    totalFtesPerQuarterForDepartment = function (department_id) {
+
+        let monthlyTotals = this.trimmedPaddedMonthlyDepartmentTotalsToPeriod({
+            ...this.settings,
+            // We need to pad the period to prevent the month filter to cut off data needed for quarterly calculations
+            start_quarter: 1,
+            start_year: this.settings.start_year - 1,
+            end_quarter: 4,
+            end_year: this.settings.end_year + 1
+        }, department_id);
+
+        return this.transformMonthlyTotalsToQuarterlyTotals(this.settings, monthlyTotals);
 
     }
 

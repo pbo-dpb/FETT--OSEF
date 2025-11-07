@@ -60,6 +60,7 @@ const saveDepartments = function (departments, aggregator) {
     Object.values(departments).forEach(dept => {
 
         dept.total_ftes_per_month = aggregator.totalFtesPerMonthForDepartment(dept.id);
+        dept.total_ftes_per_quarter = aggregator.totalFtesPerQuarterForDepartment(dept.id);
 
         const outputFilePath = path.join(deptOutputDir, `${dept.id}.json`)
         fs.writeFileSync(outputFilePath, JSON.stringify(dept), 'utf8')
