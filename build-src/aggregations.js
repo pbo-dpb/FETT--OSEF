@@ -255,7 +255,7 @@ module.exports = class Aggregator {
             let datapointsForYear = monthlyTotals.filter(mt => {
                 let fiscalYearForMonth = mt.month >= 4 ? mt.year + 1 : mt.year;
                 return fiscalYearForMonth === fiscalYearCursor;
-            });
+            }).filter(mt => !mt.unreported);
 
             let totals = {};
             Object.keys(monthlyTotals[0]).forEach(tenureType => {
@@ -303,7 +303,7 @@ module.exports = class Aggregator {
                     return;
                 }
 
-                const monthlyTotalsForTenureArray = monthlyTotals.filter(mt => mt.year === year && quarterMonths.includes(mt.month)).map((val) => val[tenureType] || 0);
+                const monthlyTotalsForTenureArray = monthlyTotals.filter(mt => mt.year === year && quarterMonths.includes(mt.month) && !mt.unreported).map((val) => val[tenureType] || 0);
                 if (monthlyTotalsForTenureArray.length) {
                     // Average over all months in the quarter
                     totals[tenureType] = monthlyTotalsForTenureArray.reduce((a, b) => a + b, 0) / monthlyTotalsForTenureArray.length;
