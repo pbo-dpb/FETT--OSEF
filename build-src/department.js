@@ -63,7 +63,7 @@ const saveDepartments = function (departments, aggregator) {
         deptDetails.total_ftes_per_quarter = aggregator.totalFtesPerQuarterForDepartment(dept.id);
         deptDetails.total_ftes_per_fiscal_year = aggregator.totalFtesPerFiscalYear(dept.id);
 
-        const outputFilePath = path.join(deptOutputDir, `${deptDetails.id}.json`)
+        const outputFilePath = path.join(deptOutputDir, `${dept.id}.json`)
         fs.writeFileSync(outputFilePath, JSON.stringify(deptDetails), 'utf8')
     })
 
