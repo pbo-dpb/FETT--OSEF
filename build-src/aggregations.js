@@ -238,9 +238,15 @@ module.exports = class Aggregator {
         return output;
     }
 
-    totalFtesPerFiscalYear = function () {
+    totalFtesPerFiscalYear = function (department_id = null) {
 
-        let monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod(this.settings);
+        let monthlyTotals;
+        if (department_id) {
+            monthlyTotals = this.trimmedPaddedMonthlyDepartmentTotalsToPeriod(this.settings, department_id);
+        } else {
+            monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod(this.settings);
+        }
+
 
         let fiscalYearCursor = this.settings.start_year;
         let fiscalYears = [];
@@ -253,7 +259,7 @@ module.exports = class Aggregator {
 
             let totals = {};
             Object.keys(monthlyTotals[0]).forEach(tenureType => {
-                if (tenureType === 'year' || tenureType === 'month') {
+                if (tenureType === 'year' || tenureType === 'month' || tenureType === 'unreported') {
                     return;
                 }
 
