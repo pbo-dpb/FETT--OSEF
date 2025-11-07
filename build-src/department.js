@@ -49,7 +49,7 @@ const importDepartments = function (worksheet) {
  * English name), and can be fetched independently if required by
  * the tool for performance optimization purposes.
  */
-const saveDepartments = function (departments, datapoints) {
+const saveDepartments = function (departments, aggregator) {
 
     // Save each department as a separate JSON file, overwriting existing files.
     const deptOutputDir = path.join(__dirname, "..", 'src', 'assets', 'departments')
@@ -59,8 +59,7 @@ const saveDepartments = function (departments, datapoints) {
 
     Object.values(departments).forEach(dept => {
 
-        // Attach datapoints relevant to this department
-        dept.datapoints = datapoints.filter(dp => dp.department_id === dept.id);
+        dept.total_ftes_per_month = aggregator.totalFtesPerMonthForDepartment(dept.id);
 
         const outputFilePath = path.join(deptOutputDir, `${dept.id}.json`)
         fs.writeFileSync(outputFilePath, JSON.stringify(dept), 'utf8')

@@ -157,9 +157,8 @@ module.exports = class Aggregator {
         return this.paddedMonthlyTotals;
     }
 
-    trimmedPaddedMonthlyTotalsToPeriod = function (periodSettings) {
-
-        return this.getPaddedMonthlyTotals().filter(dp => {
+    trimTotalsToBounds(periodSettings, totals) {
+        return totals.filter(dp => {
             // Make sure we only return datapoints within the original requested range
             if (dp.year < periodSettings.start_year) {
                 return false;
@@ -178,6 +177,15 @@ module.exports = class Aggregator {
             return true;
 
         })
+    }
+
+
+    trimmedPaddedMonthlyTotalsToPeriod = function (periodSettings) {
+        return this.trimTotalsToBounds(periodSettings, this.getPaddedMonthlyTotals())
+    }
+
+    trimmedPaddedMonthlyDepartmentTotalsToPeriod = function (periodSettings, department_id) {
+        return this.trimTotalsToBounds(periodSettings, this.paddedMonthlyDepartmentTotals[department_id]);
     }
 
     loopFunctionOverPeriod = function (settings, period, runnable) {
@@ -326,7 +334,7 @@ module.exports = class Aggregator {
     }
 
 
-    currentTotalFtesForDepartment = function (department_id) {
+    latestTotalFtesForDepartment = function (department_id) {
         const reports = this.paddedMonthlyDepartmentTotals[department_id].filter(monthEntry => monthEntry.unreported === false);
         let latestReport = reports.length > 0 ? reports[reports.length - 1] : null;
 
@@ -338,6 +346,10 @@ module.exports = class Aggregator {
             return null;
         }
 
+    }
+
+    totalFtesPerMonthForDepartment = function (department_id) {
+        return this.trimmedPaddedMonthlyDepartmentTotalsToPeriod(this.settings, department_id);
     }
 
 }

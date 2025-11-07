@@ -76,7 +76,7 @@ workbook.SheetNames.forEach(sheetName => {
 const aggregator = new Aggregator(settings, datapoints);
 
 
-saveDepartments(departments, datapoints);
+saveDepartments(departments, aggregator);
 
 /**
  * Saves the datapoints that will be used to display the charts that
@@ -93,7 +93,7 @@ saveDepartments(departments, datapoints);
                 id: dept.id,
                 name_en: dept.name_en,
                 name_fr: dept.name_fr,
-                latest_ftes: aggregator.currentTotalFtesForDepartment(dept.id)
+                latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id)
             }
         }),
         aggregations: {
