@@ -22,5 +22,11 @@
     "should_split_by_tenure_label": "Split by Tenure",
     "display_yearly_averages_label": "Display Fiscal Year Averages",
     "yearly_average_label": "Fiscal Year Average",
-    "search_departments_placeholder": "Search..."
+    "search_departments_placeholder": "Search...",
+    "dep_card_indeterminate": "Indeterminates",
+    "dep_card_term": "Terms",
+    "dep_card_casual": "Casuals",
+    "dep_card_student": "Students",
+    "dep_card_combined": "Total",
+    "dep_card_remove_button_aria_label": "Remove from comparison"
 }

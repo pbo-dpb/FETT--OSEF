@@ -1,5 +1,5 @@
 <template>
-    <ScrollAreaRoot class=" h-96 relative  overflow-hidden border-2 border-sky-100 border-solid rounded-lg"
+    <ScrollAreaRoot class=" max-h-128 relative  overflow-hidden border-2 border-sky-100 border-solid rounded-lg"
         style="--scrollbar-size: 10px">
         <div class="absolute top-0 z-10 w-full h-6 bg-gradient-to-t from-transparent to-white" />
         <ScrollAreaViewport class="w-full h-full rounded">
