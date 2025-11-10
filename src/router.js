@@ -1,7 +1,7 @@
 import { createWebHashHistory, createRouter } from 'vue-router'
 
-import PublicServiceOverview from './components/PublicServiceOverview/PublicServiceOverview.vue'
-import DepartmentsOverview from './components/DepartmentsOverview/DepartmentsOverview.vue'
+const PublicServiceOverview = () => import('./components/PublicServiceOverview/PublicServiceOverview.vue')
+const DepartmentsOverview = () => import('./components/DepartmentsOverview/DepartmentsOverview.vue')
 
 
 const routes = [
