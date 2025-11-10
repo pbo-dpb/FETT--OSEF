@@ -1,7 +1,9 @@
 <template>
 
     <div class="flex flex-col gap-4" v-if="departments !== false">
-        <div>OVERVIEW</div>
+        <div>
+            <DepartmentsOverviewChart :departments="selectedDepartments" />
+        </div>
 
         <div class="grid grid-cols-4 gap-4">
 

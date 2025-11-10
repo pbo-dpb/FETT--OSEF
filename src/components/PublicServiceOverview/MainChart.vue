@@ -76,9 +76,15 @@ import * as echarts from 'echarts/core';
 import { LineChart } from 'echarts/charts';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { SVGRenderer } from 'echarts/renderers';
+import { colors } from "../../assets/colors.json?json"
+
 import darkTheme from "../../assets/echarts/dark.json?json"
+darkTheme['color'] = colors.dark;
+darkTheme['graph']['color'] = colors.dark;
 echarts.registerTheme('dark', darkTheme);
 import lightTheme from "../../assets/echarts/light.json?json"
+lightTheme['color'] = colors.light;
+lightTheme['graph']['color'] = colors.light;
 echarts.registerTheme('light', lightTheme);
 
 import {
