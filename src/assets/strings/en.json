@@ -28,5 +28,6 @@
     "dep_card_casual": "Casuals",
     "dep_card_student": "Students",
     "dep_card_combined": "Total",
-    "dep_card_remove_button_aria_label": "Remove from comparison"
+    "dep_card_remove_button_aria_label": "Remove from comparison",
+    "departments_overview_no_departments_selected_message": "Select one or more departments to compare."
 }

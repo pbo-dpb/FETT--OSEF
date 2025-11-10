@@ -47,7 +47,7 @@ import { CircleX } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia'
 import usePayloadsStore from '../../stores/payloads.js'
 import useLocalizationsStore from '../../stores/localizations.js'
-import { ref, computed, defineEmits } from 'vue'
+import { defineEmits } from 'vue'
 
 const emits = defineEmits(['remove-department'])
 
