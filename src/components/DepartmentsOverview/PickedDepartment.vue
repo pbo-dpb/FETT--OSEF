@@ -1,8 +1,8 @@
 <template>
     <aside class="bg-white shadow-lg rounded-lg flex flex-col gap-2 w-64 p-2 shrink-0">
         <div class="flex flex-row justify-end">
-            <button @click="$emit('remove-department', department.id)" class="p-1 rounded hover:bg-slate-100">
-                <CircleX class="size-4 text-slate-500 hover:text-red-800 cursor-pointer" />
+            <button @click="$emit('remove-department', department.id)" class="p-1 rounded hover:bg-slate-100 group">
+                <CircleX class="size-4 text-slate-500 group-hover:text-red-800 cursor-pointer" />
                 <span class="sr-only">{{ strings.dep_card_remove_button_aria_label }}</span>
             </button>
         </div>
