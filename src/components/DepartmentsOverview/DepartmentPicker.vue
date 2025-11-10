@@ -1,5 +1,5 @@
 <template>
-    <ScrollAreaRoot class=" h-96 relative  overflow-hidden border border-solid rounded-lg"
+    <ScrollAreaRoot class=" h-96 relative  overflow-hidden border-2 border-sky-100 border-solid rounded-lg"
         style="--scrollbar-size: 10px">
         <div class="absolute top-0 z-10 w-full h-6 bg-gradient-to-t from-transparent to-white" />
         <ScrollAreaViewport class="w-full h-full rounded">
@@ -8,7 +8,7 @@
                         class="w-full mb-4 px-2 py-1 border border-slate-300 border-solid rounded"
                         :placeholder="strings.search_departments_placeholder" /></div>
                 <RouterLink :to="department.route" v-for="department in sortedDepartments" :key="department.id"
-                    class="flex flex-row items-center justify-between text-xs mt-2 pt-2 first:border-t-0 border-t border-slate-100 border-solid cursor-pointer hover:text-sky-700 group">
+                    class="flex flex-row items-center justify-between text-xs mt-2 pt-2 first:border-t-0 border-t border-slate-100 border-solid cursor-pointer text-sky-900 hover:text-sky-700 group">
                     <span>{{ department.name }}</span>
                     <Plus v-if="!department.active"
                         class="size-4 shrink-0 text-sky-700 opacity-0 group-hover:opacity-100"></Plus>
@@ -48,19 +48,26 @@ const route = useRoute()
 
 const query = ref('')
 
-const currentlySelectedDepartments = computed(() => {
-    return route.params.departments || []
+const props = defineProps({
+    selectedDepartments: {
+        type: Array,
+        required: true
+    }
+})
+
+const currentlySelectedDepartmentIds = computed(() => {
+    return props.selectedDepartments.map(dept => dept.id)
 })
 
 const deptToListableObject = (dept) => {
 
-    const isCurrentlySelected = currentlySelectedDepartments.value.includes(dept.id);
+    const isCurrentlySelected = currentlySelectedDepartmentIds.value.includes(dept.id);
 
     let route;
     if (isCurrentlySelected) {
-        route = { name: 'departments', params: { departments: currentlySelectedDepartments.value.filter(id => id !== dept.id) } }
+        route = { name: 'departments', params: { departments: currentlySelectedDepartmentIds.value.filter(id => id !== dept.id) } }
     } else {
-        const newSelectedDepartments = [...currentlySelectedDepartments.value, dept.id]
+        const newSelectedDepartments = [...currentlySelectedDepartmentIds.value, dept.id]
         route = { name: 'departments', params: { departments: newSelectedDepartments } }
     }
 

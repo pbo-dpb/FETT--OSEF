@@ -5,9 +5,12 @@
 
         <div class="grid grid-cols-4 gap-4">
 
-            <DepartmentPicker />
-            <div class="col-span-3">
-                PICKED DEPARTMENTS
+            <DepartmentPicker :selected-departments="selectedDepartments" />
+
+            <div
+                class="col-span-3 flex flex-row gap-4 overflow-x-scroll  bg-slate-50 p-4 rounded-tl rounded-t-lg shadow-inner">
+                <PickedDepartment v-for="department in selectedDepartments" :key="department.id"
+                    :department="department" />
             </div>
 
 
@@ -20,6 +23,8 @@
 
 </template>
 <script setup>
+import { computed } from 'vue'
+
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
 import usePayloadsStore from '../../stores/payloads.js'
@@ -27,6 +32,9 @@ const payloadsStore = usePayloadsStore()
 const { departments } = storeToRefs(payloadsStore)
 import DepartmentPicker from './DepartmentPicker.vue'
 import LoadingIndicator from '../LoadingIndicator.vue'
+import { useRoute } from 'vue-router'
+import PickedDepartment from './PickedDepartment.vue'
+const route = useRoute()
 
 onMounted(() => {
     if (departments.value === false) {
@@ -34,5 +42,9 @@ onMounted(() => {
     }
 });
 
+const selectedDepartments = computed(() => {
+    const departmanetIds = route.params.departments || [];
+    return departments.value.filter(dept => departmanetIds.includes(dept.id));
+})
 
 </script>
