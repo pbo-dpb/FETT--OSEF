@@ -14,7 +14,8 @@
                 <PickedDepartment v-for="department in selectedDepartments" :key="department.id"
                     :department="department" @remove-department="removeDepartment" />
             </div>
-            <div class="col-span-3 flex flex-col gap-2 justify-center items-center bg-slate-50 p-4 text-slate-500">
+            <div v-if="!selectedDepartments.length"
+                class="col-span-3 flex flex-col gap-2 justify-center items-center bg-slate-50 p-4 text-slate-500">
 
                 <p class="text-lg font-medium">
                     {{ strings.departments_overview_no_departments_selected_message }}
@@ -50,6 +51,7 @@ import PickedDepartment from './PickedDepartment.vue'
 import { ArrowBigLeft } from 'lucide-vue-next'
 const route = useRoute()
 const router = useRouter()
+import DepartmentsOverviewChart from './DepartmentsOverviewChart.vue'
 
 onMounted(() => {
     if (departments.value === false) {
