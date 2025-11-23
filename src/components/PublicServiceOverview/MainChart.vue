@@ -82,10 +82,10 @@ import darkTheme from "../../assets/echarts/dark.json?json"
 darkTheme['color'] = colors.dark;
 darkTheme['graph']['color'] = colors.dark;
 echarts.registerTheme('dark', darkTheme);
-/*import lightTheme from "../../assets/echarts/light.json?json"
+import lightTheme from "../../assets/echarts/light.json?json"
 lightTheme['color'] = colors.light;
 lightTheme['graph']['color'] = colors.light;
-echarts.registerTheme('light', lightTheme);*/
+echarts.registerTheme('light', lightTheme);
 
 import {
     TooltipComponent,
@@ -94,7 +94,8 @@ import {
     TransformComponent,
     LegendComponent,
     DataZoomComponent,
-    MarkAreaComponent
+    MarkAreaComponent,
+    AriaComponent,
 } from 'echarts/components';
 
 echarts.use([
@@ -108,7 +109,8 @@ echarts.use([
     UniversalTransition,
     SVGRenderer,
     DataZoomComponent,
-    MarkAreaComponent
+    MarkAreaComponent,
+    AriaComponent
 ]);
 
 const baseData = computed(() => {
@@ -238,6 +240,9 @@ const series = computed(() => {
         type: 'line',
         step: 'middle',
         showSymbol: false,
+        lineStyle: {
+            width: 4
+        },
         markArea: {
             silent: true,
             data:
@@ -324,6 +329,12 @@ const series = computed(() => {
 const chartOptions = computed(() => {
 
     const options = {
+        aria: {
+            enabled: true,
+            decal: {
+                show: true
+            }
+        },
         grid: {
             left: 0,
             right: 16,
@@ -369,7 +380,7 @@ onMounted(() => {
         theme = 'dark';
         useDarkTheme.value = true;
     } else {
-        //theme = 'light';
+        theme = 'light';
     }
 
     chart.value = echarts.init(componentRoot.value.querySelector(`#${uniqueId}`), theme, {
