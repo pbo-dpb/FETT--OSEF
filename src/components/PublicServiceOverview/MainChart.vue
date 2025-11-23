@@ -82,10 +82,10 @@ import darkTheme from "../../assets/echarts/dark.json?json"
 darkTheme['color'] = colors.dark;
 darkTheme['graph']['color'] = colors.dark;
 echarts.registerTheme('dark', darkTheme);
-import lightTheme from "../../assets/echarts/light.json?json"
+/*import lightTheme from "../../assets/echarts/light.json?json"
 lightTheme['color'] = colors.light;
 lightTheme['graph']['color'] = colors.light;
-echarts.registerTheme('light', lightTheme);
+echarts.registerTheme('light', lightTheme);*/
 
 import {
     TooltipComponent,
@@ -369,7 +369,7 @@ onMounted(() => {
         theme = 'dark';
         useDarkTheme.value = true;
     } else {
-        theme = 'light';
+        //theme = 'light';
     }
 
     chart.value = echarts.init(componentRoot.value.querySelector(`#${uniqueId}`), theme, {
