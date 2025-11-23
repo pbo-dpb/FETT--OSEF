@@ -3,7 +3,8 @@
         'blur': !departments.length
     }">
         <div v-show="departments.length" :id="uniqueId" class="w-full h-[40vh]"></div>
-        <img v-show="!departments.length" :src="departmentsOverviewPlaceholderUrl" alt="" />
+        <img v-show="!departments.length" :src="departmentsOverviewPlaceholderUrl" alt=""
+            style="aspect-ratio: 1470/364;" />
     </div>
 </template>
 <script setup>
@@ -216,6 +217,8 @@ const chartOptions = computed(() => {
         grid: {
             left: 0,
             right: 16,
+            bottom: 0,
+            top: 0
         },
         dataZoom: [],
         tooltip: {
