@@ -362,6 +362,7 @@ const chartOptions = computed(() => {
 
     options['legend'] = {
         data: options.series.map(serie => serie.name).filter(name => name !== strings.value.yearly_average_label),
+        itemHeight: 24
     }
 
     return options;
