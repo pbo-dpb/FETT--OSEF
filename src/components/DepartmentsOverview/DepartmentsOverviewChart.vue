@@ -2,11 +2,13 @@
     <div ref="componentRoot" class="w-full flex flex-col gap-2" :class="{
         'blur': !departments.length
     }">
-        <div :id="uniqueId" class="w-full h-[40vh]"></div>
+        <div v-show="departments.length" :id="uniqueId" class="w-full h-[40vh]"></div>
+        <img v-show="!departments.length" :src="departmentsOverviewPlaceholderUrl" alt="" />
     </div>
 </template>
 <script setup>
 import { onMounted, onBeforeUnmount, useTemplateRef, shallowRef, computed, watch, ref } from 'vue';
+import departmentsOverviewPlaceholderUrl from '../../assets/departments-overview-placeholder.svg?url';
 
 const props = defineProps({
     departments: {
@@ -56,7 +58,8 @@ import {
     TransformComponent,
     LegendComponent,
     DataZoomComponent,
-    MarkAreaComponent
+    MarkAreaComponent,
+    AriaComponent
 } from 'echarts/components';
 
 echarts.use([
@@ -70,7 +73,8 @@ echarts.use([
     UniversalTransition,
     SVGRenderer,
     DataZoomComponent,
-    MarkAreaComponent
+    MarkAreaComponent,
+    AriaComponent
 ]);
 
 
@@ -152,9 +156,9 @@ const series = computed(() => {
     const baseSerie = {
         type: 'line',
         smooth: true,
-        /*lineStyle: {
-            width: 0
-        },*/
+        lineStyle: {
+            width: 4
+        },
         showSymbol: false
     };
 
@@ -226,9 +230,9 @@ const chartOptions = computed(() => {
         dataset: dataset.value,
     };
 
-    options['legend'] = {
+    /*options['legend'] = {
         data: options.series.map(serie => serie.name),
-    }
+    }*/
 
     return options;
 });
