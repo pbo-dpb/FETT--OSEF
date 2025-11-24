@@ -16,6 +16,10 @@ const props = defineProps({
         type: Array,
         required: true
     },
+    highlightedDepartmentId: {
+        type: String,
+        required: false,
+    }
 })
 
 import { storeToRefs } from 'pinia'
@@ -41,7 +45,6 @@ import { LineChart } from 'echarts/charts';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { SVGRenderer } from 'echarts/renderers';
 import { colors } from "../../assets/colors.json?json"
-
 
 import darkTheme from "../../assets/echarts/dark.json?json"
 darkTheme['color'] = colors.dark;
@@ -157,9 +160,6 @@ const series = computed(() => {
     const baseSerie = {
         type: 'line',
         smooth: true,
-        lineStyle: {
-            width: 4
-        },
         showSymbol: false
     };
 
@@ -172,6 +172,16 @@ const series = computed(() => {
         series.push({
             ...baseSerie,
             name: dept[`name_${language.value}`],
+            itemStyle: {
+                color: dept['color'] || 'red',
+            },
+            lineStyle: {
+
+                width: props.highlightedDepartmentId === dept.id ? 5 : 3,
+                shadowBlur: props.highlightedDepartmentId === dept.id ? 10 : 0,
+                shadowColor: useDarkTheme.value ? '#1e293b' : '#cbd5e1',
+                shadowOffsetY: 0,
+            },
         });
     });
 
@@ -280,7 +290,7 @@ onBeforeUnmount(() => {
 });
 
 const redrawChart = () => {
-    chart.value.setOption(chartOptions.value);
+    chart.value.setOption(chartOptions.value, true);
 };
 
 const syncDepartments = () => {
@@ -295,15 +305,12 @@ const syncDepartments = () => {
 }
 
 watch(() => props.departments, (newDeptList, oldDeptList) => {
+    redrawChart();
+    syncDepartments();
+});
 
-    if (newDeptList.length <= oldDeptList.length) {
-        // Department removed
-        redrawChart();
-    } else {
-        // Department added
-        redrawChart();
-        syncDepartments();
-    }
+watch(() => props.highlightedDepartmentId, (newId, oldId) => {
+    redrawChart();
 });
 
 </script>
