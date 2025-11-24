@@ -10,16 +10,20 @@
                 <div><input type="search" v-model="query"
                         class="w-full mb-4 px-2 py-1 border border-slate-300 border-solid rounded"
                         :placeholder="strings.search_departments_placeholder" /></div>
-                <RouterLink :to="department.route" v-for="department in sortedDepartments" :key="department.id"
-                    class="flex flex-row items-center justify-between text-xs mt-2 pt-2 first:border-t-0 border-t border-slate-100 border-solid cursor-pointer text-sky-900 hover:text-sky-700 group">
+                <component :is="department.route ? 'RouterLink' : 'span'" :to="department.route"
+                    v-for="department in sortedDepartments" :key="department.id"
+                    class="flex flex-row items-center justify-between text-xs mt-2 pt-2 first:border-t-0 border-t border-slate-100 border-solid  text-sky-900  group"
+                    :class='{
+                        " cursor-pointer hover:text-sky-700 group": department.route, "opacity-50 cursor-not-allowed": !department.route
+                    }'>
                     <span>{{ department.name }}</span>
-                    <Plus v-if="!department.active"
+                    <Plus v-if="!department.active && department.route"
                         class="size-4 shrink-0 text-sky-700 opacity-0 group-hover:opacity-100"></Plus>
                     <CircleX v-if="department.active" class="size-4 shrink-0 text-red-700 hidden group-hover:block">
                     </CircleX>
                     <Check v-if="department.active" class="size-4 shrink-0 text-green-700 block group-hover:hidden">
                     </Check>
-                </RouterLink>
+                </component>
             </div>
         </ScrollAreaViewport>
         <ScrollAreaScrollbar
@@ -69,6 +73,8 @@ const deptToListableObject = (dept) => {
     let route;
     if (isCurrentlySelected) {
         route = { name: 'departments', params: { departments: currentlySelectedDepartmentIds.value.filter(id => id !== dept.id) } }
+    } else if (currentlySelectedDepartmentIds.value.length >= 10) {
+        route = null;
     } else {
         const newSelectedDepartments = [...currentlySelectedDepartmentIds.value, dept.id]
         route = { name: 'departments', params: { departments: newSelectedDepartments } }

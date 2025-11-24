@@ -68,7 +68,10 @@ const selectedDepartments = computed(() => {
     const departmanetIds = route.params.departments || [];
     let index = 0;
     let useDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return departments.value.filter(dept => departmanetIds.includes(dept.id)).map(dpt => {
+
+    return departmanetIds.map(did => {
+        return departments.value.find(d => d.id === did);
+    }).filter(d => d ? true : false).map(dpt => {
         let dptx = {
             ...dpt,
             color: useDarkTheme ? colors.dark[index] : colors.light[index]
