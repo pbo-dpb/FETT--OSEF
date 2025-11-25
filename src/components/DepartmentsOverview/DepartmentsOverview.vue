@@ -35,7 +35,7 @@
 
 </template>
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { storeToRefs } from 'pinia'
 import { onMounted } from 'vue'
@@ -43,6 +43,9 @@ import usePayloadsStore from '../../stores/payloads.js'
 const payloadsStore = usePayloadsStore()
 const { departments } = storeToRefs(payloadsStore)
 import useLocalizationsStore from '../../stores/localizations.js'
+
+import useSettingStore from '../../stores/settings.js'
+const settingsStore = useSettingStore()
 
 const localizationStore = useLocalizationsStore()
 const { strings } = storeToRefs(localizationStore)
@@ -65,6 +68,7 @@ onMounted(() => {
 });
 
 const selectedDepartments = computed(() => {
+    if (!departments.value) return [];
     const departmanetIds = route.params.departments || [];
     let index = 0;
     let useDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -88,5 +92,11 @@ const removeDepartment = (departmentId) => {
         .filter(id => id !== departmentId);
     router.push({ name: 'departments', params: { departments: newSelectedDepartments } });
 }
+
+
+watch(selectedDepartments, (newVal) => {
+    settingsStore.setPreviouslySelectedDepartmentIds(newVal.map(d => d.id) || []);
+});
+
 
 </script>

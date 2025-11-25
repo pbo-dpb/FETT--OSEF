@@ -20,6 +20,10 @@ import useLocalizationsStore from '../stores/localizations.js'
 const localizationsStore = useLocalizationsStore()
 const { language, strings } = storeToRefs(localizationsStore)
 
+import useSettingsStore from '../stores/settings.js'
+const settingsStore = useSettingsStore()
+const { previouslySelectedDepartmentIds } = storeToRefs(settingsStore)
+
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 
@@ -33,7 +37,7 @@ const tabs = computed(() => {
         },
         {
             label: 'Departments',
-            to: { name: 'departments', params: { departments: [] } },
+            to: { name: 'departments', params: { departments: previouslySelectedDepartmentIds.value } },
             selected: route.name === 'departments'
         }
     ]
