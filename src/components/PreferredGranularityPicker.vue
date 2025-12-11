@@ -3,8 +3,9 @@
         <ToggleGroupItem value="quarter" :class="toggleGroupItemClasses" :disabled="preferredGranularity === 'quarter'">
             {{ strings.preferred_granularity_quarter }}
         </ToggleGroupItem>
-        <ToggleGroupItem value="month" :class="toggleGroupItemClasses" :disabled="preferredGranularity === 'month'">
-            {{ strings.preferred_granularity_month }}
+        <ToggleGroupItem value="fiscal_year" :class="toggleGroupItemClasses"
+            :disabled="preferredGranularity === 'fiscal_year'">
+            {{ strings.preferred_granularity_fiscal_year }}
         </ToggleGroupItem>
     </ToggleGroupRoot>
 </template>

@@ -100,7 +100,7 @@ saveDepartments(departments, aggregator);
         }),
         aggregations: {
             total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
-            total_ftes_per_month: aggregator.totalFtesPerMonth(),
+            //total_ftes_per_month: aggregator.totalFtesPerMonth(),
             total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
         }
     }

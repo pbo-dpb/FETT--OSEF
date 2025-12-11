@@ -59,7 +59,7 @@ const saveDepartments = function (departments, aggregator) {
 
     Object.values(departments).forEach(dept => {
         const deptDetails = {};
-        deptDetails.total_ftes_per_month = aggregator.totalFtesPerMonthForDepartment(dept.id);
+        //deptDetails.total_ftes_per_month = aggregator.totalFtesPerMonthForDepartment(dept.id);
         deptDetails.total_ftes_per_quarter = aggregator.totalFtesPerQuarterForDepartment(dept.id);
         deptDetails.total_ftes_per_fiscal_year = aggregator.totalFtesPerFiscalYear(dept.id);
 

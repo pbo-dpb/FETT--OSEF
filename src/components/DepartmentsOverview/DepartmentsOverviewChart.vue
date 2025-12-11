@@ -107,7 +107,7 @@ const dataset = computed(() => {
         return { source: [] };
     }
 
-    if (preferredGranularity.value === 'month') {
+    /*if (preferredGranularity.value === 'month') {
         firstDept.total_ftes_per_month.forEach(item => {
             timestamps.push(`${item.year}-${String(item.month).padStart(2, '0')}`);
 
@@ -121,7 +121,7 @@ const dataset = computed(() => {
             });
 
         });
-    } else if (preferredGranularity.value === 'quarter') {
+    } else*/ if (preferredGranularity.value === 'quarter') {
         firstDept.total_ftes_per_quarter.forEach(item => {
             timestamps.push(`${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`);
         });
@@ -195,7 +195,7 @@ const dataZoom = computed(() => {
 
     let numberOfXAxisPoints = dataset.value.source.length;
 
-    const oneYearGranularity = (preferredGranularity.value === 'month' ? 12 : 4);
+    const oneYearGranularity = /*(preferredGranularity.value === 'month' ? 12 : 4);*/4;
 
     if (preferredTimeframe.value === '1Y') {
         start = 100 - oneYearGranularity / numberOfXAxisPoints * 100;

@@ -250,12 +250,14 @@ module.exports = class Aggregator {
 
         let fiscalYearCursor = this.settings.start_year;
         let fiscalYears = [];
-        while (fiscalYearCursor <= this.settings.end_year + (this.settings.end_quarter > 1 ? 1 : 0)) {
+        while (fiscalYearCursor <= this.settings.end_year - (this.settings.end_quarter == 1 ? 1 : 0)) {
 
             let datapointsForYear = monthlyTotals.filter(mt => {
-                let fiscalYearForMonth = mt.month >= 4 ? mt.year + 1 : mt.year;
+
+                let fiscalYearForMonth = mt.month < 4 ? (mt.year + 1) : mt.year;
                 return fiscalYearForMonth === fiscalYearCursor;
             }).filter(mt => !mt.unreported);
+
 
             let totals = {};
             Object.keys(monthlyTotals[0]).forEach(tenureType => {
