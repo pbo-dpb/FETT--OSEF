@@ -107,21 +107,7 @@ const dataset = computed(() => {
         return { source: [] };
     }
 
-    /*if (preferredGranularity.value === 'month') {
-        firstDept.total_ftes_per_month.forEach(item => {
-            timestamps.push(`${item.year}-${String(item.month).padStart(2, '0')}`);
-
-            // Load corresponding data points for each department
-            props.departments.forEach((dept) => {
-                if (!deptPoints[dept[`name_${language.value}`]]) {
-                    deptPoints[dept[`name_${language.value}`]] = {};
-                }
-                const monthData = dept.total_ftes_per_month.find(d => d.year === item.year && d.month === item.month);
-                deptPoints[dept[`name_${language.value}`]][`${item.year}-${String(item.month).padStart(2, '0')}`] = monthData ? Math.round(monthData.indeterminate) : 0;
-            });
-
-        });
-    } else*/ if (preferredGranularity.value === 'quarter') {
+    if (preferredGranularity.value === 'quarter') {
         firstDept.total_ftes_per_quarter.forEach(item => {
             timestamps.push(`${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`);
         });
@@ -136,8 +122,20 @@ const dataset = computed(() => {
                 deptPoints[dept[`name_${language.value}`]][`${language.value === 'fr' ? 'T' : 'Q'}${item.quarter} ${item.year}`] = Math.round(item.indeterminate + item.term + item.casual + item.student + item.combined);
             });
         });
+    } else if (preferredGranularity.value === "fiscal_year") {
+        firstDept.total_ftes_per_fiscal_year.forEach(item => {
+            timestamps.push(`${item.year}-${item.year + 1}`);
+        });
 
+        props.departments.forEach((dept) => {
+            if (!deptPoints[dept[`name_${language.value}`]]) {
+                deptPoints[dept[`name_${language.value}`]] = {};
+            }
 
+            dept.total_ftes_per_fiscal_year.forEach(item => {
+                deptPoints[dept[`name_${language.value}`]][`${item.year}-${item.year + 1}`] = Math.round(item.indeterminate + item.term + item.casual + item.student + item.combined);
+            });
+        });
     }
 
     return {
