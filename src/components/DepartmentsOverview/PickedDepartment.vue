@@ -45,6 +45,13 @@
                 </template>
             </dl>
 
+            <div class="w-full text-xs font-medium text-slate-500 text-right mt-4">
+                {{ strings.department_latest_ftes_as_of.replace('{date}', new Intl.DateTimeFormat(language, {
+                    year:
+                        'numeric', month:
+                        'long'
+                }).format(new Date(`${department.latest_ftes.year}-${department.latest_ftes.month}-01`))) }}
+            </div>
 
         </div>
 
