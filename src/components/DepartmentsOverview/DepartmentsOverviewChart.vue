@@ -2,6 +2,7 @@
     <div ref="componentRoot" class="w-full flex flex-col gap-2" :class="{
         'blur': !departments.length
     }">
+        <GeneralChartSettings />
         <div v-show="departments.length" :id="uniqueId" class="w-full h-[40vh]"></div>
         <img v-show="!departments.length" :src="departmentsOverviewPlaceholderUrl" alt=""
             style="aspect-ratio: 1470/364;" />
@@ -10,6 +11,7 @@
 <script setup>
 import { onMounted, onBeforeUnmount, useTemplateRef, shallowRef, computed, watch, ref } from 'vue';
 import departmentsOverviewPlaceholderUrl from '../../assets/departments-overview-placeholder.svg?url';
+import GeneralChartSettings from '../GeneralChartSettings.vue';
 
 const props = defineProps({
     departments: {
@@ -193,7 +195,7 @@ const dataZoom = computed(() => {
 
     let numberOfXAxisPoints = dataset.value.source.length;
 
-    const oneYearGranularity = /*(preferredGranularity.value === 'month' ? 12 : 4);*/4;
+    const oneYearGranularity = preferredGranularity.value === 'fiscal_year' ? 1 : 4;
 
     if (preferredTimeframe.value === '1Y') {
         start = 100 - oneYearGranularity / numberOfXAxisPoints * 100;
@@ -228,7 +230,7 @@ const chartOptions = computed(() => {
             bottom: 0,
             top: 0
         },
-        dataZoom: [],
+        dataZoom: [dataZoom.value],
         tooltip: {
             trigger: 'axis',
         },
@@ -310,5 +312,10 @@ watch(() => props.departments, (newDeptList, oldDeptList) => {
 watch(() => props.highlightedDepartmentId, (newId, oldId) => {
     redrawChart();
 });
+
+watch([preferredGranularity, preferredTimeframe], () => {
+    redrawChart();
+});
+
 
 </script>
