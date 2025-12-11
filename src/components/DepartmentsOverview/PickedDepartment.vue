@@ -41,7 +41,7 @@
                     v-for="(value, key) in { indeterminate: department.latest_ftes.indeterminate, term: department.latest_ftes.term, casual: department.latest_ftes.casual, student: department.latest_ftes.student, combined: department.latest_ftes.combined }"
                     :key="key">
                     <dt class="font-medium text-xs">{{ strings[`dep_card_${key}`] }}</dt>
-                    <dd class="text-lg font-light">{{ Math.round(value) }}</dd>
+                    <dd class="text-lg font-light">{{ numberFormatter(Math.round(value)) }}</dd>
                 </template>
             </dl>
 
@@ -73,5 +73,9 @@ const props = defineProps({
         type: Boolean,
     }
 })
+
+const numberFormatter = (number) => {
+    return localizationStore.localizeNumber(number);
+}
 
 </script>

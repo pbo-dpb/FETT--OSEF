@@ -7,7 +7,13 @@ export default defineStore('localizations', {
         language: document.documentElement.lang,
         iStrings: { en, fr }
     }),
-
+    actions: {
+        localizeNumber(number) {
+            return new Intl.NumberFormat(this.language, {}).format(
+                number,
+            )
+        },
+    },
     getters: {
         strings(state) {
             return state.iStrings[state.language];
