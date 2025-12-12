@@ -7,9 +7,11 @@ module.exports = class Aggregator {
 
         this.preparePaddedMonthlyTotals();
         this.preparedPaddedMonthlyDepartmentTotals();
+
     }
 
     preparedPaddedMonthlyDepartmentTotals = function () {
+
 
         this.paddedMonthlyDepartmentTotals = {};
 
@@ -187,8 +189,8 @@ module.exports = class Aggregator {
         return this.trimTotalsToBounds(periodSettings, this.getPaddedMonthlyTotals())
     }
 
-    trimmedPaddedMonthlyDepartmentTotalsToPeriod = function (periodSettings, department_id) {
-        return this.trimTotalsToBounds(periodSettings, this.paddedMonthlyDepartmentTotals[department_id]);
+    monthlyDepartmentTotalsToPeriod = function (department_id) {
+        return this.paddedMonthlyDepartmentTotals[department_id];
     }
 
     loopFunctionOverPeriod = function (settings, period, runnable) {
@@ -242,7 +244,7 @@ module.exports = class Aggregator {
 
         let monthlyTotals;
         if (department_id) {
-            monthlyTotals = this.trimmedPaddedMonthlyDepartmentTotalsToPeriod(this.settings, department_id);
+            monthlyTotals = this.monthlyDepartmentTotalsToPeriod(department_id);
         } else {
             monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod(this.settings);
         }
@@ -253,14 +255,26 @@ module.exports = class Aggregator {
         while (fiscalYearCursor <= this.settings.end_year - (this.settings.end_quarter == 1 ? 1 : 0)) {
 
             let datapointsForYear = monthlyTotals.filter(mt => {
-
                 let fiscalYearForMonth = mt.month < 4 ? (mt.year + 1) : mt.year;
                 return fiscalYearForMonth === fiscalYearCursor;
-            }).filter(mt => !mt.unreported);
+            }).filter(mt => {
+                // Eliminate dp that contain only 0s.
+                let hasNonZero = false;
+                Object.keys(mt).forEach(key => {
+                    if (key !== 'year' && key !== 'month' && key !== 'unreported' && mt[key] > 0) {
+                        hasNonZero = true;
+                    }
+                });
+                return hasNonZero;
+            });
+
 
 
             let totals = {};
-            Object.keys(monthlyTotals[0]).forEach(tenureType => {
+            // Some objects may not have tenure types, so we find one that does.
+            Object.keys(monthlyTotals.find(x => Object.keys(x).length > 3)).forEach(tenureType => {
+
+
                 if (tenureType === 'year' || tenureType === 'month' || tenureType === 'unreported') {
                     return;
                 }
@@ -272,6 +286,8 @@ module.exports = class Aggregator {
 
                 totals[tenureType] = datapointsForYear.map((val) => val[tenureType] || 0).reduce((a, b) => a + b, 0) / datapointsForYear.length;
             })
+
+
 
             fiscalYears.push({
                 year: fiscalYearCursor,
@@ -299,13 +315,15 @@ module.exports = class Aggregator {
                 quarter: quarter,
             };
 
+
+
             Object.keys(monthlyTotals.find(x => !x.unreported)).forEach(tenureType => {
 
                 if (tenureType === 'year' || tenureType === 'month' || tenureType === 'unreported') {
                     return;
                 }
 
-                const monthlyTotalsForTenureArray = monthlyTotals.filter(mt => mt.year === year && quarterMonths.includes(mt.month) && !mt.unreported).map((val) => val[tenureType] || 0);
+                const monthlyTotalsForTenureArray = monthlyTotals.filter(mt => mt.year === year && quarterMonths.includes(mt.month)).map((val) => val[tenureType] || 0);
                 if (monthlyTotalsForTenureArray.length) {
                     // Average over all months in the quarter
                     totals[tenureType] = monthlyTotalsForTenureArray.reduce((a, b) => a + b, 0) / monthlyTotalsForTenureArray.length;
@@ -368,21 +386,15 @@ module.exports = class Aggregator {
 
     totalFtesPerQuarterForDepartment = function (department_id) {
 
-        let monthlyTotals = this.trimmedPaddedMonthlyDepartmentTotalsToPeriod({
-            ...this.settings,
-            // We need to pad the period to prevent the month filter to cut off data needed for quarterly calculations
-            start_quarter: 1,
-            start_year: this.settings.start_year - 1,
-            end_quarter: 4,
-            end_year: this.settings.end_year + 1
-        }, department_id);
+        let monthlyTotals = this.monthlyDepartmentTotalsToPeriod(department_id);
+
 
         return this.transformMonthlyTotalsToQuarterlyTotals(this.settings, monthlyTotals);
 
     }
 
     totalFtesPerMonthForDepartment = function (department_id) {
-        return this.trimmedPaddedMonthlyDepartmentTotalsToPeriod(this.settings, department_id);
+        return this.monthlyDepartmentTotalsToPeriod(department_id);
     }
 
 }
