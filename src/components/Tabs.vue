@@ -1,6 +1,6 @@
 <template>
     <nav :aria-label="strings.tab_navigation_aria_label"
-        class="border-b border-gray-300 border-solid flex flex-row space-x-4">
+        class="border-b border-gray-300 border-solid flex flex-row space-x-4 select-none">
 
         <RouterLink v-for="tab in tabs" :to="tab.to" :class="{
             'pb-2 border-b-2  border-solid flex flex-row gap-2 items-center  font-medium ': true,

@@ -23,17 +23,17 @@ import LoadingIndicator from '../LoadingIndicator.vue';
 import usePayloadsStore from '../../stores/payloads.js'
 import GeneralChartSettings from '../GeneralChartSettings.vue';
 const payloadsStore = usePayloadsStore()
-const { aggregations } = storeToRefs(payloadsStore)
+const { composition } = storeToRefs(payloadsStore)
 
 const readyToRender = computed(() => {
 
-    return aggregations.value !== false;
+    return composition.value !== false;
 });
 
 onMounted(() => {
 
-    if (aggregations.value === false) {
-        payloadsStore.fetchAggregations();
+    if (composition.value === false) {
+        payloadsStore.fetchComposition();
     }
 });
 

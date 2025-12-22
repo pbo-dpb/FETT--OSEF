@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import aggregationPayloadUrl from '../assets/aggregations.json?url'
+import aggregationPayloadUrl from '../assets/composition.json?url'
 import departmentsPayloadUrl from '../assets/departments.json?url'
 let departmentsEagerPayloadsUrls = {};
 let dptUrls = import.meta.glob('../assets/departments/*.json', { query: '?url', import: 'default', eager: true });
@@ -12,22 +12,22 @@ Object.keys(dptUrls).forEach(key => {
 export default defineStore('payloads', {
     state: () => ({
         departments: false,
-        aggregations: false,
+        composition: false,
         loading: []
     }),
     actions: {
 
-        async fetchAggregations() {
-            if (this.loading.includes('aggregations')) return
-            this.loading.push('aggregations')
+        async fetchComposition() {
+            if (this.loading.includes('composition')) return
+            this.loading.push('composition')
 
             const response = await fetch(aggregationPayloadUrl)
             const data = await response.json()
 
             // Temporarely do both assigments in the same round
-            this.aggregations = data;
+            this.composition = data;
 
-            this.loading = this.loading.filter(item => item !== 'aggregations')
+            this.loading = this.loading.filter(item => item !== 'composition')
 
         },
 

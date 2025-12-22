@@ -18,13 +18,13 @@ import PreferredTimeFramePicker from './PreferredTimeFramePicker.vue';
 import PreferredGranularityPicker from './PreferredGranularityPicker.vue';
 
 const payloadsStore = usePayloadsStore()
-const { aggregations } = storeToRefs(payloadsStore)
+const { composition } = storeToRefs(payloadsStore)
 
 
 onMounted(() => {
 
-    if (aggregations.value === false) {
-        payloadsStore.fetchAggregations();
+    if (composition.value === false) {
+        payloadsStore.fetchComposition();
     }
 });
 

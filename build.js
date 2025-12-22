@@ -19,7 +19,7 @@ const handleStringsIo = require('./build-src/strings');
 const handleSettingsIo = require('./build-src/settings');
 const { importDepartments, saveDepartments } = require('./build-src/department');
 const importDataSheet = require('./build-src/datasheets');
-const Aggregator = require('./build-src/aggregations');
+const Aggregator = require('./build-src/aggregator');
 
 
 
@@ -98,7 +98,7 @@ saveDepartments(departments, aggregator);
                 latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id)
             }
         }),
-        aggregations: {
+        composition: {
             total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
             total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
         }

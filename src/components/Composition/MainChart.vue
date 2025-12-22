@@ -39,7 +39,7 @@ import { storeToRefs } from 'pinia'
 
 import usePayloadsStore from '../../stores/payloads.js'
 const payloadsStore = usePayloadsStore()
-const { aggregations } = storeToRefs(payloadsStore)
+const { composition } = storeToRefs(payloadsStore)
 
 import useLocalizationsStore from '../../stores/localizations.js'
 const localizationsStore = useLocalizationsStore()
@@ -100,9 +100,9 @@ echarts.use([
 
 const baseData = computed(() => {
     if (preferredGranularity.value === 'quarter') {
-        return aggregations.value.total_ftes_per_quarter;
+        return composition.value.total_ftes_per_quarter;
     } else if (preferredGranularity.value === 'fiscal_year') {
-        return aggregations.value.total_ftes_per_fiscal_year;
+        return composition.value.total_ftes_per_fiscal_year;
     }
     return [];
 });
@@ -273,8 +273,8 @@ let chart = shallowRef(null);
 
 onMounted(() => {
 
-    if (aggregations.value === false) {
-        throw new Error("Aggregations payload is required to render MainChart. Call 'fetchAggregations' action in payloads store before attempting to mount this component.");
+    if (composition.value === false) {
+        throw new Error("Composition payload is required to render MainChart. Call 'fetchComposition' action in payloads store before attempting to mount this component.");
     }
 
     let theme = null;
