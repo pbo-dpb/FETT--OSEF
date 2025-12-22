@@ -3,7 +3,7 @@
     "collapsible_component_handle": "About",
     "last_updated": " Last updated: ",
     "tab_navigation_aria_label": "Main Navigation Tabs",
-    "tab_navigation_overview_label": "Public Service Overview",
+    "tab_navigation_overview_label": "Overview",
     "indeterminate_label": "Indeterminate",
     "term_label": "Term",
     "casual_label": "Casual",
@@ -32,5 +32,7 @@
     "dep_card_remove_button_aria_label": "Remove from comparison",
     "departments_overview_no_departments_selected_message": "Select one or more departments to compare.",
     "department_latest_ftes_as_of": "FTEs as of {date}",
-    "department_latest_ftes_combined_note": "Note: Detailed breakdown is not available."
+    "department_latest_ftes_combined_note": "Note: Detailed breakdown is not available.",
+    "tab_navigation_composition_label": "Composition",
+    "tab_navigation_departments_label": "Compare"
 }

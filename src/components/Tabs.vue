@@ -36,7 +36,12 @@ const tabs = computed(() => {
             selected: route.name === 'overview'
         },
         {
-            label: 'Departments',
+            label: strings.value.tab_navigation_composition_label,
+            to: { name: 'composition' },
+            selected: route.name === 'composition'
+        },
+        {
+            label: strings.value.tab_navigation_departments_label,
             to: { name: 'departments', params: { departments: previouslySelectedDepartmentIds.value } },
             selected: route.name === 'departments'
         }
