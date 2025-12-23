@@ -5,7 +5,8 @@ const XLSX = require('xlsx')
 
 
 const idForDepartmentName = function (nameEn) {
-    return crypto.createHash('md5').update(nameEn).digest('hex');
+    let hash = crypto.createHash('md5').update(nameEn).digest().toString('base64');
+    return hash.replaceAll('/', '').replaceAll('+', '').replaceAll('=', '').slice(-5);
 }
 
 /**
