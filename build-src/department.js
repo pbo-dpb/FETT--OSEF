@@ -57,6 +57,7 @@ const saveDepartments = function (departments, aggregator) {
         fs.mkdirSync(deptOutputDir, { recursive: true })
     }
 
+    let allDptDetails = {};
     Object.values(departments).forEach(dept => {
         const deptDetails = {};
 
@@ -65,8 +66,10 @@ const saveDepartments = function (departments, aggregator) {
 
         const outputFilePath = path.join(deptOutputDir, `${dept.id}.json`)
         fs.writeFileSync(outputFilePath, JSON.stringify(deptDetails), 'utf8')
+        allDptDetails[dept.id] = deptDetails;
     })
 
+    return allDptDetails;
 }
 
 

@@ -8,6 +8,9 @@ module.exports = class Aggregator {
         this.preparePaddedMonthlyTotals();
         this.preparedPaddedMonthlyDepartmentTotals();
 
+        this._totalFtesPerQuarter = null;
+
+
     }
 
     preparedPaddedMonthlyDepartmentTotals = function () {
@@ -345,6 +348,10 @@ module.exports = class Aggregator {
      */
     totalFtesPerQuarter = function () {
 
+        if (this._totalFtesPerQuarter) {
+            return this._totalFtesPerQuarter;
+        }
+
         let monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod({
             ...this.settings,
             // We need to pad the period to prevent the month filter to cut off data needed for quarterly calculations
@@ -354,8 +361,8 @@ module.exports = class Aggregator {
             end_year: this.settings.end_year + 1
         });
 
-        return this.transformMonthlyTotalsToQuarterlyTotals(this.settings, monthlyTotals);
-
+        this._totalFtesPerQuarter = this.transformMonthlyTotalsToQuarterlyTotals(this.settings, monthlyTotals);
+        return this._totalFtesPerQuarter;
     }
 
 

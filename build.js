@@ -20,6 +20,7 @@ const handleSettingsIo = require('./build-src/settings');
 const { importDepartments, saveDepartments } = require('./build-src/department');
 const importDataSheet = require('./build-src/datasheets');
 const Aggregator = require('./build-src/aggregator');
+const Overviewer = require('./build-src/overviewer');
 
 
 
@@ -76,7 +77,10 @@ workbook.SheetNames.forEach(sheetName => {
 const aggregator = new Aggregator(settings, datapoints);
 
 
-saveDepartments(departments, aggregator);
+const allDepartmentsDetails = saveDepartments(departments, aggregator);
+
+// Build overviewer
+const overviewer = new Overviewer(aggregator, departments, allDepartmentsDetails);
 
 /**
  * Saves the datapoints that will be used to display the charts that
@@ -101,8 +105,12 @@ saveDepartments(departments, aggregator);
         composition: {
             total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
             total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
+        },
+        overview: {
+            quarterly: overviewer.buildQuarterlyComparison()
         }
     }
+
 
     Object.keys(payloads).forEach(key => {
         const outputFilePath = path.join(__dirname, 'src', 'assets', `${key}.json`)
