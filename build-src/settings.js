@@ -1,38 +1,37 @@
-const XLSX = require('xlsx')
-const fs = require('fs')
-const path = require('path')
+const XLSX = require("xlsx");
+const fs = require("fs");
+const path = require("path");
 
 const defaults = {
-    start_quarter: 1,
-    start_year: 2020,
-    end_quarter: 4,
-    end_year: 2023,
-    last_updated: (new Date()).toISOString().split('T')[0],
-}
+  start_quarter: 1,
+  start_year: 2020,
+  end_quarter: 4,
+  end_year: 2023,
+  last_updated: new Date().toISOString().split("T")[0],
+};
 
 /**
  * Extract key-value pairs from the `settings` worksheet.
  */
 module.exports = function (worksheet) {
-    const settings = {}
-    const jsonData = XLSX.utils.sheet_to_json(worksheet)
+  const settings = {};
+  const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-    jsonData.forEach(row => {
-        const key = row['key']
-        const value = row['value']
-        if (key === 'last_updated' && value) {
-            // Date values need to be adjusted from Excel serial date format.
-            settings[key] = XLSX.SSF.format("yyyy-mm-dd", value)
-        } else if (key && value) {
-            settings[key] = value
-        }
-    })
+  jsonData.forEach((row) => {
+    const key = row["key"];
+    const value = row["value"];
+    if (key === "last_updated" && value) {
+      // Date values need to be adjusted from Excel serial date format.
+      settings[key] = XLSX.SSF.format("yyyy-mm-dd", value);
+    } else if (key && value) {
+      settings[key] = value;
+    }
+  });
 
+  fs.writeFileSync(
+    path.join(__dirname, "..", "src", "assets", "settings.json"),
+    JSON.stringify(settings, null, 2),
+  );
 
-
-
-
-    fs.writeFileSync(path.join(__dirname, "..", 'src', 'assets', 'settings.json'), JSON.stringify(settings, null, 2))
-
-    return { ...defaults, ...settings }
-}
+  return { ...defaults, ...settings };
+};

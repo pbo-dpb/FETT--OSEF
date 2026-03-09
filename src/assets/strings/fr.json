@@ -1,11 +1,11 @@
 {
-    "title": "Effectif 360",
-    "collapsible_component_handle": "À propos",
-    "last_updated": " Dernière mise à jour : ",
-    "tab_navigation_aria_label": "Onglets de navigation principaux",
-    "indeterminate_label": "Indéterminé",
-    "term_label": "Déterminé",
-    "casual_label": "Occasionnels",
-    "student_label": "Étudiants",
-    "combined_label": "Données combinés"
+  "title": "Effectif 360",
+  "collapsible_component_handle": "À propos",
+  "last_updated": " Dernière mise à jour : ",
+  "tab_navigation_aria_label": "Onglets de navigation principaux",
+  "indeterminate_label": "Indéterminé",
+  "term_label": "Déterminé",
+  "casual_label": "Occasionnels",
+  "student_label": "Étudiants",
+  "combined_label": "Données combinés"
 }

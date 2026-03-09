@@ -1,3 +1,1 @@
-<template>
-    Overview!
-</template>
+<template>Overview!</template>

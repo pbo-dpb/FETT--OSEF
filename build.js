@@ -3,72 +3,77 @@
  * The JSON payload will overwrite the existing payload files in the assets
  * directory. The script is intended to be run in development or during
  * a build process.
- * 
+ *
  * To run this script, use the following command:
  * `node build.js <input-file.xlsx>`
- * 
+ *
  * NPM must have been install prior to running this script.
- * 
+ *
  */
 
-const XLSX = require('xlsx')
-const fs = require('fs')
-const path = require('path')
+const XLSX = require("xlsx");
+const fs = require("fs");
+const path = require("path");
 
-const handleStringsIo = require('./build-src/strings');
-const handleSettingsIo = require('./build-src/settings');
-const { importDepartments, saveDepartments } = require('./build-src/department');
-const importDataSheet = require('./build-src/datasheets');
-const Aggregator = require('./build-src/aggregator');
-const Overviewer = require('./build-src/overviewer');
-
-
+const handleStringsIo = require("./build-src/strings");
+const handleSettingsIo = require("./build-src/settings");
+const {
+  importDepartments,
+  saveDepartments,
+} = require("./build-src/department");
+const importDataSheet = require("./build-src/datasheets");
+const Aggregator = require("./build-src/aggregator");
+const Overviewer = require("./build-src/overviewer");
 
 // Get the input .xlsx file from command line arguments
-const inputFile = process.argv[2]
+const inputFile = process.argv[2];
 if (!inputFile) {
-    console.error('Please provide an input .xlsx file.')
-    process.exit(1)
+  console.error("Please provide an input .xlsx file.");
+  process.exit(1);
 }
 
+const workbook = XLSX.readFile(inputFile);
 
-const workbook = XLSX.readFile(inputFile)
-
-const stringsWorksheet = workbook.Sheets['strings']
+const stringsWorksheet = workbook.Sheets["strings"];
 if (!stringsWorksheet) {
-    console.error('The input .xlsx file is missing the required "strings" sheet.')
-    process.exit(1)
+  console.error(
+    'The input .xlsx file is missing the required "strings" sheet.',
+  );
+  process.exit(1);
 }
-handleStringsIo(stringsWorksheet)
+handleStringsIo(stringsWorksheet);
 
-const settingsWorksheet = workbook.Sheets['settings']
+const settingsWorksheet = workbook.Sheets["settings"];
 if (!settingsWorksheet) {
-    console.error('The input .xlsx file is missing the required "settings" sheet.')
-    process.exit(1)
+  console.error(
+    'The input .xlsx file is missing the required "settings" sheet.',
+  );
+  process.exit(1);
 }
-const settings = handleSettingsIo(settingsWorksheet)
+const settings = handleSettingsIo(settingsWorksheet);
 
-const departmentsWorksheet = workbook.Sheets['departments']
+const departmentsWorksheet = workbook.Sheets["departments"];
 if (!departmentsWorksheet) {
-    console.error('The input .xlsx file is missing the required "departments" sheet.')
-    process.exit(1)
+  console.error(
+    'The input .xlsx file is missing the required "departments" sheet.',
+  );
+  process.exit(1);
 }
 
-const departments = importDepartments(departmentsWorksheet)
+const departments = importDepartments(departmentsWorksheet);
 
 // Loop through all sheets to find data sheets
 let datapoints = [];
-workbook.SheetNames.forEach(sheetName => {
-    const worksheet = workbook.Sheets[sheetName]
-    if (sheetName.toLowerCase().startsWith('data-')) {
-        datapoints = [
-            ...datapoints,
-            ...importDataSheet(sheetName, worksheet, departments)
-        ];
-        return;
-    }
-})
-
+workbook.SheetNames.forEach((sheetName) => {
+  const worksheet = workbook.Sheets[sheetName];
+  if (sheetName.toLowerCase().startsWith("data-")) {
+    datapoints = [
+      ...datapoints,
+      ...importDataSheet(sheetName, worksheet, departments),
+    ];
+    return;
+  }
+});
 
 /***
  * EXPORT TO JSON FILES
@@ -76,11 +81,14 @@ workbook.SheetNames.forEach(sheetName => {
 
 const aggregator = new Aggregator(settings, datapoints);
 
-
 const allDepartmentsDetails = saveDepartments(departments, aggregator);
 
 // Build overviewer
-const overviewer = new Overviewer(aggregator, departments, allDepartmentsDetails);
+const overviewer = new Overviewer(
+  aggregator,
+  departments,
+  allDepartmentsDetails,
+);
 
 /**
  * Saves the datapoints that will be used to display the charts that
@@ -89,37 +97,30 @@ const overviewer = new Overviewer(aggregator, departments, allDepartmentsDetails
  * if needed.
  */
 (function () {
+  const payloads = {
+    departments: Object.values(departments).map((dept) => {
+      return {
+        id: dept.id,
+        name_en: dept.name_en,
+        name_fr: dept.name_fr,
+        acronym_en: dept.acronym_en,
+        acronym_fr: dept.acronym_fr,
+        latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id),
+      };
+    }),
+    composition: {
+      total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
+      total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
+    },
+    overview: {
+      quarterly: overviewer.buildQuarterlyComparison(),
+    },
+  };
 
+  Object.keys(payloads).forEach((key) => {
+    const outputFilePath = path.join(__dirname, "src", "assets", `${key}.json`);
+    fs.writeFileSync(outputFilePath, JSON.stringify(payloads[key]), "utf8");
+  });
+})();
 
-    const payloads = {
-        departments: Object.values(departments).map(dept => {
-            return {
-                id: dept.id,
-                name_en: dept.name_en,
-                name_fr: dept.name_fr,
-                acronym_en: dept.acronym_en,
-                acronym_fr: dept.acronym_fr,
-                latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id)
-            }
-        }),
-        composition: {
-            total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
-            total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
-        },
-        overview: {
-            quarterly: overviewer.buildQuarterlyComparison()
-        }
-    }
-
-
-    Object.keys(payloads).forEach(key => {
-        const outputFilePath = path.join(__dirname, 'src', 'assets', `${key}.json`)
-        fs.writeFileSync(outputFilePath, JSON.stringify(payloads[key]), 'utf8')
-
-    })
-
-})()
-
-
-console.log('Payload generation completed.')
-
+console.log("Payload generation completed.");

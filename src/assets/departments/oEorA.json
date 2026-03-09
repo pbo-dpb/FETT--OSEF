@@ -1,1 +1,476 @@
-{"total_ftes_per_quarter":[{"year":2016,"quarter":2,"unknown":0,"indeterminate":5371.020465937745,"term":501.0451766183067,"casual":0,"student":40.279999999999994,"combined":0},{"year":2016,"quarter":3,"unknown":0,"indeterminate":5446.80933940145,"term":611.492358087496,"casual":0,"student":112.68444444444445,"combined":0},{"year":2016,"quarter":4,"unknown":0,"indeterminate":5512.2301932416985,"term":626.259852856939,"casual":0,"student":45.00222222222222,"combined":0},{"year":2017,"quarter":1,"unknown":0,"indeterminate":5483.009088072712,"term":634.9171357692309,"casual":0,"student":72.71333333333335,"combined":0},{"year":2017,"quarter":2,"unknown":0,"indeterminate":5483.4677641948265,"term":696.1957883851213,"casual":0,"student":162.95999999999995,"combined":0},{"year":2017,"quarter":3,"unknown":0,"indeterminate":5420.737098631555,"term":758.679966689851,"casual":0,"student":165.71999999999994,"combined":0},{"year":2017,"quarter":4,"unknown":0,"indeterminate":5469.414573899801,"term":742.4037030802291,"casual":0,"student":50.960000000000015,"combined":0},{"year":2018,"quarter":1,"unknown":0,"indeterminate":5440.348957266724,"term":725.4192670557774,"casual":0,"student":66.81111111111112,"combined":0},{"year":2018,"quarter":2,"unknown":0,"indeterminate":5426.650084923986,"term":761.2265662323492,"casual":0,"student":197.71777777777777,"combined":0},{"year":2018,"quarter":3,"unknown":0,"indeterminate":5342.491394306114,"term":766.6912544860392,"casual":0,"student":174.0911111111111,"combined":0},{"year":2018,"quarter":4,"unknown":0,"indeterminate":5397.080795093868,"term":746.1480759586025,"casual":0,"student":59.70444444444445,"combined":0},{"year":2019,"quarter":1,"unknown":0,"indeterminate":5386.858816696148,"term":722.1373791093537,"casual":0,"student":85.51555555555554,"combined":0},{"year":2019,"quarter":2,"unknown":0,"indeterminate":5362.608507507827,"term":743.289931079245,"casual":0,"student":197.82666666666668,"combined":0},{"year":2019,"quarter":3,"unknown":0,"indeterminate":5265.878547803332,"term":755.2453400642936,"casual":0,"student":155.76,"combined":0},{"year":2019,"quarter":4,"unknown":0,"indeterminate":5290.8360227019475,"term":722.4400037642919,"casual":0,"student":65.26666666666671,"combined":0},{"year":2020,"quarter":1,"unknown":0,"indeterminate":5263.576677822196,"term":672.7034945770139,"casual":0,"student":82.09694234167499,"combined":0},{"year":2020,"quarter":2,"unknown":0,"indeterminate":5273.765784173899,"term":727.1605393782143,"casual":0,"student":128.86666666666665,"combined":0},{"year":2020,"quarter":3,"unknown":0,"indeterminate":5253.176338066791,"term":811.2820455235016,"casual":0,"student":118.98000000000002,"combined":0},{"year":2020,"quarter":4,"unknown":0,"indeterminate":5339.787843057401,"term":865.7253230636403,"casual":0,"student":69.89555555555556,"combined":0},{"year":2021,"quarter":1,"unknown":0,"indeterminate":5383.32742473079,"term":931.0750279222098,"casual":0,"student":85.88666666666666,"combined":0},{"year":2021,"quarter":2,"unknown":0,"indeterminate":5436.243155948526,"term":969.9150698821004,"casual":0,"student":205.7155555555555,"combined":0},{"year":2021,"quarter":3,"unknown":0,"indeterminate":5494.645533028521,"term":989.7744927457398,"casual":0,"student":193.41555555555556,"combined":0},{"year":2021,"quarter":4,"unknown":0,"indeterminate":5570.640674013009,"term":928.9929198416811,"casual":0,"student":97.25777777777779,"combined":0},{"year":2022,"quarter":1,"unknown":0,"indeterminate":5581.968510447649,"term":885.8260443855405,"casual":0,"student":93.52666666666671,"combined":0},{"year":2022,"quarter":2,"unknown":0,"indeterminate":5654.290333041383,"term":947.1910165757877,"casual":0,"student":218.11999999999998,"combined":0},{"year":2022,"quarter":3,"unknown":0,"indeterminate":5663.144302699999,"term":1006.9868536056038,"casual":0,"student":214.11555555555552,"combined":0},{"year":2022,"quarter":4,"unknown":0,"indeterminate":5727.982610404183,"term":1025.3978633862068,"casual":0,"student":114.61967144757182,"combined":0},{"year":2023,"quarter":1,"unknown":0,"indeterminate":5798.56938956997,"term":947.9655374728642,"casual":0,"student":116.58444444444446,"combined":0},{"year":2023,"quarter":2,"unknown":0,"indeterminate":5912.929954207971,"term":850.9042937495748,"casual":0,"student":228.18755555555552,"combined":0},{"year":2023,"quarter":3,"unknown":0,"indeterminate":5885.712251483168,"term":841.5166902133983,"casual":0,"student":182.85155555555556,"combined":0},{"year":2023,"quarter":4,"unknown":0,"indeterminate":5964.442723069683,"term":800.2372475475589,"casual":0,"student":102.50933333333337,"combined":0},{"year":2024,"quarter":1,"unknown":0,"indeterminate":5977.54922977517,"term":721.9850280158958,"casual":0,"student":104.94266666666677,"combined":0},{"year":2024,"quarter":2,"unknown":0,"indeterminate":5949.125315581019,"term":703.5001813037534,"casual":0,"student":189.67599999999993,"combined":0},{"year":2024,"quarter":3,"unknown":0,"indeterminate":5829.555432866498,"term":679.8686910860401,"casual":0,"student":118.11599999999994,"combined":0},{"year":2024,"quarter":4,"unknown":0,"indeterminate":5825.121079474996,"term":637.6631378863032,"casual":0,"student":58.5448888888889,"combined":0},{"year":2025,"quarter":1,"unknown":0,"indeterminate":5769.769254902395,"term":594.1926449530788,"casual":0,"student":52.1648888888889,"combined":0},{"year":2025,"quarter":2,"unknown":0,"indeterminate":5710.1109264288,"term":512.5787437796806,"casual":0,"student":85.83155555555555,"combined":0},{"year":2025,"quarter":3,"unknown":0,"indeterminate":5605.316517462858,"term":539.8900354642291,"casual":0,"student":69.37822222222222,"combined":0}],"total_ftes_per_fiscal_year":[{"year":2016,"unknown":0,"indeterminate":5438.345050635797,"term":572.1120122874368,"casual":0,"student":64.37266666666666,"combined":0},{"year":2017,"unknown":0,"indeterminate":5419.848091378663,"term":676.9558433669447,"casual":0,"student":104.21396474822954,"combined":0},{"year":2018,"unknown":0,"indeterminate":5412.307840599169,"term":727.2457581115555,"casual":0,"student":126.05666666666667,"combined":0},{"year":2019,"unknown":0,"indeterminate":5339.918008819956,"term":736.5986354909022,"casual":0,"student":121.41611111111114,"combined":0},{"year":2020,"unknown":0,"indeterminate":5313.39719549856,"term":781.5763217686775,"casual":0,"student":100.81444444444442,"combined":0},{"year":2021,"unknown":0,"indeterminate":5441.2765102030635,"term":890.3464942616339,"casual":0,"student":144.62145780764095,"combined":0},{"year":2022,"unknown":0,"indeterminate":5607.186167719089,"term":977.662690372452,"casual":0,"student":158.1854734174485,"combined":0},{"year":2023,"unknown":0,"indeterminate":5836.2633598021175,"term":844.6210689740182,"casual":0,"student":151.76877777777779,"combined":0},{"year":2024,"unknown":0,"indeterminate":5850.592804373121,"term":742.24938693724,"casual":0,"student":120.73033333333332,"combined":0},{"year":2025,"unknown":0,"indeterminate":5764.325557888943,"term":591.4846024199352,"casual":0,"student":86.71748148148151,"combined":0}]}
+{
+  "total_ftes_per_quarter": [
+    {
+      "year": 2016,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5371.020465937745,
+      "term": 501.0451766183067,
+      "casual": 0,
+      "student": 40.279999999999994,
+      "combined": 0
+    },
+    {
+      "year": 2016,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5446.80933940145,
+      "term": 611.492358087496,
+      "casual": 0,
+      "student": 112.68444444444445,
+      "combined": 0
+    },
+    {
+      "year": 2016,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5512.2301932416985,
+      "term": 626.259852856939,
+      "casual": 0,
+      "student": 45.00222222222222,
+      "combined": 0
+    },
+    {
+      "year": 2017,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5483.009088072712,
+      "term": 634.9171357692309,
+      "casual": 0,
+      "student": 72.71333333333335,
+      "combined": 0
+    },
+    {
+      "year": 2017,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5483.4677641948265,
+      "term": 696.1957883851213,
+      "casual": 0,
+      "student": 162.95999999999995,
+      "combined": 0
+    },
+    {
+      "year": 2017,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5420.737098631555,
+      "term": 758.679966689851,
+      "casual": 0,
+      "student": 165.71999999999994,
+      "combined": 0
+    },
+    {
+      "year": 2017,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5469.414573899801,
+      "term": 742.4037030802291,
+      "casual": 0,
+      "student": 50.960000000000015,
+      "combined": 0
+    },
+    {
+      "year": 2018,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5440.348957266724,
+      "term": 725.4192670557774,
+      "casual": 0,
+      "student": 66.81111111111112,
+      "combined": 0
+    },
+    {
+      "year": 2018,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5426.650084923986,
+      "term": 761.2265662323492,
+      "casual": 0,
+      "student": 197.71777777777777,
+      "combined": 0
+    },
+    {
+      "year": 2018,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5342.491394306114,
+      "term": 766.6912544860392,
+      "casual": 0,
+      "student": 174.0911111111111,
+      "combined": 0
+    },
+    {
+      "year": 2018,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5397.080795093868,
+      "term": 746.1480759586025,
+      "casual": 0,
+      "student": 59.70444444444445,
+      "combined": 0
+    },
+    {
+      "year": 2019,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5386.858816696148,
+      "term": 722.1373791093537,
+      "casual": 0,
+      "student": 85.51555555555554,
+      "combined": 0
+    },
+    {
+      "year": 2019,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5362.608507507827,
+      "term": 743.289931079245,
+      "casual": 0,
+      "student": 197.82666666666668,
+      "combined": 0
+    },
+    {
+      "year": 2019,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5265.878547803332,
+      "term": 755.2453400642936,
+      "casual": 0,
+      "student": 155.76,
+      "combined": 0
+    },
+    {
+      "year": 2019,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5290.8360227019475,
+      "term": 722.4400037642919,
+      "casual": 0,
+      "student": 65.26666666666671,
+      "combined": 0
+    },
+    {
+      "year": 2020,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5263.576677822196,
+      "term": 672.7034945770139,
+      "casual": 0,
+      "student": 82.09694234167499,
+      "combined": 0
+    },
+    {
+      "year": 2020,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5273.765784173899,
+      "term": 727.1605393782143,
+      "casual": 0,
+      "student": 128.86666666666665,
+      "combined": 0
+    },
+    {
+      "year": 2020,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5253.176338066791,
+      "term": 811.2820455235016,
+      "casual": 0,
+      "student": 118.98000000000002,
+      "combined": 0
+    },
+    {
+      "year": 2020,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5339.787843057401,
+      "term": 865.7253230636403,
+      "casual": 0,
+      "student": 69.89555555555556,
+      "combined": 0
+    },
+    {
+      "year": 2021,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5383.32742473079,
+      "term": 931.0750279222098,
+      "casual": 0,
+      "student": 85.88666666666666,
+      "combined": 0
+    },
+    {
+      "year": 2021,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5436.243155948526,
+      "term": 969.9150698821004,
+      "casual": 0,
+      "student": 205.7155555555555,
+      "combined": 0
+    },
+    {
+      "year": 2021,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5494.645533028521,
+      "term": 989.7744927457398,
+      "casual": 0,
+      "student": 193.41555555555556,
+      "combined": 0
+    },
+    {
+      "year": 2021,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5570.640674013009,
+      "term": 928.9929198416811,
+      "casual": 0,
+      "student": 97.25777777777779,
+      "combined": 0
+    },
+    {
+      "year": 2022,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5581.968510447649,
+      "term": 885.8260443855405,
+      "casual": 0,
+      "student": 93.52666666666671,
+      "combined": 0
+    },
+    {
+      "year": 2022,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5654.290333041383,
+      "term": 947.1910165757877,
+      "casual": 0,
+      "student": 218.11999999999998,
+      "combined": 0
+    },
+    {
+      "year": 2022,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5663.144302699999,
+      "term": 1006.9868536056038,
+      "casual": 0,
+      "student": 214.11555555555552,
+      "combined": 0
+    },
+    {
+      "year": 2022,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5727.982610404183,
+      "term": 1025.3978633862068,
+      "casual": 0,
+      "student": 114.61967144757182,
+      "combined": 0
+    },
+    {
+      "year": 2023,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5798.56938956997,
+      "term": 947.9655374728642,
+      "casual": 0,
+      "student": 116.58444444444446,
+      "combined": 0
+    },
+    {
+      "year": 2023,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5912.929954207971,
+      "term": 850.9042937495748,
+      "casual": 0,
+      "student": 228.18755555555552,
+      "combined": 0
+    },
+    {
+      "year": 2023,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5885.712251483168,
+      "term": 841.5166902133983,
+      "casual": 0,
+      "student": 182.85155555555556,
+      "combined": 0
+    },
+    {
+      "year": 2023,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5964.442723069683,
+      "term": 800.2372475475589,
+      "casual": 0,
+      "student": 102.50933333333337,
+      "combined": 0
+    },
+    {
+      "year": 2024,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5977.54922977517,
+      "term": 721.9850280158958,
+      "casual": 0,
+      "student": 104.94266666666677,
+      "combined": 0
+    },
+    {
+      "year": 2024,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5949.125315581019,
+      "term": 703.5001813037534,
+      "casual": 0,
+      "student": 189.67599999999993,
+      "combined": 0
+    },
+    {
+      "year": 2024,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5829.555432866498,
+      "term": 679.8686910860401,
+      "casual": 0,
+      "student": 118.11599999999994,
+      "combined": 0
+    },
+    {
+      "year": 2024,
+      "quarter": 4,
+      "unknown": 0,
+      "indeterminate": 5825.121079474996,
+      "term": 637.6631378863032,
+      "casual": 0,
+      "student": 58.5448888888889,
+      "combined": 0
+    },
+    {
+      "year": 2025,
+      "quarter": 1,
+      "unknown": 0,
+      "indeterminate": 5769.769254902395,
+      "term": 594.1926449530788,
+      "casual": 0,
+      "student": 52.1648888888889,
+      "combined": 0
+    },
+    {
+      "year": 2025,
+      "quarter": 2,
+      "unknown": 0,
+      "indeterminate": 5710.1109264288,
+      "term": 512.5787437796806,
+      "casual": 0,
+      "student": 85.83155555555555,
+      "combined": 0
+    },
+    {
+      "year": 2025,
+      "quarter": 3,
+      "unknown": 0,
+      "indeterminate": 5605.316517462858,
+      "term": 539.8900354642291,
+      "casual": 0,
+      "student": 69.37822222222222,
+      "combined": 0
+    }
+  ],
+  "total_ftes_per_fiscal_year": [
+    {
+      "year": 2016,
+      "unknown": 0,
+      "indeterminate": 5438.345050635797,
+      "term": 572.1120122874368,
+      "casual": 0,
+      "student": 64.37266666666666,
+      "combined": 0
+    },
+    {
+      "year": 2017,
+      "unknown": 0,
+      "indeterminate": 5419.848091378663,
+      "term": 676.9558433669447,
+      "casual": 0,
+      "student": 104.21396474822954,
+      "combined": 0
+    },
+    {
+      "year": 2018,
+      "unknown": 0,
+      "indeterminate": 5412.307840599169,
+      "term": 727.2457581115555,
+      "casual": 0,
+      "student": 126.05666666666667,
+      "combined": 0
+    },
+    {
+      "year": 2019,
+      "unknown": 0,
+      "indeterminate": 5339.918008819956,
+      "term": 736.5986354909022,
+      "casual": 0,
+      "student": 121.41611111111114,
+      "combined": 0
+    },
+    {
+      "year": 2020,
+      "unknown": 0,
+      "indeterminate": 5313.39719549856,
+      "term": 781.5763217686775,
+      "casual": 0,
+      "student": 100.81444444444442,
+      "combined": 0
+    },
+    {
+      "year": 2021,
+      "unknown": 0,
+      "indeterminate": 5441.2765102030635,
+      "term": 890.3464942616339,
+      "casual": 0,
+      "student": 144.62145780764095,
+      "combined": 0
+    },
+    {
+      "year": 2022,
+      "unknown": 0,
+      "indeterminate": 5607.186167719089,
+      "term": 977.662690372452,
+      "casual": 0,
+      "student": 158.1854734174485,
+      "combined": 0
+    },
+    {
+      "year": 2023,
+      "unknown": 0,
+      "indeterminate": 5836.2633598021175,
+      "term": 844.6210689740182,
+      "casual": 0,
+      "student": 151.76877777777779,
+      "combined": 0
+    },
+    {
+      "year": 2024,
+      "unknown": 0,
+      "indeterminate": 5850.592804373121,
+      "term": 742.24938693724,
+      "casual": 0,
+      "student": 120.73033333333332,
+      "combined": 0
+    },
+    {
+      "year": 2025,
+      "unknown": 0,
+      "indeterminate": 5764.325557888943,
+      "term": 591.4846024199352,
+      "casual": 0,
+      "student": 86.71748148148151,
+      "combined": 0
+    }
+  ]
+}
