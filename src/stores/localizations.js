@@ -3,18 +3,18 @@ import en from "../assets/strings/en.json";
 import fr from "../assets/strings/fr.json";
 
 export default defineStore("localizations", {
-  state: () => ({
-    language: document.documentElement.lang,
-    iStrings: { en, fr },
-  }),
-  actions: {
-    localizeNumber(number) {
-      return new Intl.NumberFormat(this.language, {}).format(number);
+    state: () => ({
+        language: document.documentElement.lang,
+        iStrings: { en, fr },
+    }),
+    actions: {
+        localizeNumber(number) {
+            return new Intl.NumberFormat(this.language, {}).format(number);
+        },
     },
-  },
-  getters: {
-    strings(state) {
-      return state.iStrings[state.language];
+    getters: {
+        strings(state) {
+            return state.iStrings[state.language];
+        },
     },
-  },
 });

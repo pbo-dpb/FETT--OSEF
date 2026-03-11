@@ -3,8 +3,12 @@
     <head>
         <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
         <meta charset="UTF-8" />
-        <link rel="icon" href="/icon.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="icon"
+            href="/icon.svg" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
         <title>PBO-DPB</title>
         <style>
             #wrapper-page-breadcrumbs li:before {
@@ -18,22 +22,22 @@
 
     <body class="bg-gray-100 dark:bg-black dark:text-white">
         <main
-            class="bg-white dark:bg-gray-950 container mt-8 p-8 border border-t border-gray-100 mx-auto flex flex-col gap-4"
-        >
+            class="container mx-auto mt-8 flex flex-col gap-4 border border-t border-gray-100 bg-white p-8 dark:bg-gray-950">
             <nav class="flex flex-row gap-2">
                 <a href="#">🏠</a>
                 <ul
                     id="wrapper-page-breadcrumbs"
-                    class="flex flex-row gap-2"
-                ></ul>
+                    class="flex flex-row gap-2"></ul>
             </nav>
 
-            <div class="flex flex-row justify-between items-center">
+            <div class="flex flex-row items-center justify-between">
                 <h1
-                    class="leading-none font-thin mb-4 text-4xl"
-                    id="wrapper-page-title"
-                ></h1>
-                <img src="/icon.svg" alt="" class="w-16 h-16 rounded-lg" />
+                    class="mb-4 text-4xl leading-none font-thin"
+                    id="wrapper-page-title"></h1>
+                <img
+                    src="/icon.svg"
+                    alt=""
+                    class="h-16 w-16 rounded-lg" />
             </div>
 
             <pbotool-workforce360 debug="true"></pbotool-workforce360>
@@ -71,6 +75,8 @@
                 }
             });
         </script>
-        <script type="module" src="/src/main.js"></script>
+        <script
+            type="module"
+            src="/src/main.js"></script>
     </body>
 </html>

@@ -3,30 +3,30 @@ import settings from "../assets/settings.json";
 import { colors } from "../assets/colors.json?json";
 
 const previouslySelectedDepartmentIds = sessionStorage.getItem(
-  "selectedDepartmentIds",
+    "selectedDepartmentIds",
 );
 
 export default defineStore("settings", {
-  state: () => ({
-    preferredTimeframe: "3Y",
-    preferredGranularity: "quarter",
-    colors: colors,
-    previouslySelectedDepartmentIds: previouslySelectedDepartmentIds
-      ? JSON.parse(previouslySelectedDepartmentIds).map((id) =>
-          id.replace(/[^a-z0-9]/gi, ""),
-        )
-      : [],
-    ...settings,
-  }),
+    state: () => ({
+        preferredTimeframe: "3Y",
+        preferredGranularity: "quarter",
+        colors: colors,
+        previouslySelectedDepartmentIds: previouslySelectedDepartmentIds
+            ? JSON.parse(previouslySelectedDepartmentIds).map((id) =>
+                  id.replace(/[^a-z0-9]/gi, ""),
+              )
+            : [],
+        ...settings,
+    }),
 
-  actions: {
-    // since we rely on `this`, we cannot use an arrow function
-    setPreviouslySelectedDepartmentIds(departmentIds) {
-      sessionStorage.setItem(
-        "selectedDepartmentIds",
-        JSON.stringify(departmentIds),
-      );
-      this.previouslySelectedDepartmentIds = departmentIds;
+    actions: {
+        // since we rely on `this`, we cannot use an arrow function
+        setPreviouslySelectedDepartmentIds(departmentIds) {
+            sessionStorage.setItem(
+                "selectedDepartmentIds",
+                JSON.stringify(departmentIds),
+            );
+            this.previouslySelectedDepartmentIds = departmentIds;
+        },
     },
-  },
 });

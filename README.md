@@ -27,6 +27,7 @@ Ce fichier contient plusieurs feuilles, chacune représentant différents ensemb
 Une feuille `Readme` dans ce fichier décrit la structure de chaque feuille et les types de données attendus pour chaque colonne.
 
 ## Project setup // Mise en route
+
 ```
 npm install
 ```
@@ -34,16 +35,19 @@ npm install
 ## Compilation // Compilation
 
 ### Overwrite JSON payload with new Excel file // Remplacer la charge utile JSON par un nouveau fichier Excel
+
 ```
 node build.js <input-file.xlsx>
 ```
 
 ### Compiles and hot-reloads for development // Compilations et recharges à chaud pour le développement
+
 ```
 npm run dev
 ```
 
 ### Compiles and minifies for production // Compilation et miniaturisation pour la production
+
 ```
 npm run build
 ```

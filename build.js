@@ -18,8 +18,8 @@ const path = require("path");
 const handleStringsIo = require("./build-src/strings");
 const handleSettingsIo = require("./build-src/settings");
 const {
-  importDepartments,
-  saveDepartments,
+    importDepartments,
+    saveDepartments,
 } = require("./build-src/department");
 const importDataSheet = require("./build-src/datasheets");
 const Aggregator = require("./build-src/aggregator");
@@ -28,36 +28,36 @@ const Overviewer = require("./build-src/overviewer");
 // Get the input .xlsx file from command line arguments
 const inputFile = process.argv[2];
 if (!inputFile) {
-  console.error("Please provide an input .xlsx file.");
-  process.exit(1);
+    console.error("Please provide an input .xlsx file.");
+    process.exit(1);
 }
 
 const workbook = XLSX.readFile(inputFile);
 
 const stringsWorksheet = workbook.Sheets["strings"];
 if (!stringsWorksheet) {
-  console.error(
-    'The input .xlsx file is missing the required "strings" sheet.',
-  );
-  process.exit(1);
+    console.error(
+        'The input .xlsx file is missing the required "strings" sheet.',
+    );
+    process.exit(1);
 }
 handleStringsIo(stringsWorksheet);
 
 const settingsWorksheet = workbook.Sheets["settings"];
 if (!settingsWorksheet) {
-  console.error(
-    'The input .xlsx file is missing the required "settings" sheet.',
-  );
-  process.exit(1);
+    console.error(
+        'The input .xlsx file is missing the required "settings" sheet.',
+    );
+    process.exit(1);
 }
 const settings = handleSettingsIo(settingsWorksheet);
 
 const departmentsWorksheet = workbook.Sheets["departments"];
 if (!departmentsWorksheet) {
-  console.error(
-    'The input .xlsx file is missing the required "departments" sheet.',
-  );
-  process.exit(1);
+    console.error(
+        'The input .xlsx file is missing the required "departments" sheet.',
+    );
+    process.exit(1);
 }
 
 const departments = importDepartments(departmentsWorksheet);
@@ -65,14 +65,14 @@ const departments = importDepartments(departmentsWorksheet);
 // Loop through all sheets to find data sheets
 let datapoints = [];
 workbook.SheetNames.forEach((sheetName) => {
-  const worksheet = workbook.Sheets[sheetName];
-  if (sheetName.toLowerCase().startsWith("data-")) {
-    datapoints = [
-      ...datapoints,
-      ...importDataSheet(sheetName, worksheet, departments),
-    ];
-    return;
-  }
+    const worksheet = workbook.Sheets[sheetName];
+    if (sheetName.toLowerCase().startsWith("data-")) {
+        datapoints = [
+            ...datapoints,
+            ...importDataSheet(sheetName, worksheet, departments),
+        ];
+        return;
+    }
 });
 
 /***
@@ -85,9 +85,9 @@ const allDepartmentsDetails = saveDepartments(departments, aggregator);
 
 // Build overviewer
 const overviewer = new Overviewer(
-  aggregator,
-  departments,
-  allDepartmentsDetails,
+    aggregator,
+    departments,
+    allDepartmentsDetails,
 );
 
 /**
@@ -97,30 +97,35 @@ const overviewer = new Overviewer(
  * if needed.
  */
 (function () {
-  const payloads = {
-    departments: Object.values(departments).map((dept) => {
-      return {
-        id: dept.id,
-        name_en: dept.name_en,
-        name_fr: dept.name_fr,
-        acronym_en: dept.acronym_en,
-        acronym_fr: dept.acronym_fr,
-        latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id),
-      };
-    }),
-    composition: {
-      total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
-      total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
-    },
-    overview: {
-      quarterly: overviewer.buildQuarterlyComparison(),
-    },
-  };
+    const payloads = {
+        departments: Object.values(departments).map((dept) => {
+            return {
+                id: dept.id,
+                name_en: dept.name_en,
+                name_fr: dept.name_fr,
+                acronym_en: dept.acronym_en,
+                acronym_fr: dept.acronym_fr,
+                latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id),
+            };
+        }),
+        composition: {
+            total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
+            total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
+        },
+        overview: {
+            quarterly: overviewer.buildQuarterlyComparison(),
+        },
+    };
 
-  Object.keys(payloads).forEach((key) => {
-    const outputFilePath = path.join(__dirname, "src", "assets", `${key}.json`);
-    fs.writeFileSync(outputFilePath, JSON.stringify(payloads[key]), "utf8");
-  });
+    Object.keys(payloads).forEach((key) => {
+        const outputFilePath = path.join(
+            __dirname,
+            "src",
+            "assets",
+            `${key}.json`,
+        );
+        fs.writeFileSync(outputFilePath, JSON.stringify(payloads[key]), "utf8");
+    });
 })();
 
 console.log("Payload generation completed.");

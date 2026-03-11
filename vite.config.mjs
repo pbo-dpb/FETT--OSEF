@@ -4,19 +4,19 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "./",
-  plugins: [
-    vue({
-      compilerOptions: {
-        customElement: true,
-      },
-    }),
-    tailwindcss(),
-  ],
-  build: {
-    manifest: true,
-    rollupOptions: {
-      input: ["index.html", "./src/main.js"],
+    base: "./",
+    plugins: [
+        vue({
+            compilerOptions: {
+                customElement: true,
+            },
+        }),
+        tailwindcss(),
+    ],
+    build: {
+        manifest: true,
+        rollupOptions: {
+            input: ["index.html", "./src/main.js"],
+        },
     },
-  },
 });
