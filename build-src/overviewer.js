@@ -29,6 +29,7 @@ module.exports = class Overviewer {
         secondYear,
         secondQuarter,
     ) {
+        let departmentMeta = this.departments[deptId];
         let department = this.departmentsDetails[deptId];
 
         let firstFtesRow = department.total_ftes_per_quarter.find(
@@ -46,13 +47,18 @@ module.exports = class Overviewer {
         let diff = secondFtesCount - firstFtesCount;
         return {
             department_id: deptId,
-            relativeDiff: Number(
-                firstFtesCount === 0 ? null : (diff / firstFtesCount) * 100,
-            ).toFixed(2),
-            first: Number(firstFtesCount).toFixed(2),
-            absoluteDiff: Number(diff).toFixed(2),
-            from: Number(firstFtesCount).toFixed(2),
-            to: Number(secondFtesCount).toFixed(2),
+            department_name_en: departmentMeta.name_en,
+            department_name_fr: departmentMeta.name_fr,
+            relativeDiff:
+                firstFtesCount === 0
+                    ? null
+                    : parseFloat(
+                          Number((diff / firstFtesCount) * 100).toFixed(2),
+                      ),
+            first: parseFloat(Number(firstFtesCount).toFixed(2)),
+            absoluteDiff: parseFloat(Number(diff).toFixed(2)),
+            from: parseFloat(Number(firstFtesCount).toFixed(2)),
+            to: parseFloat(Number(secondFtesCount).toFixed(2)),
         };
     }
 
@@ -117,6 +123,21 @@ module.exports = class Overviewer {
         };
     }
 
+    diffCategory(firstValue, secondValue) {
+        const absoluteDiff = secondValue - firstValue;
+        const relativeDiff =
+            firstValue === 0 ? null : (absoluteDiff / firstValue) * 100;
+        return {
+            from: parseFloat(Number(firstValue).toFixed(2)),
+            to: parseFloat(Number(secondValue).toFixed(2)),
+            absoluteDiff: parseFloat(Number(absoluteDiff).toFixed(2)),
+            relativeDiff:
+                relativeDiff === null
+                    ? null
+                    : parseFloat(Number(relativeDiff).toFixed(2)),
+        };
+    }
+
     compareTwoQuartersGeneral(
         firstYear,
         firstQuarter,
@@ -152,21 +173,45 @@ module.exports = class Overviewer {
                   100;
 
         return {
-            from: Number(
-                this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
-                    firstQuarterRow,
-                    includeCombined,
-                ),
-            ).toFixed(2),
-            to: Number(
-                this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
-                    secondQuarterRow,
-                    includeCombined,
-                ),
-            ).toFixed(2),
-            absoluteDiff: Number(absoluteDiff).toFixed(2),
+            from: parseFloat(
+                Number(
+                    this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                        firstQuarterRow,
+                        includeCombined,
+                    ),
+                ).toFixed(2),
+            ),
+            to: parseFloat(
+                Number(
+                    this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                        secondQuarterRow,
+                        includeCombined,
+                    ),
+                ).toFixed(2),
+            ),
+            absoluteDiff: parseFloat(Number(absoluteDiff).toFixed(2)),
             relativeDiff:
-                relativeDiff === null ? null : Number(relativeDiff).toFixed(2),
+                relativeDiff === null
+                    ? null
+                    : parseFloat(Number(relativeDiff).toFixed(2)),
+            categories: {
+                indeterminate: this.diffCategory(
+                    firstQuarterRow.indeterminate || 0,
+                    secondQuarterRow.indeterminate || 0,
+                ),
+                term: this.diffCategory(
+                    firstQuarterRow.term || 0,
+                    secondQuarterRow.term || 0,
+                ),
+                student: this.diffCategory(
+                    firstQuarterRow.student || 0,
+                    secondQuarterRow.student || 0,
+                ),
+                casual: this.diffCategory(
+                    firstQuarterRow.casual || 0,
+                    secondQuarterRow.casual || 0,
+                ),
+            },
         };
     }
 
@@ -174,10 +219,10 @@ module.exports = class Overviewer {
         // We will build an overview that includes:
         // - Comparison of tenures between latest quarter and previous quarter
         // - Comparison of tenures between latest quarter and same quarter last year
-        // - Top 3 departments with highest FTEs growth betwen latest quarter and previous quarter
-        // - Top 3 departments with highest FTEs growth betwen latest quarter and same quarter last year
-        // - Top 3 departments with highest FTEs decline betwen latest quarter and previous quarter
-        // - Top 3 departments with highest FTEs decline betwen latest quarter and same quarter last year
+        // - Top 3 departments with highest FTEs growth between latest quarter and previous quarter
+        // - Top 3 departments with highest FTEs growth between latest quarter and same quarter last year
+        // - Top 3 departments with highest FTEs decline between latest quarter and previous quarter
+        // - Top 3 departments with highest FTEs decline between latest quarter and same quarter last year
 
         const total_ftes_per_quarter = this.aggregator.totalFtesPerQuarter();
         const latestYear = Math.max(
