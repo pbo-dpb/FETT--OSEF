@@ -4,6 +4,7 @@
         class="flex flex-row space-x-4 border-b border-solid border-gray-300 select-none">
         <RouterLink
             v-for="tab in tabs"
+            :key="tab.to.name"
             :to="tab.to"
             :class="{
                 'flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-medium': true,
@@ -21,6 +22,7 @@
     import { computed } from "vue";
 
     import { storeToRefs } from "pinia";
+
     import useLocalizationsStore from "../stores/localizations.js";
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
