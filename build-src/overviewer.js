@@ -49,6 +49,8 @@ module.exports = class Overviewer {
             department_id: deptId,
             department_name_en: departmentMeta.name_en,
             department_name_fr: departmentMeta.name_fr,
+            department_acronym_en: departmentMeta.acronym_en,
+            department_acronym_fr: departmentMeta.acronym_fr,
             relativeDiff:
                 firstFtesCount === 0
                     ? null

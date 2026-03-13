@@ -64,7 +64,7 @@
                     {{ strings.overview_all_positions_label }}
                 </h3>
                 <p
-                    class="font-bold"
+                    class="text-2xl font-bold"
                     :class="{
                         'text-red-800': allDepartmentsAbsoluteDiff < 0,
                         'text-green-800': allDepartmentsAbsoluteDiff > 0,
@@ -81,7 +81,6 @@
                     {{ strings.indeterminate_label }}
                 </h3>
                 <p
-                    class="text-lg font-light"
                     :class="{
                         'text-red-800': indeterminateAbsoluteDiff < 0,
                         'text-green-800': indeterminateAbsoluteDiff > 0,
@@ -96,7 +95,6 @@
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="text-sm font-medium">{{ strings.term_label }}</h3>
                 <p
-                    class="text-lg font-light"
                     :class="{
                         'text-red-800': termAbsoluteDiff < 0,
                         'text-green-800': termAbsoluteDiff > 0,
@@ -112,7 +110,6 @@
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="text-sm font-medium">{{ strings.student_label }}</h3>
                 <p
-                    class="text-lg font-light"
                     :class="{
                         'text-red-800': studentAbsoluteDiff < 0,
                         'text-green-800': studentAbsoluteDiff > 0,
@@ -128,7 +125,6 @@
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="text-sm font-medium">{{ strings.casual_label }}</h3>
                 <p
-                    class="text-lg font-light"
                     :class="{
                         'text-red-800': casualAbsoluteDiff < 0,
                         'text-green-800': casualAbsoluteDiff > 0,
@@ -153,9 +149,15 @@
                     :key="department.department_id">
                     <div class="text-sm font-medium">
                         {{ displayDepartmentName(department) }}
+                        <span
+                            v-if="
+                                department.department_acronym_en ||
+                                department.department_acronym_fr
+                            "
+                            >({{ displayDepartmentAcronym(department) }})</span
+                        >
                     </div>
                     <div
-                        class="font-light"
                         :class="{
                             'text-red-800': department.absoluteDiff < 0,
                             'text-green-800': department.absoluteDiff > 0,
@@ -182,9 +184,15 @@
                     :key="department.department_id">
                     <div class="text-sm font-medium">
                         {{ displayDepartmentName(department) }}
+                        <span
+                            v-if="
+                                department.department_acronym_en ||
+                                department.department_acronym_fr
+                            "
+                            >({{ displayDepartmentAcronym(department) }})</span
+                        >
                     </div>
                     <div
-                        class="font-bold font-light"
                         :class="{
                             'text-red-800': department.absoluteDiff < 0,
                             'text-green-800': department.absoluteDiff > 0,
@@ -312,6 +320,11 @@
                     ? department.department_name_fr
                     : department.department_name_en;
             },
+            displayDepartmentAcronym(department) {
+                return this.language === "fr"
+                    ? department.department_acronym_fr
+                    : department.department_acronym_en;
+            },
         },
         watch: {
             comparisonPeriod(newValue) {
@@ -334,6 +347,8 @@
 
             this.data = overview.value;
             this.isLoading = false;
+
+            console.log(this.data);
         },
     };
 </script>
