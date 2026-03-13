@@ -248,42 +248,42 @@
             indeterminateAbsoluteDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.indeterminate?.absoluteDiff;
+                ]?.general?.tenures?.indeterminate?.absoluteDiff;
             },
             indeterminateRelativeDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.indeterminate?.relativeDiff;
+                ]?.general?.tenures?.indeterminate?.relativeDiff;
             },
             termAbsoluteDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.term?.absoluteDiff;
+                ]?.general?.tenures?.term?.absoluteDiff;
             },
             termRelativeDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.term?.relativeDiff;
+                ]?.general?.tenures?.term?.relativeDiff;
             },
             studentAbsoluteDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.student?.absoluteDiff;
+                ]?.general?.tenures?.student?.absoluteDiff;
             },
             studentRelativeDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.student?.relativeDiff;
+                ]?.general?.tenures?.student?.relativeDiff;
             },
             casualAbsoluteDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.casual?.absoluteDiff;
+                ]?.general?.tenures?.casual?.absoluteDiff;
             },
             casualRelativeDiff() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.categories?.casual?.relativeDiff;
+                ]?.general?.tenures?.casual?.relativeDiff;
             },
             topThreeDepartmentsIncrease() {
                 return this.data?.quarterly?.comparisons[

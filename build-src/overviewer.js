@@ -194,7 +194,7 @@ module.exports = class Overviewer {
                 relativeDiff === null
                     ? null
                     : parseFloat(Number(relativeDiff).toFixed(2)),
-            categories: {
+            tenures: {
                 indeterminate: this.diffCategory(
                     firstQuarterRow.indeterminate || 0,
                     secondQuarterRow.indeterminate || 0,
