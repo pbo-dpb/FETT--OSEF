@@ -1,6 +1,7 @@
 {
     "title": "Effectif 360",
-    "collapsible_component_handle": "À propos",
+    "collapsible_component_handle_notes": "Notes",
+    "collapsible_component_handle_about": "À propos",
     "last_updated": " Dernière mise à jour : ",
     "tab_navigation_aria_label": "Onglets de navigation principaux",
     "tab_navigation_overview_label": "Aperçu",
@@ -35,7 +36,7 @@
     "departments_overview_no_departments_selected_message": "Sélectionnez un ou plusieurs ministères à comparer.",
     "department_latest_ftes_as_of": "ETP au {date}",
     "department_latest_ftes_combined_note": "Remarque : La ventilation détaillée n'est pas disponible.",
-    "overview_compare_to_label": "Comparer à :",
+    "overview_compare_to_label": "Par rapport au :",
     "overview_compare_same_quarter_last_year": "Même trimestre l'année dernière",
     "overview_compare_previous_quarter": "Trimestre précédent",
     "overview_size_heading": "Taille de la fonction publique fédérale",

@@ -15,7 +15,7 @@
                 <ChevronDown
                     class="h-6 w-6"
                     v-else></ChevronDown>
-                {{ strings.collapsible_component_handle_about }}
+                {{ strings.collapsible_component_handle_notes }}
             </button>
         </h3>
         <section
@@ -27,10 +27,6 @@
                 v-if="collapsibleContent"
                 class="flex flex-col">
                 <div v-html="collapsibleContent"></div>
-
-                <div class="mb-5 text-sm font-medium">
-                    {{ strings.last_updated }}{{ displayableLastUpdated }}
-                </div>
             </div>
             <LoadingIndicator
                 class="size-8 py-4"
@@ -43,8 +39,8 @@
     import { ChevronDown, ChevronRight } from "lucide-vue-next";
     import { storeToRefs } from "pinia";
 
-    import introEn from "../assets/intro.en.md?url";
-    import introFr from "../assets/intro.fr.md?url";
+    import notesEn from "../assets/notes.en.md?url";
+    import notesFr from "../assets/notes.fr.md?url";
 
     import LoadingIndicator from "./LoadingIndicator.vue";
     import { marked } from "marked";
@@ -56,17 +52,6 @@
     import useSettingStore from "../stores/settings.js";
     const settingsStore = useSettingStore();
     const { last_updated } = storeToRefs(settingsStore);
-
-    const displayableLastUpdated = computed(() => {
-        return new Date(last_updated.value).toLocaleDateString(
-            `${language.value}-CA`,
-            {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            },
-        );
-    });
 
     // Data
     const shouldCollapse = ref(false);
@@ -94,7 +79,7 @@
     // Methods
     const fetchContent = async (lang) => {
         fetching.value = lang;
-        let url = lang === "en" ? introEn : introFr;
+        let url = lang === "en" ? notesEn : notesFr;
 
         const response = await fetch(url);
         let markdown = await response.text();
