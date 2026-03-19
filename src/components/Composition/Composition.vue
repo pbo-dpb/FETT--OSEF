@@ -1,7 +1,7 @@
 <template>
     <div class="flex grid-cols-5 flex-col gap-4 lg:grid">
         <template v-if="readyToRender">
-            <div class="flex w-full flex-col lg:col-span-5">
+            <div class="flex w-full flex-col gap-4 lg:col-span-5">
                 <GeneralChartSettings />
                 <MainChart />
             </div>

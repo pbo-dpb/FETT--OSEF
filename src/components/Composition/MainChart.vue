@@ -263,8 +263,9 @@
                 },
             },
             grid: {
+                top: 0,
                 left: 0,
-                right: 16,
+                right: 0,
             },
             dataZoom: [dataZoom.value],
             tooltip: {
@@ -296,6 +297,7 @@
         }
 
         let theme = null;
+
         if (
             window.matchMedia &&
             window.matchMedia("(prefers-color-scheme: dark)").matches

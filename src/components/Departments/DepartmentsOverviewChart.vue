@@ -1,7 +1,7 @@
 <template>
     <div
         ref="componentRoot"
-        class="flex w-full flex-col gap-2"
+        class="flex w-full flex-col gap-4"
         :class="{
             blur: !departments.length,
         }">
@@ -254,10 +254,9 @@
     const chartOptions = computed(() => {
         const options = {
             grid: {
-                left: 0,
-                right: 16,
-                bottom: 0,
                 top: 0,
+                right: 0,
+                left: 0,
             },
             dataZoom: [dataZoom.value],
             tooltip: {
@@ -280,6 +279,7 @@
 
     onMounted(() => {
         let theme = null;
+
         if (
             window.matchMedia &&
             window.matchMedia("(prefers-color-scheme: dark)").matches
