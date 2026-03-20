@@ -1,14 +1,11 @@
 <template>
-    <div
-        v-if="data"
-        class="grid grid-cols-4 gap-4">
+    <div v-if="data" class="grid grid-cols-4 gap-8">
         <div class="col-span-full flex items-center">
             <PreferredMetricPicker />
             <Separator />
             <PreferredComparisonPeriodPicker />
         </div>
-        <div
-            class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4">
+        <div class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4">
             <div class="col-span-full text-center">
                 <h2 class="mb-8 text-xl text-balance">
                     {{ strings.overview_size_heading }}
@@ -16,12 +13,10 @@
                 <h3 class="text-sm font-medium">
                     {{ strings[overviewAllLabelKey] }}
                 </h3>
-                <p
-                    class="text-2xl font-bold"
-                    :class="{
-                        'text-red-800': allDepartmentsAbsoluteDiff < 0,
-                        'text-green-800': allDepartmentsAbsoluteDiff > 0,
-                    }">
+                <p class="text-2xl font-bold" :class="{
+                    'text-red-800': allDepartmentsAbsoluteDiff < 0,
+                    'text-green-800': allDepartmentsAbsoluteDiff > 0,
+                }">
                     {{ numberFormatter(allDepartmentsAbsoluteDiff) }}
                     ({{ numberFormatter(allDepartmentsRelativeDiff) }}%)
                     <span v-if="allDepartmentsAbsoluteDiff > 0">↑</span>
@@ -33,11 +28,10 @@
                 <h3 class="text-sm font-medium">
                     {{ strings.indeterminate_label }}
                 </h3>
-                <p
-                    :class="{
-                        'text-red-800': indeterminateAbsoluteDiff < 0,
-                        'text-green-800': indeterminateAbsoluteDiff > 0,
-                    }">
+                <p :class="{
+                    'text-red-800': indeterminateAbsoluteDiff < 0,
+                    'text-green-800': indeterminateAbsoluteDiff > 0,
+                }">
                     {{ numberFormatter(indeterminateAbsoluteDiff) }}
                     ({{ numberFormatter(indeterminateRelativeDiff) }}%)
                     <span v-if="indeterminateAbsoluteDiff > 0">↑</span>
@@ -47,11 +41,10 @@
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="text-sm font-medium">{{ strings.term_label }}</h3>
-                <p
-                    :class="{
-                        'text-red-800': termAbsoluteDiff < 0,
-                        'text-green-800': termAbsoluteDiff > 0,
-                    }">
+                <p :class="{
+                    'text-red-800': termAbsoluteDiff < 0,
+                    'text-green-800': termAbsoluteDiff > 0,
+                }">
                     {{ numberFormatter(termAbsoluteDiff) }} ({{
                         numberFormatter(termRelativeDiff)
                     }}%)
@@ -62,11 +55,10 @@
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="text-sm font-medium">{{ strings.student_label }}</h3>
-                <p
-                    :class="{
-                        'text-red-800': studentAbsoluteDiff < 0,
-                        'text-green-800': studentAbsoluteDiff > 0,
-                    }">
+                <p :class="{
+                    'text-red-800': studentAbsoluteDiff < 0,
+                    'text-green-800': studentAbsoluteDiff > 0,
+                }">
                     {{ numberFormatter(studentAbsoluteDiff) }} ({{
                         numberFormatter(studentRelativeDiff)
                     }}%)
@@ -77,11 +69,10 @@
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="text-sm font-medium">{{ strings.casual_label }}</h3>
-                <p
-                    :class="{
-                        'text-red-800': casualAbsoluteDiff < 0,
-                        'text-green-800': casualAbsoluteDiff > 0,
-                    }">
+                <p :class="{
+                    'text-red-800': casualAbsoluteDiff < 0,
+                    'text-green-800': casualAbsoluteDiff > 0,
+                }">
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
                         numberFormatter(casualRelativeDiff)
                     }}%)
@@ -97,26 +88,19 @@
                 {{ strings.overview_largest_increase_by_department }}
             </h2>
             <ol class="space-y-2">
-                <li
-                    v-for="department in topThreeDepartmentsIncrease"
-                    :key="department.department_id">
+                <li v-for="department in topThreeDepartmentsIncrease" :key="department.department_id">
                     <div class="text-sm font-medium">
                         {{ displayDepartmentName(department) }}
-                        <span
-                            v-if="
-                                department.department_acronym_en ||
-                                department.department_acronym_fr
-                            "
-                            >({{ displayDepartmentAcronym(department) }})</span
-                        >
+                        <span v-if="
+                            department.department_acronym_en ||
+                            department.department_acronym_fr
+                        ">({{ displayDepartmentAcronym(department) }})</span>
                     </div>
-                    <div
-                        :class="{
-                            'text-red-800': department.absoluteDiff < 0,
-                            'text-green-800': department.absoluteDiff > 0,
-                        }">
-                        <span
-                            >{{ numberFormatter(department.absoluteDiff) }}
+                    <div :class="{
+                        'text-red-800': department.absoluteDiff < 0,
+                        'text-green-800': department.absoluteDiff > 0,
+                    }">
+                        <span>{{ numberFormatter(department.absoluteDiff) }}
                         </span>
                         ({{ numberFormatter(department.relativeDiff) }}%)
                         <span v-if="department.absoluteDiff > 0">↑</span>
@@ -132,26 +116,19 @@
                 {{ strings.overview_largest_decrease_by_department }}
             </h2>
             <ol class="space-y-2">
-                <li
-                    v-for="department in topThreeDepartmentsDecrease"
-                    :key="department.department_id">
+                <li v-for="department in topThreeDepartmentsDecrease" :key="department.department_id">
                     <div class="text-sm font-medium">
                         {{ displayDepartmentName(department) }}
-                        <span
-                            v-if="
-                                department.department_acronym_en ||
-                                department.department_acronym_fr
-                            "
-                            >({{ displayDepartmentAcronym(department) }})</span
-                        >
+                        <span v-if="
+                            department.department_acronym_en ||
+                            department.department_acronym_fr
+                        ">({{ displayDepartmentAcronym(department) }})</span>
                     </div>
-                    <div
-                        :class="{
-                            'text-red-800': department.absoluteDiff < 0,
-                            'text-green-800': department.absoluteDiff > 0,
-                        }">
-                        <span
-                            >{{ numberFormatter(department.absoluteDiff) }}
+                    <div :class="{
+                        'text-red-800': department.absoluteDiff < 0,
+                        'text-green-800': department.absoluteDiff > 0,
+                    }">
+                        <span>{{ numberFormatter(department.absoluteDiff) }}
                         </span>
                         ({{ numberFormatter(department.relativeDiff) }}%)
                         <span v-if="department.absoluteDiff > 0">↑</span>
@@ -168,141 +145,141 @@
 </template>
 
 <script>
-    import LoadingIndicator from "../LoadingIndicator.vue";
-    import Separator from "../Separator.vue";
-    import PreferredComparisonPeriodPicker from "../PreferredComparisonPeriodPicker.vue";
-    import PreferredMetricPicker from "../PreferredMetricPicker.vue";
-    import numberFormatter from "../../mixins/numberFormatter.js";
+import LoadingIndicator from "../LoadingIndicator.vue";
+import Separator from "../Separator.vue";
+import PreferredComparisonPeriodPicker from "../PreferredComparisonPeriodPicker.vue";
+import PreferredMetricPicker from "../PreferredMetricPicker.vue";
+import numberFormatter from "../../mixins/numberFormatter.js";
 
-    import { storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 
-    import useLocalizationsStore from "../../stores/localizations.js";
+import useLocalizationsStore from "../../stores/localizations.js";
 
-    import usePayloadsStore from "../../stores/payloads.js";
-    import useSettingsStore from "../../stores/settings.js";
+import usePayloadsStore from "../../stores/payloads.js";
+import useSettingsStore from "../../stores/settings.js";
 
-    export default {
-        components: {
-            LoadingIndicator,
-            Separator,
-            PreferredComparisonPeriodPicker,
-            PreferredMetricPicker,
+export default {
+    components: {
+        LoadingIndicator,
+        Separator,
+        PreferredComparisonPeriodPicker,
+        PreferredMetricPicker,
+    },
+    data() {
+        return {
+            data: null,
+            isLoading: false,
+        };
+    },
+    computed: {
+        comparisonData() {
+            return this.data?.quarterly?.comparisons[
+                this.selectedComparisonPeriod
+            ];
         },
-        data() {
-            return {
-                data: null,
-                isLoading: false,
-            };
-        },
-        computed: {
-            comparisonData() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ];
-            },
-            generalComparison() {
-                if (this.preferredMetric === "pop") {
-                    return this.comparisonData?.generalPop;
-                }
-
-                return this.comparisonData?.general;
-            },
-            departmentsComparison() {
-                if (this.preferredMetric === "pop") {
-                    return this.comparisonData?.departmentsPop;
-                }
-
-                return this.comparisonData?.departments;
-            },
-            overviewAllLabelKey() {
-                return this.preferredMetric === "pop"
-                    ? "overview_all_headcount_label"
-                    : "overview_all_positions_label";
-            },
-            allDepartmentsAbsoluteDiff() {
-                return this.generalComparison?.absoluteDiff;
-            },
-            allDepartmentsRelativeDiff() {
-                return this.generalComparison?.relativeDiff;
-            },
-            indeterminateAbsoluteDiff() {
-                return this.generalComparison?.tenures?.indeterminate
-                    ?.absoluteDiff;
-            },
-            indeterminateRelativeDiff() {
-                return this.generalComparison?.tenures?.indeterminate
-                    ?.relativeDiff;
-            },
-            termAbsoluteDiff() {
-                return this.generalComparison?.tenures?.term?.absoluteDiff;
-            },
-            termRelativeDiff() {
-                return this.generalComparison?.tenures?.term?.relativeDiff;
-            },
-            studentAbsoluteDiff() {
-                return this.generalComparison?.tenures?.student?.absoluteDiff;
-            },
-            studentRelativeDiff() {
-                return this.generalComparison?.tenures?.student?.relativeDiff;
-            },
-            casualAbsoluteDiff() {
-                return this.generalComparison?.tenures?.casual?.absoluteDiff;
-            },
-            casualRelativeDiff() {
-                return this.generalComparison?.tenures?.casual?.relativeDiff;
-            },
-            topThreeDepartmentsIncrease() {
-                return this.departmentsComparison?.top_absolute_gains;
-            },
-            topThreeDepartmentsDecrease() {
-                return this.departmentsComparison?.top_absolute_declines;
-            },
-            preferredMetric() {
-                const settingsStore = useSettingsStore();
-
-                return settingsStore.preferredMetric;
-            },
-            selectedComparisonPeriod() {
-                const settingsStore = useSettingsStore();
-
-                return settingsStore.selectedComparisonPeriod;
-            },
-            strings() {
-                const localizationsStore = useLocalizationsStore();
-
-                return localizationsStore.strings;
-            },
-            language() {
-                const localizationsStore = useLocalizationsStore();
-
-                return localizationsStore.language;
-            },
-        },
-        methods: {
-            displayDepartmentName(department) {
-                return this.language === "fr"
-                    ? department.department_name_fr
-                    : department.department_name_en;
-            },
-            displayDepartmentAcronym(department) {
-                return this.language === "fr"
-                    ? department.department_acronym_fr
-                    : department.department_acronym_en;
-            },
-        },
-        mixins: [numberFormatter],
-        async mounted() {
-            const payloadsStore = usePayloadsStore();
-            const { overview } = storeToRefs(payloadsStore);
-
-            this.isLoading = true;
-
-            if (overview.value === false) {
-                await payloadsStore.fetchOverview();
+        generalComparison() {
+            if (this.preferredMetric === "pop") {
+                return this.comparisonData?.generalPop;
             }
 
-            this.data = overview.value;
-            this.isLoading = false;
+            return this.comparisonData?.general;
         },
-    };
+        departmentsComparison() {
+            if (this.preferredMetric === "pop") {
+                return this.comparisonData?.departmentsPop;
+            }
+
+            return this.comparisonData?.departments;
+        },
+        overviewAllLabelKey() {
+            return this.preferredMetric === "pop"
+                ? "overview_all_headcount_label"
+                : "overview_all_positions_label";
+        },
+        allDepartmentsAbsoluteDiff() {
+            return this.generalComparison?.absoluteDiff;
+        },
+        allDepartmentsRelativeDiff() {
+            return this.generalComparison?.relativeDiff;
+        },
+        indeterminateAbsoluteDiff() {
+            return this.generalComparison?.tenures?.indeterminate
+                ?.absoluteDiff;
+        },
+        indeterminateRelativeDiff() {
+            return this.generalComparison?.tenures?.indeterminate
+                ?.relativeDiff;
+        },
+        termAbsoluteDiff() {
+            return this.generalComparison?.tenures?.term?.absoluteDiff;
+        },
+        termRelativeDiff() {
+            return this.generalComparison?.tenures?.term?.relativeDiff;
+        },
+        studentAbsoluteDiff() {
+            return this.generalComparison?.tenures?.student?.absoluteDiff;
+        },
+        studentRelativeDiff() {
+            return this.generalComparison?.tenures?.student?.relativeDiff;
+        },
+        casualAbsoluteDiff() {
+            return this.generalComparison?.tenures?.casual?.absoluteDiff;
+        },
+        casualRelativeDiff() {
+            return this.generalComparison?.tenures?.casual?.relativeDiff;
+        },
+        topThreeDepartmentsIncrease() {
+            return this.departmentsComparison?.top_absolute_gains;
+        },
+        topThreeDepartmentsDecrease() {
+            return this.departmentsComparison?.top_absolute_declines;
+        },
+        preferredMetric() {
+            const settingsStore = useSettingsStore();
+
+            return settingsStore.preferredMetric;
+        },
+        selectedComparisonPeriod() {
+            const settingsStore = useSettingsStore();
+
+            return settingsStore.selectedComparisonPeriod;
+        },
+        strings() {
+            const localizationsStore = useLocalizationsStore();
+
+            return localizationsStore.strings;
+        },
+        language() {
+            const localizationsStore = useLocalizationsStore();
+
+            return localizationsStore.language;
+        },
+    },
+    methods: {
+        displayDepartmentName(department) {
+            return this.language === "fr"
+                ? department.department_name_fr
+                : department.department_name_en;
+        },
+        displayDepartmentAcronym(department) {
+            return this.language === "fr"
+                ? department.department_acronym_fr
+                : department.department_acronym_en;
+        },
+    },
+    mixins: [numberFormatter],
+    async mounted() {
+        const payloadsStore = usePayloadsStore();
+        const { overview } = storeToRefs(payloadsStore);
+
+        this.isLoading = true;
+
+        if (overview.value === false) {
+            await payloadsStore.fetchOverview();
+        }
+
+        this.data = overview.value;
+        this.isLoading = false;
+    },
+};
 </script>
