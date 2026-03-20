@@ -1,7 +1,6 @@
 import { createWebHashHistory, createRouter } from "vue-router";
 
-const Overview = () => import("./components/Overview/OverviewOptionsAPI.vue");
-// const Overview = () => import("./components/Overview/OverviewCompositionAPI.vue");
+const Overview = () => import("./components/Overview/Overview.vue");
 const Composition = () => import("./components/Composition/Composition.vue");
 const Departments = () => import("./components/Departments/Departments.vue");
 

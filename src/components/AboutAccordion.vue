@@ -22,14 +22,14 @@
             :id="uid + '-panel'"
             :aria-labelledby="uid + '-header'"
             :hidden="shouldCollapse"
-            class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-light prose-a:text-slate-800 dark:prose-a:text-slate-200 max-w-none px-4">
+            class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-light prose-a:text-slate-800 dark:prose-a:text-slate-200 max-w-none p-4">
             <div
                 v-if="collapsibleContent"
                 class="flex flex-col">
                 <div v-html="collapsibleContent"></div>
-
-                <div class="mb-5 text-sm font-medium">
-                    {{ strings.last_updated }}{{ displayableLastUpdated }}
+                <div class="border-t border-solid py-4 text-sm">
+                    <span class="font-medium">{{ strings.last_updated }}</span
+                    >{{ displayableLastUpdated }}
                 </div>
             </div>
             <LoadingIndicator
