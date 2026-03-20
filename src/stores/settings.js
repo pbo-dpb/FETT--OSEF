@@ -10,6 +10,8 @@ export default defineStore("settings", {
     state: () => ({
         preferredTimeframe: "3Y",
         preferredGranularity: "quarter",
+        preferredMetric: "fte",
+        selectedComparisonPeriod: "sameQuarterLastYear",
         colors: colors,
         previouslySelectedDepartmentIds: previouslySelectedDepartmentIds
             ? JSON.parse(previouslySelectedDepartmentIds).map((id) =>
@@ -20,6 +22,14 @@ export default defineStore("settings", {
     }),
 
     actions: {
+        setPreferredMetric(metric) {
+            this.preferredMetric = metric;
+        },
+
+        setSelectedComparisonPeriod(comparisonPeriod) {
+            this.selectedComparisonPeriod = comparisonPeriod;
+        },
+
         // since we rely on `this`, we cannot use an arrow function
         setPreviouslySelectedDepartmentIds(departmentIds) {
             sessionStorage.setItem(

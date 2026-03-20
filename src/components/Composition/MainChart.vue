@@ -61,7 +61,7 @@
 
     import useSettingsStore from "../../stores/settings.js";
     const settingsStore = useSettingsStore();
-    const { preferredTimeframe, preferredGranularity } =
+    const { preferredTimeframe, preferredGranularity, preferredMetric } =
         storeToRefs(settingsStore);
 
     const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
@@ -115,9 +115,13 @@
 
     const baseData = computed(() => {
         if (preferredGranularity.value === "quarter") {
-            return composition.value.total_ftes_per_quarter;
+            return preferredMetric.value === "pop"
+                ? composition.value.total_pops_per_quarter
+                : composition.value.total_ftes_per_quarter;
         } else if (preferredGranularity.value === "fiscal_year") {
-            return composition.value.total_ftes_per_fiscal_year;
+            return preferredMetric.value === "pop"
+                ? composition.value.total_pops_per_fiscal_year
+                : composition.value.total_ftes_per_fiscal_year;
         }
         return [];
     });
@@ -342,7 +346,7 @@
         chart.value.setOption(chartOptions.value);
     };
 
-    watch([preferredGranularity, preferredTimeframe], () => {
+    watch([preferredGranularity, preferredTimeframe, preferredMetric], () => {
         redrawChart();
     });
 

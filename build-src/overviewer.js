@@ -28,17 +28,22 @@ module.exports = class Overviewer {
         firstQuarter,
         secondYear,
         secondQuarter,
+        metric = "fte",
     ) {
         let departmentMeta = this.departments[deptId];
         let department = this.departmentsDetails[deptId];
+        const quarterField =
+            metric === "pop"
+                ? "total_pops_per_quarter"
+                : "total_ftes_per_quarter";
 
-        let firstFtesRow = department.total_ftes_per_quarter.find(
+        let firstFtesRow = department[quarterField].find(
             (row) => row.year === firstYear && row.quarter === firstQuarter,
         );
         let firstFtesCount =
             this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(firstFtesRow);
 
-        let secondFtesRow = department.total_ftes_per_quarter.find(
+        let secondFtesRow = department[quarterField].find(
             (row) => row.year === secondYear && row.quarter === secondQuarter,
         );
 
@@ -69,6 +74,7 @@ module.exports = class Overviewer {
         firstQuarter,
         secondYear,
         secondQuarter,
+        metric = "fte",
     ) {
         let diffs = [];
 
@@ -80,6 +86,7 @@ module.exports = class Overviewer {
                     firstQuarter,
                     secondYear,
                     secondQuarter,
+                    metric,
                 ),
             );
         });
@@ -92,12 +99,14 @@ module.exports = class Overviewer {
         firstQuarter,
         secondYear,
         secondQuarter,
+        metric = "fte",
     ) {
         let deptDiffs = this.diffDepartmentsForQuarters(
             firstYear,
             firstQuarter,
             secondYear,
             secondQuarter,
+            metric,
         );
         let topAbsoluteGains = deptDiffs
             .sort((a, b) => b.absoluteDiff - a.absoluteDiff)
@@ -146,8 +155,12 @@ module.exports = class Overviewer {
         secondYear,
         secondQuarter,
         includeCombined = true,
+        metric = "fte",
     ) {
-        const total_ftes_per_quarters = this.aggregator.totalFtesPerQuarter();
+        const total_ftes_per_quarters =
+            metric === "pop"
+                ? this.aggregator.totalPopsPerQuarter()
+                : this.aggregator.totalFtesPerQuarter();
         let firstQuarterRow = total_ftes_per_quarters.find(
             (row) => row.year === firstYear && row.quarter === firstQuarter,
         );
@@ -258,6 +271,14 @@ module.exports = class Overviewer {
                         latestYear,
                         latestQuarter,
                     ),
+                    generalPop: this.compareTwoQuartersGeneral(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                        true,
+                        "pop",
+                    ),
                     generalExcludingCombined: this.compareTwoQuartersGeneral(
                         previousQuarter.year,
                         previousQuarter.quarter,
@@ -265,11 +286,26 @@ module.exports = class Overviewer {
                         latestQuarter,
                         false,
                     ),
+                    generalExcludingCombinedPop: this.compareTwoQuartersGeneral(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                        "pop",
+                    ),
                     departments: this.compareTwoQuartersDepartments(
                         previousQuarter.year,
                         previousQuarter.quarter,
                         latestYear,
                         latestQuarter,
+                    ),
+                    departmentsPop: this.compareTwoQuartersDepartments(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                        "pop",
                     ),
                 },
                 sameQuarterLastYear: {
@@ -281,6 +317,14 @@ module.exports = class Overviewer {
                         latestYear,
                         latestQuarter,
                     ),
+                    generalPop: this.compareTwoQuartersGeneral(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                        true,
+                        "pop",
+                    ),
                     generalExcludingCombined: this.compareTwoQuartersGeneral(
                         sameQuarterLastYear.year,
                         sameQuarterLastYear.quarter,
@@ -288,11 +332,26 @@ module.exports = class Overviewer {
                         latestQuarter,
                         false,
                     ),
+                    generalExcludingCombinedPop: this.compareTwoQuartersGeneral(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                        "pop",
+                    ),
                     departments: this.compareTwoQuartersDepartments(
                         sameQuarterLastYear.year,
                         sameQuarterLastYear.quarter,
                         latestYear,
                         latestQuarter,
+                    ),
+                    departmentsPop: this.compareTwoQuartersDepartments(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                        "pop",
                     ),
                 },
             },

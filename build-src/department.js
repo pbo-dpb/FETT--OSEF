@@ -50,6 +50,7 @@ const importDepartments = function (worksheet) {
             };
         }
     });
+
     return departments;
 };
 
@@ -80,6 +81,10 @@ const saveDepartments = function (departments, aggregator) {
             aggregator.totalFtesPerQuarterForDepartment(dept.id);
         deptDetails.total_ftes_per_fiscal_year =
             aggregator.totalFtesPerFiscalYear(dept.id);
+        deptDetails.total_pops_per_quarter =
+            aggregator.totalPopsPerQuarterForDepartment(dept.id);
+        deptDetails.total_pops_per_fiscal_year =
+            aggregator.totalPopsPerFiscalYear(dept.id);
 
         const outputFilePath = path.join(deptOutputDir, `${dept.id}.json`);
         fs.writeFileSync(outputFilePath, JSON.stringify(deptDetails), "utf8");

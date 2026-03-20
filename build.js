@@ -106,11 +106,14 @@ const overviewer = new Overviewer(
                 acronym_en: dept.acronym_en,
                 acronym_fr: dept.acronym_fr,
                 latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id),
+                latest_pops: aggregator.latestTotalPopsForDepartment(dept.id),
             };
         }),
         composition: {
             total_ftes_per_quarter: aggregator.totalFtesPerQuarter(),
             total_ftes_per_fiscal_year: aggregator.totalFtesPerFiscalYear(),
+            total_pops_per_quarter: aggregator.totalPopsPerQuarter(),
+            total_pops_per_fiscal_year: aggregator.totalPopsPerFiscalYear(),
         },
         overview: {
             quarterly: overviewer.buildQuarterlyComparison(),

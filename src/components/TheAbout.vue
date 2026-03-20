@@ -10,7 +10,7 @@
     </div>
     <LoadingIndicator
         v-else
-        class="size-8 py-4"></LoadingIndicator>
+        class="size-8 py-4" />
 </template>
 <script setup>
     import { ref, computed } from "vue";

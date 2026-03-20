@@ -2,57 +2,10 @@
     <div
         v-if="data"
         class="grid grid-cols-4 gap-4">
-        <div class="col-span-full flex justify-end gap-4">
-            <div class="flex flex-col">
-                <label
-                    for="comparisonPeriod"
-                    class="mb-1 text-sm font-medium"
-                    >{{ strings.overview_compare_to_label }}</label
-                >
-                <select
-                    id="comparisonPeriod"
-                    v-model="selectedComparisonPeriod"
-                    class="focus:ring-opacity-50 rounded-md border border-solid border-gray-300 px-2 py-1 text-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                    <option value="sameQuarterLastYear">
-                        {{ strings.overview_compare_same_quarter_last_year }}
-                    </option>
-                    <option value="previousQuarter">
-                        {{ strings.overview_compare_previous_quarter }}
-                    </option>
-                </select>
-            </div>
-            <!-- <fieldset>
-                <legend class="">Compare to:</legend>
-                <div class="flex items-center space-x-4">
-                    <div class="flex">
-                        <input
-                            type="radio"
-                            id="sameQuarterLastYear"
-                            name="comparisonPeriod"
-                            value="sameQuarterLastYear"
-                            v-model="selectedComparisonPeriod" />
-                        <label
-                            for="sameQuarterLastYear"
-                            class="flex cursor-pointer items-center rounded-md border border-gray-300 py-1 pl-1 text-sm peer-data-[state=checked]:bg-blue-600 peer-data-[state=checked]:text-white">
-                            Same quarter last year
-                        </label>
-                    </div>
-                    <div class="flex">
-                        <input
-                            type="radio"
-                            id="previousQuarter"
-                            name="comparisonPeriod"
-                            value="previousQuarter"
-                            v-model="selectedComparisonPeriod" />
-                        <label
-                            for="previousQuarter"
-                            class="flex cursor-pointer items-center rounded-md border border-gray-300 py-1 pl-1 text-sm peer-data-[state=checked]:bg-blue-600 peer-data-[state=checked]:text-white">
-                            Previous quarter
-                        </label>
-                    </div>
-                </div>
-            </fieldset> -->
-            <!-- <span>[Show positions/FTEs]</span> -->
+        <div class="col-span-full flex items-center">
+            <PreferredMetricPicker />
+            <Separator />
+            <PreferredComparisonPeriodPicker />
         </div>
         <div
             class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4">
@@ -61,7 +14,7 @@
                     {{ strings.overview_size_heading }}
                 </h2>
                 <h3 class="text-sm font-medium">
-                    {{ strings.overview_all_positions_label }}
+                    {{ strings[overviewAllLabelKey] }}
                 </h3>
                 <p
                     class="text-2xl font-bold"
@@ -216,6 +169,9 @@
 
 <script>
     import LoadingIndicator from "../LoadingIndicator.vue";
+    import Separator from "../Separator.vue";
+    import PreferredComparisonPeriodPicker from "../PreferredComparisonPeriodPicker.vue";
+    import PreferredMetricPicker from "../PreferredMetricPicker.vue";
     import numberFormatter from "../../mixins/numberFormatter.js";
 
     import { storeToRefs } from "pinia";
@@ -223,85 +179,93 @@
     import useLocalizationsStore from "../../stores/localizations.js";
 
     import usePayloadsStore from "../../stores/payloads.js";
+    import useSettingsStore from "../../stores/settings.js";
 
     export default {
-        emits: ["update:comparisonPeriod"],
         components: {
             LoadingIndicator,
-        },
-        props: {
-            comparisonPeriod: {
-                type: String,
-                default: "sameQuarterLastYear",
-            },
+            Separator,
+            PreferredComparisonPeriodPicker,
+            PreferredMetricPicker,
         },
         data() {
             return {
                 data: null,
                 isLoading: false,
-                selectedComparisonPeriod: this.comparisonPeriod,
             };
         },
         computed: {
-            allDepartmentsAbsoluteDiff() {
+            comparisonData() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
-                ]?.general?.absoluteDiff;
+                ];
+            },
+            generalComparison() {
+                if (this.preferredMetric === "pop") {
+                    return this.comparisonData?.generalPop;
+                }
+
+                return this.comparisonData?.general;
+            },
+            departmentsComparison() {
+                if (this.preferredMetric === "pop") {
+                    return this.comparisonData?.departmentsPop;
+                }
+
+                return this.comparisonData?.departments;
+            },
+            overviewAllLabelKey() {
+                return this.preferredMetric === "pop"
+                    ? "overview_all_headcount_label"
+                    : "overview_all_positions_label";
+            },
+            allDepartmentsAbsoluteDiff() {
+                return this.generalComparison?.absoluteDiff;
             },
             allDepartmentsRelativeDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.relativeDiff;
+                return this.generalComparison?.relativeDiff;
             },
             indeterminateAbsoluteDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.indeterminate?.absoluteDiff;
+                return this.generalComparison?.tenures?.indeterminate
+                    ?.absoluteDiff;
             },
             indeterminateRelativeDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.indeterminate?.relativeDiff;
+                return this.generalComparison?.tenures?.indeterminate
+                    ?.relativeDiff;
             },
             termAbsoluteDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.term?.absoluteDiff;
+                return this.generalComparison?.tenures?.term?.absoluteDiff;
             },
             termRelativeDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.term?.relativeDiff;
+                return this.generalComparison?.tenures?.term?.relativeDiff;
             },
             studentAbsoluteDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.student?.absoluteDiff;
+                return this.generalComparison?.tenures?.student?.absoluteDiff;
             },
             studentRelativeDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.student?.relativeDiff;
+                return this.generalComparison?.tenures?.student?.relativeDiff;
             },
             casualAbsoluteDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.casual?.absoluteDiff;
+                return this.generalComparison?.tenures?.casual?.absoluteDiff;
             },
             casualRelativeDiff() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.general?.tenures?.casual?.relativeDiff;
+                return this.generalComparison?.tenures?.casual?.relativeDiff;
             },
             topThreeDepartmentsIncrease() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.departments?.top_absolute_gains;
+                return this.departmentsComparison?.top_absolute_gains;
             },
             topThreeDepartmentsDecrease() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ]?.departments?.top_absolute_declines;
+                return this.departmentsComparison?.top_absolute_declines;
+            },
+            preferredMetric() {
+                const settingsStore = useSettingsStore();
+
+                return settingsStore.preferredMetric;
+            },
+            selectedComparisonPeriod() {
+                const settingsStore = useSettingsStore();
+
+                return settingsStore.selectedComparisonPeriod;
             },
             strings() {
                 const localizationsStore = useLocalizationsStore();
@@ -326,14 +290,6 @@
                     : department.department_acronym_en;
             },
         },
-        watch: {
-            comparisonPeriod(newValue) {
-                this.selectedComparisonPeriod = newValue;
-            },
-            selectedComparisonPeriod(newValue) {
-                this.$emit("update:comparisonPeriod", newValue);
-            },
-        },
         mixins: [numberFormatter],
         async mounted() {
             const payloadsStore = usePayloadsStore();
@@ -347,8 +303,6 @@
 
             this.data = overview.value;
             this.isLoading = false;
-
-            console.log(this.data);
         },
     };
 </script>

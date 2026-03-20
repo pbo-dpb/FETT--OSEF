@@ -40,25 +40,13 @@
 <script setup>
     import { ToggleGroupItem, ToggleGroupRoot } from "reka-ui";
     import { storeToRefs } from "pinia";
+    import { toggleGroupItemClasses } from "./pickerStyles.js";
 
     import useLocalizationsStore from "../stores/localizations.js";
     const localizationsStore = useLocalizationsStore();
-    const { language, strings } = storeToRefs(localizationsStore);
+    const { strings } = storeToRefs(localizationsStore);
 
     import useSettingsStore from "../stores/settings.js";
     const settingsStore = useSettingsStore();
     const { preferredTimeframe } = storeToRefs(settingsStore);
-
-    const toggleGroupItemClasses = [
-        "px-1",
-        "py-0.5",
-        "bg-slate-50",
-        "text-xs",
-        "font-medium",
-        "text-slate-700",
-        "rounded",
-        "select-none",
-        "data-[state=on]:bg-slate-300",
-        "data-[state=off]:cursor-pointer",
-    ];
 </script>

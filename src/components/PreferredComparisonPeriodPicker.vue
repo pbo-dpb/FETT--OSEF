@@ -1,33 +1,34 @@
 <template>
     <ToggleGroupRoot
-        v-model="preferredGranularity"
+        v-model="selectedComparisonPeriod"
         type="single"
         class="flex flex-row gap-2"
         required>
         <ToggleGroupItem
-            value="quarter"
+            value="sameQuarterLastYear"
             :class="toggleGroupItemClasses"
-            :disabled="preferredGranularity === 'quarter'">
-            {{ strings.preferred_granularity_quarter }}
+            :disabled="selectedComparisonPeriod === 'sameQuarterLastYear'">
+            {{ strings.overview_compare_same_quarter_last_year }}
         </ToggleGroupItem>
         <ToggleGroupItem
-            value="fiscal_year"
+            value="previousQuarter"
             :class="toggleGroupItemClasses"
-            :disabled="preferredGranularity === 'fiscal_year'">
-            {{ strings.preferred_granularity_fiscal_year }}
+            :disabled="selectedComparisonPeriod === 'previousQuarter'">
+            {{ strings.overview_compare_previous_quarter }}
         </ToggleGroupItem>
     </ToggleGroupRoot>
 </template>
+
 <script setup>
     import { ToggleGroupItem, ToggleGroupRoot } from "reka-ui";
     import { storeToRefs } from "pinia";
     import { toggleGroupItemClasses } from "./pickerStyles.js";
-
     import useLocalizationsStore from "../stores/localizations.js";
+
     const localizationsStore = useLocalizationsStore();
     const { strings } = storeToRefs(localizationsStore);
 
     import useSettingsStore from "../stores/settings.js";
     const settingsStore = useSettingsStore();
-    const { preferredGranularity } = storeToRefs(settingsStore);
+    const { selectedComparisonPeriod } = storeToRefs(settingsStore);
 </script>

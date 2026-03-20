@@ -56,13 +56,13 @@
         <div class="border-t-2 border-solid border-slate-100 px-4 pt-4">
             <div
                 v-if="
-                    department.latest_ftes.indeterminate === 0 &&
-                    department.latest_ftes.combined > 0
+                    latestValues.indeterminate === 0 &&
+                    latestValues.combined > 0
                 ">
                 <dl class="flex flex-col gap-1">
                     <template
                         v-for="(value, key) in {
-                            combined: department.latest_ftes.combined,
+                            combined: latestValues.combined,
                         }"
                         :key="key">
                         <dt class="text-xs font-medium">
@@ -74,7 +74,7 @@
                     </template>
                 </dl>
                 <div class="text-base/8 text-sm text-gray-500 italic">
-                    {{ strings.department_latest_ftes_combined_note }}
+                    {{ strings[latestCombinedNoteKey] }}
                 </div>
             </div>
             <dl
@@ -82,10 +82,10 @@
                 v-else>
                 <template
                     v-for="(value, key) in {
-                        indeterminate: department.latest_ftes.indeterminate,
-                        term: department.latest_ftes.term,
-                        casual: department.latest_ftes.casual,
-                        student: department.latest_ftes.student,
+                        indeterminate: latestValues.indeterminate,
+                        term: latestValues.term,
+                        casual: latestValues.casual,
+                        student: latestValues.student,
                     }"
                     :key="key">
                     <dt class="text-xs font-medium">
@@ -100,14 +100,14 @@
             <div
                 class="mt-4 w-full text-right text-xs font-medium text-slate-500">
                 {{
-                    strings.department_latest_ftes_as_of.replace(
+                    strings[latestAsOfKey].replace(
                         "{date}",
                         new Intl.DateTimeFormat(language, {
                             year: "numeric",
                             month: "long",
                         }).format(
                             new Date(
-                                `${department.latest_ftes.year}-${department.latest_ftes.month}-01`,
+                                `${latestValues.year}-${latestValues.month}-01`,
                             ),
                         ),
                     )
@@ -118,11 +118,12 @@
 </template>
 <script setup>
     import { CircleX } from "lucide-vue-next";
+    import { computed } from "vue";
 
     import { storeToRefs } from "pinia";
     import usePayloadsStore from "../../stores/payloads.js";
     import useLocalizationsStore from "../../stores/localizations.js";
-    import { onMounted } from "vue";
+    import useSettingsStore from "../../stores/settings.js";
 
     const emits = defineEmits([
         "remove-department",
@@ -134,6 +135,8 @@
     const { departments } = storeToRefs(payloadsStore);
     const localizationStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationStore);
+    const settingsStore = useSettingsStore();
+    const { preferredMetric } = storeToRefs(settingsStore);
 
     const props = defineProps({
         department: {
@@ -148,4 +151,22 @@
     const numberFormatter = (number) => {
         return localizationStore.localizeNumber(number);
     };
+
+    const latestValues = computed(() =>
+        preferredMetric.value === "pop"
+            ? props.department.latest_pops
+            : props.department.latest_ftes,
+    );
+
+    const latestCombinedNoteKey = computed(() =>
+        preferredMetric.value === "pop"
+            ? "department_latest_pops_combined_note"
+            : "department_latest_ftes_combined_note",
+    );
+
+    const latestAsOfKey = computed(() =>
+        preferredMetric.value === "pop"
+            ? "department_latest_pops_as_of"
+            : "department_latest_ftes_as_of",
+    );
 </script>

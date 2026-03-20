@@ -48,7 +48,7 @@
 
     import useSettingsStore from "../../stores/settings.js";
     const settingsStore = useSettingsStore();
-    const { preferredTimeframe, preferredGranularity } =
+    const { preferredTimeframe, preferredGranularity, preferredMetric } =
         storeToRefs(settingsStore);
 
     import usePayloadsStore from "../../stores/payloads.js";
@@ -101,6 +101,18 @@
         AriaComponent,
     ]);
 
+    const perQuarterKey = computed(() =>
+        preferredMetric.value === "pop"
+            ? "total_pops_per_quarter"
+            : "total_ftes_per_quarter",
+    );
+
+    const perFiscalYearKey = computed(() =>
+        preferredMetric.value === "pop"
+            ? "total_pops_per_fiscal_year"
+            : "total_ftes_per_fiscal_year",
+    );
+
     const dataset = computed(() => {
         if (props.departments.filter((dept) => !dept.eagerLoaded).length) {
             return { source: [] };
@@ -122,7 +134,7 @@
         }
 
         if (preferredGranularity.value === "quarter") {
-            firstDept.total_ftes_per_quarter.forEach((item) => {
+            firstDept[perQuarterKey.value].forEach((item) => {
                 timestamps.push(
                     `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`,
                 );
@@ -134,7 +146,7 @@
                     deptPoints[dept[`name_${language.value}`]] = {};
                 }
 
-                dept.total_ftes_per_quarter.forEach((item) => {
+                dept[perQuarterKey.value].forEach((item) => {
                     deptPoints[dept[`name_${language.value}`]][
                         `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`
                     ] = Math.round(
@@ -147,7 +159,7 @@
                 });
             });
         } else if (preferredGranularity.value === "fiscal_year") {
-            firstDept.total_ftes_per_fiscal_year.forEach((item) => {
+            firstDept[perFiscalYearKey.value].forEach((item) => {
                 timestamps.push(`${item.year}-${item.year + 1}`);
             });
 
@@ -156,7 +168,7 @@
                     deptPoints[dept[`name_${language.value}`]] = {};
                 }
 
-                dept.total_ftes_per_fiscal_year.forEach((item) => {
+                dept[perFiscalYearKey.value].forEach((item) => {
                     deptPoints[dept[`name_${language.value}`]][
                         `${item.year}-${item.year + 1}`
                     ] = Math.round(
@@ -352,7 +364,7 @@
         },
     );
 
-    watch([preferredGranularity, preferredTimeframe], () => {
+    watch([preferredGranularity, preferredTimeframe, preferredMetric], () => {
         redrawChart();
     });
 </script>

@@ -8,7 +8,56 @@ module.exports = class Aggregator {
         this.preparedPaddedMonthlyDepartmentTotals();
 
         this._totalFtesPerQuarter = null;
+        this._totalPopsPerQuarter = null;
     }
+
+    isMetaKey = function (key) {
+        return ["year", "month", "quarter", "fy", "unreported"].includes(key);
+    };
+
+    isMetricKey = function (key, metric = "fte") {
+        if (this.isMetaKey(key)) {
+            return false;
+        }
+
+        if (metric === "pop") {
+            return key.startsWith("pop_");
+        }
+
+        return !key.startsWith("pop_");
+    };
+
+    normalizeMetricKey = function (key, metric = "fte") {
+        if (metric === "pop") {
+            return key.replace(/^pop_/, "");
+        }
+
+        return key;
+    };
+
+    normalizeMetricRow = function (row, metric = "fte") {
+        if (!row) {
+            return null;
+        }
+
+        const normalized = {};
+        Object.keys(row).forEach((key) => {
+            if (this.isMetaKey(key)) {
+                normalized[key] = row[key];
+                return;
+            }
+
+            if (this.isMetricKey(key, metric)) {
+                normalized[this.normalizeMetricKey(key, metric)] = row[key];
+            }
+        });
+
+        return normalized;
+    };
+
+    normalizeMetricRows = function (rows, metric = "fte") {
+        return rows.map((row) => this.normalizeMetricRow(row, metric));
+    };
 
     preparedPaddedMonthlyDepartmentTotals = function () {
         this.paddedMonthlyDepartmentTotals = {};
@@ -55,6 +104,7 @@ module.exports = class Aggregator {
                             "student",
                             "combined",
                         ].forEach((tenureType) => {
+                            const popTenureType = `pop_${tenureType}`;
                             let dataPointsForMonthDeptTenure =
                                 this.datapoints.filter(
                                     (dp) =>
@@ -69,9 +119,13 @@ module.exports = class Aggregator {
                                     previousMonthForDept.shouldFillWithZeros
                                 ) {
                                     monthEntry[tenureType] = 0;
+                                    monthEntry[popTenureType] = 0;
                                 } else if (previousMonthForDept) {
                                     monthEntry[tenureType] =
                                         previousMonthForDept[tenureType] || 0;
+                                    monthEntry[popTenureType] =
+                                        previousMonthForDept[popTenureType] ||
+                                        0;
                                 }
                             } else {
                                 // If we have one data point, mark this month as reported
@@ -79,6 +133,10 @@ module.exports = class Aggregator {
                                 monthEntry[tenureType] =
                                     dataPointsForMonthDeptTenure
                                         .map((val) => val.fte)
+                                        .reduce((a, b) => a + b, 0);
+                                monthEntry[popTenureType] =
+                                    dataPointsForMonthDeptTenure
+                                        .map((val) => val.pop || 0)
                                         .reduce((a, b) => a + b, 0);
 
                                 // When we find a datapoint, we can check its source to see if we need to fill future missing months with zeros
@@ -154,6 +212,7 @@ module.exports = class Aggregator {
                         departmentRows.forEach((row) => {
                             totals[tenureType][row.department_id] = {
                                 fte: row.fte,
+                                pop: row.pop,
                                 source_of_dept: row.source,
                             };
                         });
@@ -177,6 +236,8 @@ module.exports = class Aggregator {
                                     ) {
                                         totals[tenureType][department_id].fte =
                                             0;
+                                        totals[tenureType][department_id].pop =
+                                            0;
                                     }
                                 }
                             },
@@ -195,6 +256,9 @@ module.exports = class Aggregator {
                     result[tenureType] = Object.values(
                         totals[tenureType],
                     ).reduce((sum, val) => sum + val.fte, 0);
+                    result[`pop_${tenureType}`] = Object.values(
+                        totals[tenureType],
+                    ).reduce((sum, val) => sum + (val.pop || 0), 0);
                 });
 
                 return result;
@@ -311,7 +375,7 @@ module.exports = class Aggregator {
         return output;
     };
 
-    totalFtesPerFiscalYear = function (department_id = null) {
+    totalPerFiscalYear = function (metric = "fte", department_id = null) {
         let monthlyTotals;
         if (department_id) {
             monthlyTotals = this.monthlyDepartmentTotalsToPeriod(department_id);
@@ -354,20 +418,18 @@ module.exports = class Aggregator {
             Object.keys(
                 monthlyTotals.find((x) => Object.keys(x).length > 3),
             ).forEach((tenureType) => {
-                if (
-                    tenureType === "year" ||
-                    tenureType === "month" ||
-                    tenureType === "unreported"
-                ) {
+                if (!this.isMetricKey(tenureType, metric)) {
                     return;
                 }
+
+                const outputKey = this.normalizeMetricKey(tenureType, metric);
 
                 if (datapointsForYear.length === 0) {
-                    totals[tenureType] = 0; // Avoid division by zero
+                    totals[outputKey] = 0; // Avoid division by zero
                     return;
                 }
 
-                totals[tenureType] =
+                totals[outputKey] =
                     datapointsForYear
                         .map((val) => val[tenureType] || 0)
                         .reduce((a, b) => a + b, 0) / datapointsForYear.length;
@@ -384,9 +446,18 @@ module.exports = class Aggregator {
         return fiscalYears;
     };
 
+    totalFtesPerFiscalYear = function (department_id = null) {
+        return this.totalPerFiscalYear("fte", department_id);
+    };
+
+    totalPopsPerFiscalYear = function (department_id = null) {
+        return this.totalPerFiscalYear("pop", department_id);
+    };
+
     transformMonthlyTotalsToQuarterlyTotals = function (
         settings,
         monthlyTotals,
+        metric = "fte",
     ) {
         return this.loopFunctionOverPeriod(
             settings,
@@ -406,13 +477,14 @@ module.exports = class Aggregator {
 
                 Object.keys(monthlyTotals.find((x) => !x.unreported)).forEach(
                     (tenureType) => {
-                        if (
-                            tenureType === "year" ||
-                            tenureType === "month" ||
-                            tenureType === "unreported"
-                        ) {
+                        if (!this.isMetricKey(tenureType, metric)) {
                             return;
                         }
+
+                        const outputKey = this.normalizeMetricKey(
+                            tenureType,
+                            metric,
+                        );
 
                         const monthlyTotalsForTenureArray = monthlyTotals
                             .filter(
@@ -423,13 +495,13 @@ module.exports = class Aggregator {
                             .map((val) => val[tenureType] || 0);
                         if (monthlyTotalsForTenureArray.length) {
                             // Average over all months in the quarter
-                            totals[tenureType] =
+                            totals[outputKey] =
                                 monthlyTotalsForTenureArray.reduce(
                                     (a, b) => a + b,
                                     0,
                                 ) / monthlyTotalsForTenureArray.length;
                         } else {
-                            totals[tenureType] = 0;
+                            totals[outputKey] = 0;
                         }
                     },
                 );
@@ -461,8 +533,31 @@ module.exports = class Aggregator {
             this.transformMonthlyTotalsToQuarterlyTotals(
                 this.settings,
                 monthlyTotals,
+                "fte",
             );
         return this._totalFtesPerQuarter;
+    };
+
+    totalPopsPerQuarter = function () {
+        if (this._totalPopsPerQuarter) {
+            return this._totalPopsPerQuarter;
+        }
+
+        let monthlyTotals = this.trimmedPaddedMonthlyTotalsToPeriod({
+            ...this.settings,
+            start_quarter: 1,
+            start_year: this.settings.start_year - 1,
+            end_quarter: 4,
+            end_year: this.settings.end_year + 1,
+        });
+
+        this._totalPopsPerQuarter =
+            this.transformMonthlyTotalsToQuarterlyTotals(
+                this.settings,
+                monthlyTotals,
+                "pop",
+            );
+        return this._totalPopsPerQuarter;
     };
 
     /**
@@ -471,7 +566,17 @@ module.exports = class Aggregator {
      * [{'year': '2020', 'month':1, 'indeterminate': 1, 'term':2, 'casual':3, 'student':4, 'combined':10}, ...]
      */
     totalFtesPerMonth = function () {
-        return this.trimmedPaddedMonthlyTotalsToPeriod(this.settings);
+        return this.normalizeMetricRows(
+            this.trimmedPaddedMonthlyTotalsToPeriod(this.settings),
+            "fte",
+        );
+    };
+
+    totalPopsPerMonth = function () {
+        return this.normalizeMetricRows(
+            this.trimmedPaddedMonthlyTotalsToPeriod(this.settings),
+            "pop",
+        );
     };
 
     latestTotalFtesForDepartment = function (department_id) {
@@ -483,7 +588,28 @@ module.exports = class Aggregator {
 
         // Clean up the "unreported" field before returning
         if (latestReport) {
-            const { unreported, ...rest } = latestReport;
+            const { unreported, ...rest } = this.normalizeMetricRow(
+                latestReport,
+                "fte",
+            );
+            return rest;
+        } else {
+            return null;
+        }
+    };
+
+    latestTotalPopsForDepartment = function (department_id) {
+        const reports = this.paddedMonthlyDepartmentTotals[
+            department_id
+        ].filter((monthEntry) => monthEntry.unreported === false);
+        let latestReport =
+            reports.length > 0 ? reports[reports.length - 1] : null;
+
+        if (latestReport) {
+            const { unreported, ...rest } = this.normalizeMetricRow(
+                latestReport,
+                "pop",
+            );
             return rest;
         } else {
             return null;
@@ -496,10 +622,31 @@ module.exports = class Aggregator {
         return this.transformMonthlyTotalsToQuarterlyTotals(
             this.settings,
             monthlyTotals,
+            "fte",
+        );
+    };
+
+    totalPopsPerQuarterForDepartment = function (department_id) {
+        let monthlyTotals = this.monthlyDepartmentTotalsToPeriod(department_id);
+
+        return this.transformMonthlyTotalsToQuarterlyTotals(
+            this.settings,
+            monthlyTotals,
+            "pop",
         );
     };
 
     totalFtesPerMonthForDepartment = function (department_id) {
-        return this.monthlyDepartmentTotalsToPeriod(department_id);
+        return this.normalizeMetricRows(
+            this.monthlyDepartmentTotalsToPeriod(department_id),
+            "fte",
+        );
+    };
+
+    totalPopsPerMonthForDepartment = function (department_id) {
+        return this.normalizeMetricRows(
+            this.monthlyDepartmentTotalsToPeriod(department_id),
+            "pop",
+        );
     };
 };

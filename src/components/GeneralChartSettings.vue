@@ -1,11 +1,9 @@
 <template>
-    <div class="flex flex-row items-center">
+    <div class="flex items-center">
+        <PreferredMetricPicker />
+        <Separator />
         <PreferredTimeFramePicker />
-        <div
-            role="separator"
-            class="w-8 cursor-default text-center text-slate-500 select-none">
-            •
-        </div>
+        <Separator />
         <PreferredGranularityPicker />
     </div>
 </template>
@@ -16,6 +14,8 @@
     import { onMounted } from "vue";
 
     import usePayloadsStore from "../stores/payloads.js";
+    import Separator from "./Separator.vue";
+    import PreferredMetricPicker from "./PreferredMetricPicker.vue";
     import PreferredTimeFramePicker from "./PreferredTimeFramePicker.vue";
     import PreferredGranularityPicker from "./PreferredGranularityPicker.vue";
 

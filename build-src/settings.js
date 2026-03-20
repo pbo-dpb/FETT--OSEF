@@ -1,3 +1,14 @@
+/**
+ * Extracts key-value pairs from the provided `settings` worksheet and writes them to a JSON file.
+ *
+ * The function reads the worksheet, converts it to JSON, and processes each row to extract
+ * settings. If the key is "last_updated", it formats the date from Excel's serial date format
+ * to "yyyy-mm-dd". The extracted settings are merged with default values and saved to
+ * "src/assets/settings.json".
+ *
+ * @param {Object} worksheet - The worksheet object from which to extract settings.
+ * @returns {Object} The merged settings object containing both defaults and extracted values.
+ */
 const XLSX = require("xlsx");
 const fs = require("fs");
 const path = require("path");
