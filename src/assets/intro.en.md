@@ -4,6 +4,8 @@ The Federal Personnel Tracking Tool provides detailed data visualizations on hea
 
 Personnel costs are the largest component of federal operating spending, therefore the size of the federal public service is a key driver of overall government spending. The purpose of this tool is to provide timely data that support parliamentarians’ scrutiny of the Government’s staffing and spending decisions.
 
+The data used to create this tool can also be downloaded as a <a href="/sample-input-latest.xlsx" download>spreadsheet</a>.
+
 ### Notes
 
 - The information provided is for the Federal Public Service (i.e., Core Public Administration and Separate Agencies). The Core Public Administration consists of the departments and agencies named in schedules I and IV of the Financial Administration Act (FAA). The Treasury Board is the employer of this segment of the Federal Public Service.
