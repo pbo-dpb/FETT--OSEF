@@ -59,13 +59,11 @@ module.exports = class Overviewer {
             relativeDiff:
                 firstFtesCount === 0
                     ? null
-                    : parseFloat(
-                          Number((diff / firstFtesCount) * 100).toFixed(2),
-                      ),
-            first: parseFloat(Number(firstFtesCount).toFixed(2)),
-            absoluteDiff: parseFloat(Number(diff).toFixed(2)),
-            from: parseFloat(Number(firstFtesCount).toFixed(2)),
-            to: parseFloat(Number(secondFtesCount).toFixed(2)),
+                    : ((diff / firstFtesCount) * 100).toFixed(1),
+            first: firstFtesCount.toFixed(2),
+            absoluteDiff: diff.toFixed(0),
+            from: firstFtesCount.toFixed(2),
+            to: secondFtesCount.toFixed(2),
         };
     }
 
@@ -139,13 +137,11 @@ module.exports = class Overviewer {
         const relativeDiff =
             firstValue === 0 ? null : (absoluteDiff / firstValue) * 100;
         return {
-            from: parseFloat(Number(firstValue).toFixed(2)),
-            to: parseFloat(Number(secondValue).toFixed(2)),
-            absoluteDiff: parseFloat(Number(absoluteDiff).toFixed(2)),
+            from: firstValue.toFixed(2),
+            to: secondValue.toFixed(2),
+            absoluteDiff: absoluteDiff.toFixed(0),
             relativeDiff:
-                relativeDiff === null
-                    ? null
-                    : parseFloat(Number(relativeDiff).toFixed(2)),
+                relativeDiff === null ? null : relativeDiff.toFixed(1),
         };
     }
 
@@ -188,27 +184,17 @@ module.exports = class Overviewer {
                   100;
 
         return {
-            from: parseFloat(
-                Number(
-                    this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
-                        firstQuarterRow,
-                        includeCombined,
-                    ),
-                ).toFixed(2),
-            ),
-            to: parseFloat(
-                Number(
-                    this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
-                        secondQuarterRow,
-                        includeCombined,
-                    ),
-                ).toFixed(2),
-            ),
-            absoluteDiff: parseFloat(Number(absoluteDiff).toFixed(2)),
+            from: this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                firstQuarterRow,
+                includeCombined,
+            ).toFixed(2),
+            to: this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                secondQuarterRow,
+                includeCombined,
+            ).toFixed(2),
+            absoluteDiff: absoluteDiff.toFixed(0),
             relativeDiff:
-                relativeDiff === null
-                    ? null
-                    : parseFloat(Number(relativeDiff).toFixed(2)),
+                relativeDiff === null ? null : relativeDiff.toFixed(1),
             tenures: {
                 indeterminate: this.diffCategory(
                     firstQuarterRow.indeterminate || 0,

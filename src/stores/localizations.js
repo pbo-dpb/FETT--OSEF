@@ -8,8 +8,19 @@ export default defineStore("localizations", {
         iStrings: { en, fr },
     }),
     actions: {
-        localizeNumber(number) {
-            return new Intl.NumberFormat(this.language, {}).format(number);
+        localizeNumber(number, options = { isPercent: false }) {
+            const config = {
+                minimumFractionDigits: options.isPercent ? 1 : 0,
+                maximumFractionDigits: options.isPercent ? 1 : 0,
+            };
+
+            const valueToFormat = options.isPercent
+                ? number
+                : Math.round(number);
+
+            return new Intl.NumberFormat(this.language, config).format(
+                valueToFormat,
+            );
         },
     },
     getters: {

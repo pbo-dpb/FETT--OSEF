@@ -2,10 +2,10 @@ import useLocalizationsStore from "../stores/localizations.js";
 
 export default {
     methods: {
-        numberFormatter(number) {
+        numberFormatter(number, isPercent = false) {
             const localizationStore = useLocalizationsStore();
 
-            return localizationStore.localizeNumber(number);
+            return localizationStore.localizeNumber(number, { isPercent });
         },
     },
 };

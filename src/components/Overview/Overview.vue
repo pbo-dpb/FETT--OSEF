@@ -18,7 +18,7 @@
                     'text-green-800': allDepartmentsAbsoluteDiff > 0,
                 }">
                     {{ numberFormatter(allDepartmentsAbsoluteDiff) }}
-                    ({{ numberFormatter(allDepartmentsRelativeDiff) }}%)
+                    ({{ numberFormatter(allDepartmentsRelativeDiff, true) }}%)
                     <span v-if="allDepartmentsAbsoluteDiff > 0">↑</span>
                     <span v-else-if="allDepartmentsAbsoluteDiff < 0">↓</span>
                     <span v-else>-</span>
@@ -33,7 +33,7 @@
                     'text-green-800': indeterminateAbsoluteDiff > 0,
                 }">
                     {{ numberFormatter(indeterminateAbsoluteDiff) }}
-                    ({{ numberFormatter(indeterminateRelativeDiff) }}%)
+                    ({{ numberFormatter(indeterminateRelativeDiff, true) }}%)
                     <span v-if="indeterminateAbsoluteDiff > 0">↑</span>
                     <span v-else-if="indeterminateAbsoluteDiff < 0">↓</span>
                     <span v-else>-</span>
@@ -46,7 +46,7 @@
                     'text-green-800': termAbsoluteDiff > 0,
                 }">
                     {{ numberFormatter(termAbsoluteDiff) }} ({{
-                        numberFormatter(termRelativeDiff)
+                        numberFormatter(termRelativeDiff, true)
                     }}%)
                     <span v-if="termAbsoluteDiff > 0">↑</span>
                     <span v-else-if="termAbsoluteDiff < 0">↓</span>
@@ -60,7 +60,7 @@
                     'text-green-800': studentAbsoluteDiff > 0,
                 }">
                     {{ numberFormatter(studentAbsoluteDiff) }} ({{
-                        numberFormatter(studentRelativeDiff)
+                        numberFormatter(studentRelativeDiff, true)
                     }}%)
                     <span v-if="studentAbsoluteDiff > 0">↑</span>
                     <span v-else-if="studentAbsoluteDiff < 0">↓</span>
@@ -74,7 +74,7 @@
                     'text-green-800': casualAbsoluteDiff > 0,
                 }">
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
-                        numberFormatter(casualRelativeDiff)
+                        numberFormatter(casualRelativeDiff, true)
                     }}%)
                     <span v-if="casualAbsoluteDiff > 0">↑</span>
                     <span v-else-if="casualAbsoluteDiff < 0">↓</span>
@@ -102,7 +102,7 @@
                     }">
                         <span>{{ numberFormatter(department.absoluteDiff) }}
                         </span>
-                        ({{ numberFormatter(department.relativeDiff) }}%)
+                        ({{ numberFormatter(department.relativeDiff, true) }}%)
                         <span v-if="department.absoluteDiff > 0">↑</span>
                         <span v-else-if="department.absoluteDiff < 0">↓</span>
                         <span v-else>-</span>
@@ -130,7 +130,7 @@
                     }">
                         <span>{{ numberFormatter(department.absoluteDiff) }}
                         </span>
-                        ({{ numberFormatter(department.relativeDiff) }}%)
+                        ({{ numberFormatter(department.relativeDiff, true) }}%)
                         <span v-if="department.absoluteDiff > 0">↑</span>
                         <span v-else-if="department.absoluteDiff < 0">↓</span>
                         <span v-else>-</span>
@@ -157,6 +157,8 @@ import useLocalizationsStore from "../../stores/localizations.js";
 
 import usePayloadsStore from "../../stores/payloads.js";
 import useSettingsStore from "../../stores/settings.js";
+
+import { toRaw } from "vue";
 
 export default {
     components: {
@@ -280,6 +282,8 @@ export default {
 
         this.data = overview.value;
         this.isLoading = false;
+
+        console.log(toRaw(this.data.quarterly.comparisons))
     },
 };
 </script>
