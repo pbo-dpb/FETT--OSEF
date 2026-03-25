@@ -59,9 +59,9 @@ module.exports = class Overviewer {
             relativeDiff:
                 firstFtesCount === 0
                     ? null
-                    : ((diff / firstFtesCount) * 100).toFixed(1),
+                    : ((diff / firstFtesCount) * 100).toFixed(2),
             first: firstFtesCount.toFixed(2),
-            absoluteDiff: diff.toFixed(0),
+            absoluteDiff: diff.toFixed(2),
             from: firstFtesCount.toFixed(2),
             to: secondFtesCount.toFixed(2),
         };
@@ -139,9 +139,9 @@ module.exports = class Overviewer {
         return {
             from: firstValue.toFixed(2),
             to: secondValue.toFixed(2),
-            absoluteDiff: absoluteDiff.toFixed(0),
+            absoluteDiff: absoluteDiff.toFixed(2),
             relativeDiff:
-                relativeDiff === null ? null : relativeDiff.toFixed(1),
+                relativeDiff === null ? null : relativeDiff.toFixed(2),
         };
     }
 
@@ -192,9 +192,9 @@ module.exports = class Overviewer {
                 secondQuarterRow,
                 includeCombined,
             ).toFixed(2),
-            absoluteDiff: absoluteDiff.toFixed(0),
+            absoluteDiff: absoluteDiff.toFixed(2),
             relativeDiff:
-                relativeDiff === null ? null : relativeDiff.toFixed(1),
+                relativeDiff === null ? null : relativeDiff.toFixed(2),
             tenures: {
                 indeterminate: this.diffCategory(
                     firstQuarterRow.indeterminate || 0,
