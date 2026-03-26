@@ -1,12 +1,9 @@
 <template>
     <div class="flex flex-col gap-8" v-if="departments !== false">
-        <div>
-            <DepartmentsOverviewChart :departments="selectedDepartments"
-                :highlighted-department-id="highlightedDepartmentId" />
-        </div>
+        <DepartmentsOverviewChart :departments="selectedDepartments"
+            :highlighted-department-id="highlightedDepartmentId" />
         <div class="grid grid-cols-4 gap-4">
             <DepartmentPicker :selected-departments="selectedDepartments" />
-
             <div v-if="selectedDepartments.length"
                 class="col-span-3 flex flex-row gap-8 overflow-x-scroll rounded-t-lg rounded-tl bg-slate-50 p-4 shadow-inner">
                 <PickedDepartment v-for="department in selectedDepartments" :key="department.id"
@@ -36,40 +33,45 @@
     </div>
 </template>
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+
 import usePayloadsStore from "../../stores/payloads.js";
 const payloadsStore = usePayloadsStore();
 const { departments } = storeToRefs(payloadsStore);
+
 import useLocalizationsStore from "../../stores/localizations.js";
+const localizationStore = useLocalizationsStore();
+const { strings } = storeToRefs(localizationStore);
 
 import useSettingStore from "../../stores/settings.js";
 const settingsStore = useSettingStore();
 
-const localizationStore = useLocalizationsStore();
-const { strings } = storeToRefs(localizationStore);
 import DepartmentPicker from "./DepartmentPicker.vue";
 import LoadingIndicator from "../LoadingIndicator.vue";
-import { useRoute, useRouter } from "vue-router";
+import DepartmentsOverviewChart from "./DepartmentsOverviewChart.vue";
 import PickedDepartment from "./PickedDepartment.vue";
+
 import { ArrowBigLeft } from "lucide-vue-next";
 import { colors } from "../../assets/colors.json?json";
 
+import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
+
 const highlightedDepartmentId = ref(null);
-import DepartmentsOverviewChart from "./DepartmentsOverviewChart.vue";
 
 onMounted(() => {
     if (departments.value === false) {
         payloadsStore.fetchDepartments();
     }
+
 });
 
 const selectedDepartments = computed(() => {
     if (!departments.value) return [];
+
     const departmanetIds = route.params.departments || [];
     let index = 0;
     let useDarkTheme =
@@ -98,6 +100,7 @@ const removeDepartment = (departmentId) => {
     const newSelectedDepartments = selectedDepartments.value
         .map((dept) => dept.id)
         .filter((id) => id !== departmentId);
+
     router.push({
         name: "departments",
         params: { departments: newSelectedDepartments },

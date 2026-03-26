@@ -62,14 +62,16 @@
                 <dl class="flex flex-col gap-1">
                     <template
                         v-for="(value, key) in {
-                            combined: latestValues.combined,
+                            combined: numberFormatter(
+                                Math.round(latestValues.combined),
+                            ),
                         }"
                         :key="key">
                         <dt class="text-xs font-medium">
                             {{ strings[`dep_card_${key}`] }}
                         </dt>
                         <dd class="text-lg font-light">
-                            {{ numberFormatter(Math.round(value)) }}
+                            {{ value }}
                         </dd>
                     </template>
                 </dl>
@@ -82,17 +84,23 @@
                 v-else>
                 <template
                     v-for="(value, key) in {
-                        indeterminate: latestValues.indeterminate,
-                        term: latestValues.term,
-                        casual: latestValues.casual,
-                        student: latestValues.student,
+                        indeterminate: Math.round(latestValues.indeterminate),
+                        term: Math.round(latestValues.term),
+                        casual: Math.round(latestValues.casual),
+                        student: Math.round(latestValues.student),
+                        combined: numberFormatter(
+                            Math.round(latestValues.indeterminate) +
+                                Math.round(latestValues.term) +
+                                Math.round(latestValues.casual) +
+                                Math.round(latestValues.student),
+                        ),
                     }"
                     :key="key">
                     <dt class="text-xs font-medium">
                         {{ strings[`dep_card_${key}`] }}
                     </dt>
                     <dd class="text-lg font-light">
-                        {{ numberFormatter(Math.round(value)) }}
+                        {{ value }}
                     </dd>
                 </template>
             </dl>
@@ -124,6 +132,9 @@
     import usePayloadsStore from "../../stores/payloads.js";
     import useLocalizationsStore from "../../stores/localizations.js";
     import useSettingsStore from "../../stores/settings.js";
+    import numberFormatterMixin from "../../mixins/numberFormatter.js";
+
+    const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 
     const emits = defineEmits([
         "remove-department",
@@ -147,10 +158,6 @@
             type: Boolean,
         },
     });
-
-    const numberFormatter = (number) => {
-        return localizationStore.localizeNumber(number);
-    };
 
     const latestValues = computed(() =>
         preferredMetric.value === "pop"

@@ -9,18 +9,10 @@ export default defineStore("localizations", {
     }),
     actions: {
         localizeNumber(number, options = { isPercent: false }) {
-            const config = {
+            return new Intl.NumberFormat(this.language, {
                 minimumFractionDigits: options.isPercent ? 1 : 0,
                 maximumFractionDigits: options.isPercent ? 1 : 0,
-            };
-
-            const valueToFormat = options.isPercent
-                ? number
-                : Math.round(number);
-
-            return new Intl.NumberFormat(this.language, config).format(
-                valueToFormat,
-            );
+            }).format(number);
         },
     },
     getters: {

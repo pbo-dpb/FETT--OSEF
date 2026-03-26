@@ -2,6 +2,7 @@
     "tabWidth": 4,
     "useTabs": false,
     "singleAttributePerLine": true,
+    "semi": true,
     "bracketSameLine": true,
     "vueIndentScriptAndStyle": true,
 
