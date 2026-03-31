@@ -10,11 +10,11 @@
             <select
                 class="rounded-sm border border-solid border-gray-300"
                 v-model="preferredBreakdown">
-                <option value="indeterminate">Indeterminate</option>
-                <option value="term">Terms</option>
-                <option value="casual">Casuals</option>
-                <option value="student">Students</option>
-                <option value="combined">Combined</option>
+                <option value="indeterminate">{{ strings.dep_indeterminate }}</option>
+                <option value="term">{{ strings.dep_term }}</option>
+                <option value="casual">{{ strings.dep_casual }}</option>
+                <option value="student">{{ strings.dep_student }}</option>
+                <option value="combined">{{ strings.dep_combined }}</option>
             </select>
         </div>
         <div

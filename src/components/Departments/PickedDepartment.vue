@@ -68,7 +68,7 @@
                         }"
                         :key="key">
                         <dt class="text-xs font-medium">
-                            {{ strings[`dep_card_${key}`] }}
+                            {{ strings[`dep_${key}`] }}
                         </dt>
                         <dd class="text-lg font-light">
                             {{ value }}
@@ -84,10 +84,10 @@
                 v-else>
                 <template
                     v-for="(value, key) in {
-                        indeterminate: Math.round(latestValues.indeterminate),
-                        term: Math.round(latestValues.term),
-                        casual: Math.round(latestValues.casual),
-                        student: Math.round(latestValues.student),
+                        indeterminate: numberFormatter(Math.round(latestValues.indeterminate)),
+                        term: numberFormatter(Math.round(latestValues.term)),
+                        casual: numberFormatter(Math.round(latestValues.casual)),
+                        student: numberFormatter(Math.round(latestValues.student)),
                         combined: numberFormatter(
                             Math.round(latestValues.indeterminate) +
                                 Math.round(latestValues.term) +
@@ -97,7 +97,7 @@
                     }"
                     :key="key">
                     <dt class="text-xs font-medium">
-                        {{ strings[`dep_card_${key}`] }}
+                        {{ strings[`dep_${key}`] }}
                     </dt>
                     <dd class="text-lg font-light">
                         {{ value }}
