@@ -53,7 +53,7 @@
                 {{ department[`name_${language}`] }}
             </div>
         </header>
-        <div class="border-t-2 border-solid border-slate-100 px-4 pt-4">
+    <div class="border-t-2 border-solid border-slate-100 px-4 pt-4" v-if="latestValues">
             <div
                 v-if="
                     latestValues.indeterminate === 0 &&
@@ -108,17 +108,7 @@
             <div
                 class="mt-4 w-full text-right text-xs font-medium text-slate-500">
                 {{
-                    strings[latestAsOfKey].replace(
-                        "{date}",
-                        new Intl.DateTimeFormat(language, {
-                            year: "numeric",
-                            month: "long",
-                        }).format(
-                            new Date(
-                                `${latestValues.year}-${latestValues.month}-01`,
-                            ),
-                        ),
-                    )
+                    formattedDateLabel
                 }}
             </div>
         </div>
@@ -147,7 +137,7 @@
     const localizationStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationStore);
     const settingsStore = useSettingsStore();
-    const { preferredMetric } = storeToRefs(settingsStore);
+    const { preferredMetric, preferredGranularity } = storeToRefs(settingsStore);
 
     const props = defineProps({
         department: {
@@ -159,11 +149,13 @@
         },
     });
 
-    const latestValues = computed(() =>
-        preferredMetric.value === "pop"
-            ? props.department.latest_pops
-            : props.department.latest_ftes,
-    );
+    const latestValues = computed(() => {
+        const metric = preferredMetric.value === "pop" ? "pops" : "ftes";
+        const granularity = preferredGranularity.value;
+        const dataKey = `total_${metric}_per_${granularity}`;
+        
+        return props.department[dataKey]?.at(-1);
+    });
 
     const latestCombinedNoteKey = computed(() =>
         preferredMetric.value === "pop"
@@ -176,4 +168,21 @@
             ? "department_latest_pops_as_of"
             : "department_latest_ftes_as_of",
     );
+
+    const formattedDateLabel = computed(() => {
+        const val = latestValues.value;
+
+        if (!val) return "";
+
+        let dateString = "";
+
+        if (preferredGranularity.value === "quarter") {
+            const prefix = language.value === 'fr' ? 'T' : 'Q';
+            dateString = `${prefix}${val.quarter} ${val.year}`;
+        } else {
+            dateString = `${val.year}`;
+        }
+
+        return strings.value[latestAsOfKey.value]?.replace("{date}", dateString) || "";
+});
 </script>
