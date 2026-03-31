@@ -18,7 +18,6 @@ export default defineConfig({
         rollupOptions: {
             input: ["index.html", "./src/main.js"],
         },
-        minify: 'terser',
         esbuild: {
             drop: ['console', 'debugger'],
         },
