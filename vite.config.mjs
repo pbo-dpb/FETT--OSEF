@@ -19,9 +19,8 @@ export default defineConfig({
             input: ["index.html", "./src/main.js"],
         },
         minify: 'terser',
-        terserOptions: {
-            drop_console: true,
-            drop_debugger: true
-        }
+        esbuild: {
+            drop: ['console', 'debugger'],
+        },
     },
 });
