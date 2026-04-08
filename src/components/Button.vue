@@ -110,6 +110,7 @@
                     base.push(this.colors.base);
                     base.push(this.colors.hover);
                     base.push("transition-all hover:shadow-lg");
+                    base.push("cursor-pointer")
                 }
                 return base;
             },

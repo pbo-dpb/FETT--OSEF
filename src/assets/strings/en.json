@@ -1,7 +1,6 @@
 {
     "title": "Workforce 360",
-    "collapsible_component_handle_notes": "Notes",
-    "collapsible_component_handle_about": "About",
+    "collapsible_component_handle_about": "About this tool",
     "last_updated": " Last updated: ",
     "tab_navigation_aria_label": "Main Navigation Tabs",
     "tab_navigation_overview_label": "Overview",
@@ -48,5 +47,6 @@
     "overview_largest_increase_by_department": "Largest increase by department",
     "overview_largest_decrease_by_department": "Largest decrease by department",
     "tab_navigation_composition_label": "Composition",
-    "tab_navigation_departments_label": "Compare"
+    "tab_navigation_departments_label": "Compare",
+    "download_button": "Download the data (.xlsx)"
 }

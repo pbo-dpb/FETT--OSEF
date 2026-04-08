@@ -10,14 +10,14 @@
         <div
             class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4">
             <div class="col-span-full text-center">
-                <h2 class="mb-8 text-xl text-balance">
+                <h2 class="mb-8 text-2xl text-balance">
                     {{ strings.overview_size_heading }}
                 </h2>
-                <h3 class="text-sm font-medium">
+                <h3 class="font-medium">
                     {{ strings[overviewAllLabelKey] }}
                 </h3>
                 <p
-                    class="text-2xl font-bold"
+                    class="text-3xl font-bold"
                     :class="{
                         'text-red-800': allDepartmentsAbsoluteDiff < 0,
                         'text-green-800': allDepartmentsAbsoluteDiff > 0,
@@ -30,10 +30,11 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="text-sm font-medium">
+                <h3 class="font-medium">
                     {{ strings.indeterminate_label }}
                 </h3>
-                <p
+                <p  
+                    class="text-xl"
                     :class="{
                         'text-red-800': indeterminateAbsoluteDiff < 0,
                         'text-green-800': indeterminateAbsoluteDiff > 0,
@@ -46,8 +47,9 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="text-sm font-medium">{{ strings.term_label }}</h3>
+                <h3 class="font-medium">{{ strings.term_label }}</h3>
                 <p
+                    class="text-xl"
                     :class="{
                         'text-red-800': termAbsoluteDiff < 0,
                         'text-green-800': termAbsoluteDiff > 0,
@@ -61,8 +63,9 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="text-sm font-medium">{{ strings.student_label }}</h3>
+                <h3 class="font-medium">{{ strings.student_label }}</h3>
                 <p
+                    class="text-xl"
                     :class="{
                         'text-red-800': studentAbsoluteDiff < 0,
                         'text-green-800': studentAbsoluteDiff > 0,
@@ -76,8 +79,9 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="text-sm font-medium">{{ strings.casual_label }}</h3>
+                <h3 class="font-medium">{{ strings.casual_label }}</h3>
                 <p
+                    class="text-xl"
                     :class="{
                         'text-red-800': casualAbsoluteDiff < 0,
                         'text-green-800': casualAbsoluteDiff > 0,
@@ -93,14 +97,14 @@
         </div>
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
-            <h2 class="mb-8 text-center text-xl text-balance">
+            <h2 class="mb-8 text-center text-2xl text-balance">
                 {{ strings.overview_largest_increase_by_department }}
             </h2>
             <ol class="space-y-2">
                 <li
                     v-for="department in topThreeDepartmentsIncrease"
                     :key="department.department_id">
-                    <div class="text-sm font-medium">
+                    <div class="font-medium">
                         {{ displayDepartmentName(department) }}
                         <span
                             v-if="
@@ -128,14 +132,14 @@
         </div>
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
-            <h2 class="mb-8 text-center text-xl text-balance">
+            <h2 class="mb-8 text-center text-2xl text-balance">
                 {{ strings.overview_largest_decrease_by_department }}
             </h2>
             <ol class="space-y-2">
                 <li
                     v-for="department in topThreeDepartmentsDecrease"
                     :key="department.department_id">
-                    <div class="text-sm font-medium">
+                    <div class="font-medium">
                         {{ displayDepartmentName(department) }}
                         <span
                             v-if="
@@ -161,6 +165,9 @@
                 </li>
             </ol>
         </div>
+        <div class="col-span-full">
+            <Button type="default" href="./sample-input.xlsx">{{ strings.download_button }}</Button>
+        </div>
     </div>
     <div v-else>
         <LoadingIndicator class="size-6" />
@@ -169,6 +176,7 @@
 
 <script>
     import LoadingIndicator from "../LoadingIndicator.vue";
+    import Button from "../Button.vue";
     import Separator from "../Separator.vue";
     import PreferredComparisonPeriodPicker from "../PreferredComparisonPeriodPicker.vue";
     import PreferredMetricPicker from "../PreferredMetricPicker.vue";
@@ -186,6 +194,7 @@
     export default {
         components: {
             LoadingIndicator,
+            Button,
             Separator,
             PreferredComparisonPeriodPicker,
             PreferredMetricPicker,

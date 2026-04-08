@@ -8,9 +8,9 @@ const previouslySelectedDepartmentIds = sessionStorage.getItem(
 
 export default defineStore("settings", {
     state: () => ({
-        preferredTimeframe: "3Y",
-        preferredGranularity: "quarter",
         preferredMetric: "fte",
+        preferredTimeframe: "MAX",
+        preferredGranularity: "quarter",
         selectedComparisonPeriod: "sameQuarterLastYear",
         colors: colors,
         previouslySelectedDepartmentIds: previouslySelectedDepartmentIds

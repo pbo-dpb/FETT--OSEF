@@ -1,7 +1,6 @@
 {
     "title": "Effectif 360",
-    "collapsible_component_handle_notes": "Notes",
-    "collapsible_component_handle_about": "À propos",
+    "collapsible_component_handle_about": "À propos de cet outil",
     "last_updated": " Dernière mise à jour : ",
     "tab_navigation_aria_label": "Onglets de navigation principaux",
     "tab_navigation_overview_label": "Aperçu",
@@ -48,5 +47,6 @@
     "overview_all_positions_label": "Tous les postes",
     "overview_all_headcount_label": "Tous les employés",
     "overview_largest_increase_by_department": "Plus forte hausse par ministère",
-    "overview_largest_decrease_by_department": "Plus forte baisse par ministère"
+    "overview_largest_decrease_by_department": "Plus forte baisse par ministère",
+    "download_button": "Téléchargez les données (.xlsx)"
 }

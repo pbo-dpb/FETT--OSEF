@@ -1,17 +1,18 @@
 <template>
     <div
-        class="rounded-sm border border-solid border-purple-100 shadow-sm dark:border-purple-900">
+        class="rounded-sm border border-solid border-gray-300 shadow-sm">
         <h3
-            class="flex flex-col border-b border-solid border-purple-100 p-4 dark:border-purple-900">
+            class="flex flex-col p-4 dark:border-gray-900"
+            :class="{'border-b-1 border-solid border-gray-300': !isExpanded}">
             <button
                 :id="uid + '-header'"
                 :aria-controls="uid + '-panel'"
-                :aria-expanded="!shouldCollapse"
+                :aria-expanded="!isExpanded"
                 @click="toggle"
                 class="flex cursor-pointer flex-row items-center gap-2 font-semibold text-slate-800 dark:text-slate-100">
                 <ChevronRight
                     class="h-6 w-6"
-                    v-if="shouldCollapse"></ChevronRight>
+                    v-if="isExpanded"></ChevronRight>
                 <ChevronDown
                     class="h-6 w-6"
                     v-else></ChevronDown>
@@ -21,8 +22,8 @@
         <section
             :id="uid + '-panel'"
             :aria-labelledby="uid + '-header'"
-            :hidden="shouldCollapse"
-            class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-light prose-a:text-slate-800 dark:prose-a:text-slate-200 max-w-none p-4">
+            :hidden="isExpanded"
+            class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-light prose-a:text-slate-800 dark:prose-a:text-slate-200 max-w-none px-4">
             <div
                 v-if="collapsibleContent"
                 class="flex flex-col">
@@ -69,7 +70,7 @@
     });
 
     // Data
-    const shouldCollapse = ref(false);
+    const isExpanded = ref(true);
     const uid = ref(`collapsible-${Math.random().toString(36).slice(2, 7)}`);
     const fetching = ref(false);
     const content = ref({
@@ -103,9 +104,9 @@
     };
 
     const toggle = () => {
-        shouldCollapse.value = !shouldCollapse.value;
+        isExpanded.value = !isExpanded.value;
         try {
-            if (shouldCollapse.value) {
+            if (isExpanded.value) {
                 window.localStorage.setItem(localStorageKey.value, "TRUE");
             } else {
                 window.localStorage.removeItem(localStorageKey.value);
@@ -122,7 +123,7 @@
                 localStorageKey.value,
             );
             if (userPreference) {
-                shouldCollapse.value = true;
+                isExpanded.value = true;
             }
         } catch (error) {
             // Fail silently
