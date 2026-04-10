@@ -94,6 +94,10 @@
                     <span v-else>-</span>
                 </p>
             </div>
+            <div
+                class="col-span-full text-right text-xs font-medium text-slate-500">
+                {{ formattedDateLabel }}
+            </div>
         </div>
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
@@ -129,6 +133,10 @@
                     </div>
                 </li>
             </ol>
+            <div
+                class="col-span-full text-right text-xs font-medium text-slate-500">
+                {{ formattedDateLabel }}
+            </div>
         </div>
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
@@ -164,6 +172,10 @@
                     </div>
                 </li>
             </ol>
+            <div
+                class="col-span-full text-right text-xs font-medium text-slate-500">
+                {{ formattedDateLabel }}
+            </div>
         </div>
         <div class="col-span-full">
             <Button type="default" href="./sample-input.xlsx">{{ strings.download_button }}</Button>
@@ -181,6 +193,7 @@
     import PreferredComparisonPeriodPicker from "../PreferredComparisonPeriodPicker.vue";
     import PreferredMetricPicker from "../PreferredMetricPicker.vue";
     import numberFormatter from "../../mixins/numberFormatter.js";
+    import { formatAsOfDateLabel } from "../../mixins/formattedDateLabel.js";
 
     import { storeToRefs } from "pinia";
 
@@ -287,6 +300,18 @@
                 const localizationsStore = useLocalizationsStore();
 
                 return localizationsStore.language;
+            },
+            formattedDateLabel() {
+                const settingsStore = useSettingsStore();
+
+                return formatAsOfDateLabel({
+                    preferredMetric: settingsStore.preferredMetric,
+                    preferredGranularity: settingsStore.preferredGranularity,
+                    language: this.language,
+                    strings: this.strings,
+                    year: settingsStore.end_year,
+                    quarter: settingsStore.end_quarter,
+                });
             },
         },
         methods: {

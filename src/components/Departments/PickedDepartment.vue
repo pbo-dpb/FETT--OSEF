@@ -123,6 +123,7 @@
     import useLocalizationsStore from "../../stores/localizations.js";
     import useSettingsStore from "../../stores/settings.js";
     import numberFormatterMixin from "../../mixins/numberFormatter.js";
+    import { formatAsOfDateLabel } from "../../mixins/formattedDateLabel.js";
 
     const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 
@@ -163,26 +164,16 @@
             : "department_latest_ftes_combined_note",
     );
 
-    const latestAsOfKey = computed(() =>
-        preferredMetric.value === "pop"
-            ? "department_latest_pops_as_of"
-            : "department_latest_ftes_as_of",
-    );
-
     const formattedDateLabel = computed(() => {
         const val = latestValues.value;
 
-        if (!val) return "";
-
-        let dateString = "";
-
-        if (preferredGranularity.value === "quarter") {
-            const prefix = language.value === 'fr' ? 'T' : 'Q';
-            dateString = `${prefix}${val.quarter} ${val.year}`;
-        } else {
-            dateString = `${val.year}`;
-        }
-
-        return strings.value[latestAsOfKey.value]?.replace("{date}", dateString) || "";
-});
+        return formatAsOfDateLabel({
+            preferredMetric: preferredMetric.value,
+            preferredGranularity: preferredGranularity.value,
+            language: language.value,
+            strings: strings.value,
+            year: val?.year,
+            quarter: val?.quarter,
+        });
+    });
 </script>
