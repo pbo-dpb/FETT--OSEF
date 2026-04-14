@@ -8,9 +8,11 @@
         <div class="flex items-center justify-between">
             <GeneralChartSettings />
             <select
-                class="rounded-sm border border-solid border-gray-300"
+                class="rounded-sm border border-solid border-gray-300 py-0.5"
                 v-model="preferredBreakdown">
-                <option value="indeterminate">{{ strings.dep_indeterminate }}</option>
+                <option value="indeterminate">
+                    {{ strings.dep_indeterminate }}
+                </option>
                 <option value="term">{{ strings.dep_term }}</option>
                 <option value="casual">{{ strings.dep_casual }}</option>
                 <option value="student">{{ strings.dep_student }}</option>
@@ -46,7 +48,7 @@
     import useSettingsStore from "../../stores/settings.js";
     import usePayloadsStore from "../../stores/payloads.js";
     import numberFormatterMixin from "../../mixins/numberFormatter.js";
-    
+
     import departmentsOverviewPlaceholderUrl from "../../assets/departments-overview-placeholder.svg?url";
     import GeneralChartSettings from "../GeneralChartSettings.vue";
 
@@ -133,10 +135,13 @@
     const preferredBreakdown = ref("combined");
 
     const dataset = computed(() => {
-        if (props.departments.filter((dept) => !dept.eagerLoaded).length) return { source: [] };
+        if (props.departments.filter((dept) => !dept.eagerLoaded).length)
+            return { source: [] };
 
         let dimensions = ["timestamp"];
-        props.departments.forEach(dept => dimensions.push(dept[`name_${language.value}`]));
+        props.departments.forEach((dept) =>
+            dimensions.push(dept[`name_${language.value}`]),
+        );
 
         let timestamps = [];
         let deptPoints = {};
@@ -145,10 +150,12 @@
         if (!firstDept?.eagerLoaded) return { source: [] };
 
         const isQuarterly = preferredGranularity.value === "quarter";
-        const dataKey = isQuarterly ? perQuarterKey.value : perFiscalYearKey.value;
+        const dataKey = isQuarterly
+            ? perQuarterKey.value
+            : perFiscalYearKey.value;
 
         firstDept[dataKey].forEach((item) => {
-            const ts = isQuarterly 
+            const ts = isQuarterly
                 ? `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`
                 : `${item.year}-${item.year + 1}`;
             timestamps.push(ts);
@@ -158,25 +165,31 @@
             const dptName = dept[`name_${language.value}`];
             deptPoints[dptName] = {};
 
-           dept[dataKey].forEach((item) => {
-                const ts = isQuarterly 
+            dept[dataKey].forEach((item) => {
+                const ts = isQuarterly
                     ? `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`
                     : `${item.year}-${item.year + 1}`;
 
-                const sumOfParts = Math.round(item.indeterminate || 0) + 
-                    Math.round(item.term || 0) + 
-                    Math.round(item.casual || 0) + 
+                const sumOfParts =
+                    Math.round(item.indeterminate || 0) +
+                    Math.round(item.term || 0) +
+                    Math.round(item.casual || 0) +
                     Math.round(item.student || 0);
 
                 let rawValue;
 
                 if (preferredBreakdown.value === "combined") {
-                    rawValue = (sumOfParts === 0 && item.combined) ? Math.round(item.combined) : sumOfParts;
+                    rawValue =
+                        sumOfParts === 0 && item.combined
+                            ? Math.round(item.combined)
+                            : sumOfParts;
                 } else {
                     if (sumOfParts === 0 && item.combined > 0) {
                         rawValue = null;
                     } else {
-                        rawValue = Math.round(item[preferredBreakdown.value] || 0);
+                        rawValue = Math.round(
+                            item[preferredBreakdown.value] || 0,
+                        );
                     }
                 }
 
@@ -186,15 +199,15 @@
 
         return {
             dimensions,
-            source: timestamps.map(ts => {
+            source: timestamps.map((ts) => {
                 let dataPoint = { timestamp: ts };
-                props.departments.forEach(dept => {
+                props.departments.forEach((dept) => {
                     const dptName = dept[`name_${language.value}`];
                     const val = deptPoints[dptName][ts];
 
                     dataPoint[dptName] = val === null ? null : (val ?? 0);
                 });
-                
+
                 return dataPoint;
             }),
         };
@@ -208,7 +221,8 @@
 
             const dptName = dept[`name_${language.value}`];
             const hasVisibleData = dataset.value.source.some(
-                point => point[dptName] !== null && point[dptName] !== undefined
+                (point) =>
+                    point[dptName] !== null && point[dptName] !== undefined,
             );
 
             if (hasVisibleData) {
@@ -221,7 +235,8 @@
                         color: dept["color"] || "red",
                     },
                     lineStyle: {
-                        width: props.highlightedDepartmentId === dept.id ? 5 : 3,
+                        width:
+                            props.highlightedDepartmentId === dept.id ? 5 : 3,
                         shadowBlur:
                             props.highlightedDepartmentId === dept.id ? 10 : 0,
                         shadowColor: useDarkTheme.value ? "#1e293b" : "#cbd5e1",
@@ -283,11 +298,11 @@
                 trigger: "axis",
                 valueFormatter: (value) => {
                     if (value === null || value === undefined || isNaN(value)) {
-                        return "N/A"
+                        return "N/A";
                     }
 
                     return formatter(value);
-                }
+                },
             },
             xAxis: {
                 type: "category",

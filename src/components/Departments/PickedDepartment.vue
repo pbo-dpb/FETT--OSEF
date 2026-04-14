@@ -53,17 +53,19 @@
                 {{ department[`name_${language}`] }}
             </div>
         </header>
-    <div class="border-t-2 border-solid border-slate-100 px-4 pt-4" v-if="latestValues">
+        <div
+            class="border-t-2 border-solid border-slate-100 px-4 pt-4"
+            v-if="selectedValues">
             <div
                 v-if="
-                    latestValues.indeterminate === 0 &&
-                    latestValues.combined > 0
+                    selectedValues.indeterminate === 0 &&
+                    selectedValues.combined > 0
                 ">
                 <dl class="flex flex-col gap-1">
                     <template
                         v-for="(value, key) in {
                             combined: numberFormatter(
-                                Math.round(latestValues.combined),
+                                Math.round(selectedValues.combined),
                             ),
                         }"
                         :key="key">
@@ -76,7 +78,7 @@
                     </template>
                 </dl>
                 <div class="text-base/8 text-sm text-gray-500 italic">
-                    {{ strings[latestCombinedNoteKey] }}
+                    {{ strings[selectedCombinedNoteKey] }}
                 </div>
             </div>
             <dl
@@ -84,15 +86,21 @@
                 v-else>
                 <template
                     v-for="(value, key) in {
-                        indeterminate: numberFormatter(Math.round(latestValues.indeterminate)),
-                        term: numberFormatter(Math.round(latestValues.term)),
-                        casual: numberFormatter(Math.round(latestValues.casual)),
-                        student: numberFormatter(Math.round(latestValues.student)),
+                        indeterminate: numberFormatter(
+                            Math.round(selectedValues.indeterminate),
+                        ),
+                        term: numberFormatter(Math.round(selectedValues.term)),
+                        casual: numberFormatter(
+                            Math.round(selectedValues.casual),
+                        ),
+                        student: numberFormatter(
+                            Math.round(selectedValues.student),
+                        ),
                         combined: numberFormatter(
-                            Math.round(latestValues.indeterminate) +
-                                Math.round(latestValues.term) +
-                                Math.round(latestValues.casual) +
-                                Math.round(latestValues.student),
+                            Math.round(selectedValues.indeterminate) +
+                                Math.round(selectedValues.term) +
+                                Math.round(selectedValues.casual) +
+                                Math.round(selectedValues.student),
                         ),
                     }"
                     :key="key">
@@ -107,9 +115,7 @@
 
             <div
                 class="mt-4 w-full text-right text-xs font-medium text-slate-500">
-                {{
-                    formattedDateLabel
-                }}
+                {{ formattedDateLabel }}
             </div>
         </div>
     </aside>
@@ -119,7 +125,6 @@
     import { computed } from "vue";
 
     import { storeToRefs } from "pinia";
-    import usePayloadsStore from "../../stores/payloads.js";
     import useLocalizationsStore from "../../stores/localizations.js";
     import useSettingsStore from "../../stores/settings.js";
     import numberFormatterMixin from "../../mixins/numberFormatter.js";
@@ -127,22 +132,29 @@
 
     const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 
-    const emits = defineEmits([
+    defineEmits([
         "remove-department",
         "highlight-department",
         "unhighlight-department",
     ]);
 
-    const payloadsStore = usePayloadsStore();
-    const { departments } = storeToRefs(payloadsStore);
     const localizationStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationStore);
     const settingsStore = useSettingsStore();
-    const { preferredMetric, preferredGranularity } = storeToRefs(settingsStore);
+    const { preferredMetric, preferredGranularity } =
+        storeToRefs(settingsStore);
 
     const props = defineProps({
         department: {
             type: Object,
+            required: true,
+        },
+        selectedQuarter: {
+            type: Number,
+            required: true,
+        },
+        selectedYear: {
+            type: Number,
             required: true,
         },
         highlighted: {
@@ -150,30 +162,39 @@
         },
     });
 
-    const latestValues = computed(() => {
+    const selectedValues = computed(() => {
         const metric = preferredMetric.value === "pop" ? "pops" : "ftes";
         const granularity = preferredGranularity.value;
-        const dataKey = `total_${metric}_per_${granularity}`;
-        
-        return props.department[dataKey]?.at(-1);
+        const dataKey =
+            granularity === "quarter"
+                ? `total_${metric}_per_quarter`
+                : `total_${metric}_per_fiscal_year`;
+
+        return props.department[dataKey]?.find((item) => {
+            if (item.year !== props.selectedYear) {
+                return false;
+            }
+
+            return granularity === "quarter"
+                ? item.quarter === props.selectedQuarter
+                : true;
+        });
     });
 
-    const latestCombinedNoteKey = computed(() =>
+    const selectedCombinedNoteKey = computed(() =>
         preferredMetric.value === "pop"
             ? "department_latest_pops_combined_note"
             : "department_latest_ftes_combined_note",
     );
 
     const formattedDateLabel = computed(() => {
-        const val = latestValues.value;
-
         return formatAsOfDateLabel({
             preferredMetric: preferredMetric.value,
             preferredGranularity: preferredGranularity.value,
             language: language.value,
             strings: strings.value,
-            year: val?.year,
-            quarter: val?.quarter,
+            year: props.selectedYear,
+            quarter: props.selectedQuarter,
         });
     });
 </script>

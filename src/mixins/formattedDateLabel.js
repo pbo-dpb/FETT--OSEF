@@ -12,7 +12,8 @@ const latestAsOfKeyByMetric = {
 };
 
 export const getLatestAsOfString = (preferredMetric, language = "en") => {
-    const key = latestAsOfKeyByMetric[preferredMetric] || latestAsOfKeyByMetric.fte;
+    const key =
+        latestAsOfKeyByMetric[preferredMetric] || latestAsOfKeyByMetric.fte;
     return localeStrings[language]?.[key] || "";
 };
 
@@ -30,7 +31,7 @@ export const formatAsOfDateLabel = ({
     const dateString =
         preferredGranularity === "quarter"
             ? `${prefix}${quarter} ${year}`
-            : `${year}`;
+            : `${year}-${year + 1}`;
 
     // Try to get template from imported locale first, fall back to passed-in strings
     const templateString =
