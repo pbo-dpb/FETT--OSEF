@@ -6,28 +6,47 @@
             :departments="selectedDepartments"
             :highlighted-department-id="highlightedDepartmentId" />
         <div class="flex flex-col gap-4">
-            <div class="flex justify-end gap-2">
-                <select
-                    class="rounded-sm border border-solid border-gray-300 py-0.5"
-                    v-model="selectedYear">
-                    <option
-                        v-for="year in availableYears"
-                        :key="year"
-                        :value="year">
-                        {{ year }}
-                    </option>
-                </select>
-                <select
-                    class="rounded-sm border border-solid border-gray-300 py-0.5"
-                    v-model="selectedQuarter">
-                    <option
-                        v-for="quarter in quarterOptions"
-                        :key="quarter.value"
-                        :value="quarter.value"
-                        :disabled="quarter.disabled">
-                        {{ quarter.label }}
-                    </option>
-                </select>
+            <div class="flex justify-end">
+                <fieldset class="flex flex-col">
+                    <legend class="mb-1 font-semibold">
+                        {{ strings.department_fiscal_period_label }}
+                    </legend>
+                    <div class="flex gap-2">
+                        <label
+                            for="year"
+                            class="sr-only"
+                            >{{ strings.department_year }}</label
+                        >
+                        <select
+                            id="year"
+                            class="rounded-sm border border-solid border-gray-300 py-0.5"
+                            v-model="selectedYear">
+                            <option
+                                v-for="year in availableYears"
+                                :key="year"
+                                :value="year">
+                                {{ year }}
+                            </option>
+                        </select>
+                        <label
+                            for="quarter"
+                            class="sr-only"
+                            >{{ strings.department_quarter }}</label
+                        >
+                        <select
+                            id="quarter"
+                            class="rounded-sm border border-solid border-gray-300 py-0.5"
+                            v-model="selectedQuarter">
+                            <option
+                                v-for="quarter in quarterOptions"
+                                :key="quarter.value"
+                                :value="quarter.value"
+                                :disabled="quarter.disabled">
+                                {{ quarter.label }}
+                            </option>
+                        </select>
+                    </div>
+                </fieldset>
             </div>
             <div class="grid grid-cols-4 gap-4">
                 <DepartmentPicker :selected-departments="selectedDepartments" />
