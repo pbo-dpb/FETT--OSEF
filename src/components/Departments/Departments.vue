@@ -105,8 +105,8 @@
     const localizationStore = useLocalizationsStore();
     const { strings } = storeToRefs(localizationStore);
 
-    import useSettingStore from "../../stores/settings.js";
-    const settingsStore = useSettingStore();
+    import useSettingsStore from "../../stores/settings.js";
+    const settingsStore = useSettingsStore();
     const { start_quarter, start_year, end_year, end_quarter } =
         storeToRefs(settingsStore);
 
