@@ -97,26 +97,26 @@
 
     import { storeToRefs } from "pinia";
 
-    import usePayloadsStore from "../../stores/payloads.js";
+    import usePayloadsStore from "@/stores/payloads.js";
     const payloadsStore = usePayloadsStore();
     const { departments } = storeToRefs(payloadsStore);
 
-    import useLocalizationsStore from "../../stores/localizations.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
     const localizationStore = useLocalizationsStore();
     const { strings } = storeToRefs(localizationStore);
 
-    import useSettingsStore from "../../stores/settings.js";
+    import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
     const { start_quarter, start_year, end_year, end_quarter } =
         storeToRefs(settingsStore);
 
     import DepartmentPicker from "./DepartmentPicker.vue";
-    import LoadingIndicator from "../LoadingIndicator.vue";
+    import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
     import DepartmentsOverviewChart from "./DepartmentsOverviewChart.vue";
     import PickedDepartment from "./PickedDepartment.vue";
 
     import { ArrowBigLeft } from "lucide-vue-next";
-    import { colors } from "../../assets/colors.json?json";
+    import { colors } from "@/assets/colors.json?json";
 
     import { useRoute, useRouter } from "vue-router";
     const route = useRoute();

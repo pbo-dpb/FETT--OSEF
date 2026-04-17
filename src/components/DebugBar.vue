@@ -12,8 +12,8 @@
 
 <script>
     import { mapWritableState } from "pinia";
-    import Button from "./Button.vue";
-    import Localizations from "../stores/localizations.js";
+    import Button from "@/components/Shared/UI/Button.vue";
+    import Localizations from "@/stores/localizations.js";
 
     export default {
         computed: {

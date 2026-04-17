@@ -22,8 +22,8 @@
 
 <script setup>
     import { storeToRefs } from "pinia";
-    import useLocalizationStore from "../stores/localizations.js";
-    import useSettingsStore from "../stores/settings.js";
+    import useLocalizationStore from "@/stores/localizations.js";
+    import useSettingsStore from "@/stores/settings.js";
 
     const localizationsStore = useLocalizationStore();
     const { strings } = storeToRefs(localizationsStore);

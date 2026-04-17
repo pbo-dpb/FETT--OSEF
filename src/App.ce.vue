@@ -18,8 +18,8 @@
     import WrapperEventDispatcher from "./WrapperEventDispatcher.js";
     import { storeToRefs } from "pinia";
     import useLocalizationsStore from "./stores/localizations.js";
-    import AboutAccordion from "./components/AboutAccordion.vue";
-    import Tabs from "./components/Tabs.vue";
+    import AboutAccordion from "@/components/Shared/UI/AboutAccordion.vue";
+    import Tabs from "@/components/Shared/UI/Tabs.vue";
 
     const DebugBar = defineAsyncComponent(
         () => import("./components/DebugBar.vue"),

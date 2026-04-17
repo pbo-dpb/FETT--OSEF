@@ -190,19 +190,19 @@
 </template>
 
 <script>
-    import LoadingIndicator from "../LoadingIndicator.vue";
-    import Button from "../Button.vue";
-    import PreferredComparisonPeriodPicker from "../PreferredComparisonPeriodPicker.vue";
-    import PreferredMetricPicker from "../PreferredMetricPicker.vue";
-    import numberFormatter from "../../mixins/numberFormatter.js";
-    import { formatAsOfDateLabel } from "../../mixins/formattedDateLabel.js";
+    import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
+    import Button from "@/components/Shared/UI/Button.vue";
+    import PreferredComparisonPeriodPicker from "@/components/Shared/Controls/Chart/PreferredComparisonPeriodPicker.vue";
+    import PreferredMetricPicker from "@/components/Shared/Controls/Chart/PreferredMetricPicker.vue";
+    import numberFormatter from "@/mixins/numberFormatter.js";
+    import { formatAsOfDateLabel } from "@/mixins/formattedDateLabel.js";
 
     import { storeToRefs } from "pinia";
 
-    import useLocalizationsStore from "../../stores/localizations.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
 
-    import usePayloadsStore from "../../stores/payloads.js";
-    import useSettingsStore from "../../stores/settings.js";
+    import usePayloadsStore from "@/stores/payloads.js";
+    import useSettingsStore from "@/stores/settings.js";
 
     import { toRaw } from "vue";
 

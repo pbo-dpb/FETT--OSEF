@@ -44,17 +44,17 @@
     import { ChevronDown, ChevronRight } from "lucide-vue-next";
     import { storeToRefs } from "pinia";
 
-    import introEn from "../assets/intro.en.md?url";
-    import introFr from "../assets/intro.fr.md?url";
+    import introEn from "@/assets/intro.en.md?url";
+    import introFr from "@/assets/intro.fr.md?url";
 
     import LoadingIndicator from "./LoadingIndicator.vue";
     import { marked } from "marked";
 
-    import useLocalizationsStore from "../stores/localizations.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
 
-    import useSettingStore from "../stores/settings.js";
+    import useSettingStore from "@/stores/settings.js";
     const settingsStore = useSettingStore();
     const { last_updated } = storeToRefs(settingsStore);
 

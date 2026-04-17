@@ -125,10 +125,10 @@
     import { computed } from "vue";
 
     import { storeToRefs } from "pinia";
-    import useLocalizationsStore from "../../stores/localizations.js";
-    import useSettingsStore from "../../stores/settings.js";
-    import numberFormatterMixin from "../../mixins/numberFormatter.js";
-    import { formatAsOfDateLabel } from "../../mixins/formattedDateLabel.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
+    import useSettingsStore from "@/stores/settings.js";
+    import numberFormatterMixin from "@/mixins/numberFormatter.js";
+    import { formatAsOfDateLabel } from "@/mixins/formattedDateLabel.js";
 
     const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 

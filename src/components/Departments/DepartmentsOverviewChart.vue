@@ -34,22 +34,22 @@
     } from "vue";
     import { storeToRefs } from "pinia";
 
-    import useLocalizationsStore from "../../stores/localizations.js";
-    import useSettingsStore from "../../stores/settings.js";
-    import usePayloadsStore from "../../stores/payloads.js";
-    import numberFormatterMixin from "../../mixins/numberFormatter.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
+    import useSettingsStore from "@/stores/settings.js";
+    import usePayloadsStore from "@/stores/payloads.js";
+    import numberFormatterMixin from "@/mixins/numberFormatter.js";
 
-    import departmentsOverviewPlaceholderUrl from "../../assets/departments-overview-placeholder.svg?url";
-    import GeneralChartSettings from "../GeneralChartSettings.vue";
-    import PreferredTenurePicker from "../PreferredTenurePicker.vue";
+    import departmentsOverviewPlaceholderUrl from "@/assets/departments-overview-placeholder.svg?url";
+    import GeneralChartSettings from "@/components/Shared/Controls/Chart/GeneralChartSettings.vue";
+    import PreferredTenurePicker from "@/components/Shared/Controls/Chart/PreferredTenurePicker.vue";
 
     import * as echarts from "echarts/core";
     import { LineChart } from "echarts/charts";
     import { LabelLayout, UniversalTransition } from "echarts/features";
     import { SVGRenderer } from "echarts/renderers";
-    import { colors } from "../../assets/colors.json?json";
-    import lightTheme from "../../assets/echarts/light.json?json";
-    import darkTheme from "../../assets/echarts/dark.json?json";
+    import { colors } from "@/assets/colors.json?json";
+    import lightTheme from "@/assets/echarts/light.json?json";
+    import darkTheme from "@/assets/echarts/dark.json?json";
     import {
         TooltipComponent,
         GridComponent,

@@ -23,11 +23,11 @@
 
     import { storeToRefs } from "pinia";
 
-    import useLocalizationsStore from "../stores/localizations.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
 
-    import useSettingsStore from "../stores/settings.js";
+    import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
     const { previouslySelectedDepartmentIds } = storeToRefs(settingsStore);
 

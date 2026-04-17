@@ -51,15 +51,15 @@
     } from "vue";
     import { storeToRefs } from "pinia";
 
-    import usePayloadsStore from "../../stores/payloads.js";
+    import usePayloadsStore from "@/stores/payloads.js";
     const payloadsStore = usePayloadsStore();
     const { composition } = storeToRefs(payloadsStore);
 
-    import useLocalizationsStore from "../../stores/localizations.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
 
-    import useSettingsStore from "../../stores/settings.js";
+    import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
     const { preferredTimeframe, preferredGranularity, preferredMetric } =
         storeToRefs(settingsStore);
@@ -76,13 +76,13 @@
     import { LineChart } from "echarts/charts";
     import { LabelLayout, UniversalTransition } from "echarts/features";
     import { SVGRenderer } from "echarts/renderers";
-    import { colors } from "../../assets/colors.json?json";
+    import { colors } from "@/assets/colors.json?json";
 
-    import darkTheme from "../../assets/echarts/dark.json?json";
+    import darkTheme from "@/assets/echarts/dark.json?json";
     darkTheme["color"] = colors.dark;
     darkTheme["graph"]["color"] = colors.dark;
     echarts.registerTheme("dark", darkTheme);
-    import lightTheme from "../../assets/echarts/light.json?json";
+    import lightTheme from "@/assets/echarts/light.json?json";
     lightTheme["color"] = colors.light;
     lightTheme["graph"]["color"] = colors.light;
     echarts.registerTheme("light", lightTheme);

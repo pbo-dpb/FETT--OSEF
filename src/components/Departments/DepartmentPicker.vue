@@ -65,8 +65,8 @@
     } from "reka-ui";
 
     import { storeToRefs } from "pinia";
-    import usePayloadsStore from "../../stores/payloads.js";
-    import useLocalizationsStore from "../../stores/localizations.js";
+    import usePayloadsStore from "@/stores/payloads.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
     import { ref, computed } from "vue";
     const payloadsStore = usePayloadsStore();
     const { departments } = storeToRefs(payloadsStore);
