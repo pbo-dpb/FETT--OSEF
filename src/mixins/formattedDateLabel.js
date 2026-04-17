@@ -27,13 +27,22 @@ export const formatAsOfDateLabel = ({
 }) => {
     if (!year) return "";
 
-    const prefix = language === "fr" ? "T" : "Q";
+    const fiscalDivision = language === "fr" ? "T" : "Q";
+    let preposition = "";
+
+    if (language === "fr") {
+        if (preferredGranularity === "quarter") {
+            preposition = "au";
+        } else {
+            preposition = "en";
+        }
+    }
+
     const dateString =
         preferredGranularity === "quarter"
-            ? `${prefix}${quarter} ${year}`
-            : `${year}-${year + 1}`;
+            ? `${preposition} ${fiscalDivision}${quarter} ${year}`
+            : `${preposition} ${year}-${year + 1}`;
 
-    // Try to get template from imported locale first, fall back to passed-in strings
     const templateString =
         getLatestAsOfString(preferredMetric, language) ||
         strings?.[latestAsOfKeyByMetric[preferredMetric]];
