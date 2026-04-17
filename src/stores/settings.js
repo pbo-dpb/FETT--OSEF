@@ -12,6 +12,7 @@ export default defineStore("settings", {
         preferredTimeframe: "MAX",
         preferredGranularity: "quarter",
         selectedComparisonPeriod: "sameQuarterLastYear",
+        preferredTenure: "combined",
         colors: colors,
         previouslySelectedDepartmentIds: previouslySelectedDepartmentIds
             ? JSON.parse(previouslySelectedDepartmentIds).map((id) =>

@@ -1,22 +1,30 @@
 <template>
-    <ToggleGroupRoot
-        v-model="preferredMetric"
-        type="single"
-        class="flex flex-row gap-2"
-        required>
-        <ToggleGroupItem
-            value="fte"
-            :class="toggleGroupItemClasses"
-            :disabled="preferredMetric === 'fte'">
-            {{ strings.preferred_metric_fte }}
-        </ToggleGroupItem>
-        <ToggleGroupItem
-            value="pop"
-            :class="toggleGroupItemClasses"
-            :disabled="preferredMetric === 'pop'">
-            {{ strings.preferred_metric_headcount }}
-        </ToggleGroupItem>
-    </ToggleGroupRoot>
+    <div class="flex flex-col gap-1">
+        <span
+            id="preferred-metric-label"
+            class="font-semibold">
+            {{ strings.preferred_metric_label }}
+        </span>
+        <ToggleGroupRoot
+            v-model="preferredMetric"
+            type="single"
+            aria-labelledby="preferred-metric-label"
+            class="flex flex-row gap-2"
+            required>
+            <ToggleGroupItem
+                value="fte"
+                :class="toggleGroupItemClasses"
+                :disabled="preferredMetric === 'fte'">
+                {{ strings.preferred_metric_fte }}
+            </ToggleGroupItem>
+            <ToggleGroupItem
+                value="pop"
+                :class="toggleGroupItemClasses"
+                :disabled="preferredMetric === 'pop'">
+                {{ strings.preferred_metric_headcount }}
+            </ToggleGroupItem>
+        </ToggleGroupRoot>
+    </div>
 </template>
 
 <script setup>

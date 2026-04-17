@@ -5,19 +5,9 @@
         :class="{
             blur: !departments.length,
         }">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-wrap items-center justify-between gap-y-4">
             <GeneralChartSettings />
-            <select
-                class="rounded-sm border border-solid border-gray-300 py-0.5"
-                v-model="preferredBreakdown">
-                <option value="indeterminate">
-                    {{ strings.dep_indeterminate }}
-                </option>
-                <option value="term">{{ strings.dep_term }}</option>
-                <option value="casual">{{ strings.dep_casual }}</option>
-                <option value="student">{{ strings.dep_student }}</option>
-                <option value="combined">{{ strings.dep_combined }}</option>
-            </select>
+            <PreferredTenurePicker />
         </div>
         <div
             v-show="departments.length"
@@ -51,6 +41,7 @@
 
     import departmentsOverviewPlaceholderUrl from "../../assets/departments-overview-placeholder.svg?url";
     import GeneralChartSettings from "../GeneralChartSettings.vue";
+    import PreferredTenurePicker from "../PreferredTenurePicker.vue";
 
     import * as echarts from "echarts/core";
     import { LineChart } from "echarts/charts";
@@ -86,11 +77,15 @@
     ]);
 
     const localizationsStore = useLocalizationsStore();
-    const { language, strings } = storeToRefs(localizationsStore);
+    const { language } = storeToRefs(localizationsStore);
 
     const settingsStore = useSettingsStore();
-    const { preferredTimeframe, preferredGranularity, preferredMetric } =
-        storeToRefs(settingsStore);
+    const {
+        preferredTimeframe,
+        preferredGranularity,
+        preferredMetric,
+        preferredTenure,
+    } = storeToRefs(settingsStore);
 
     const payloadsStore = usePayloadsStore();
 
@@ -131,8 +126,6 @@
             ? "total_pops_per_fiscal_year"
             : "total_ftes_per_fiscal_year",
     );
-
-    const preferredBreakdown = ref("combined");
 
     const dataset = computed(() => {
         if (props.departments.filter((dept) => !dept.eagerLoaded).length)
@@ -178,7 +171,7 @@
 
                 let rawValue;
 
-                if (preferredBreakdown.value === "combined") {
+                if (preferredTenure.value === "combined") {
                     rawValue =
                         sumOfParts === 0 && item.combined
                             ? Math.round(item.combined)
@@ -187,9 +180,7 @@
                     if (sumOfParts === 0 && item.combined > 0) {
                         rawValue = null;
                     } else {
-                        rawValue = Math.round(
-                            item[preferredBreakdown.value] || 0,
-                        );
+                        rawValue = Math.round(item[preferredTenure.value] || 0);
                     }
                 }
 
@@ -335,16 +326,14 @@
     };
 
     onMounted(() => {
-        let theme = null;
-
-        if (
+        const theme =
             window.matchMedia &&
             window.matchMedia("(prefers-color-scheme: dark)").matches
-        ) {
-            theme = "dark";
+                ? "dark"
+                : "light";
+
+        if (theme === "dark") {
             useDarkTheme.value = true;
-        } else {
-            theme = "light";
         }
 
         chart.value = echarts.init(
@@ -383,7 +372,7 @@
 
     watch(
         () => props.departments,
-        (newDeptList, oldDeptList) => {
+        () => {
             redrawChart();
             syncDepartments();
         },
@@ -391,7 +380,7 @@
 
     watch(
         () => props.highlightedDepartmentId,
-        (newId, oldId) => {
+        () => {
             redrawChart();
         },
     );
@@ -401,7 +390,7 @@
             preferredGranularity,
             preferredTimeframe,
             preferredMetric,
-            preferredBreakdown,
+            preferredTenure,
         ],
         () => {
             redrawChart();

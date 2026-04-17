@@ -1,20 +1,15 @@
 <template>
-    <div class="flex items-center">
+    <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <PreferredMetricPicker />
-        <Separator />
         <PreferredTimeFramePicker />
-        <Separator />
         <PreferredGranularityPicker />
     </div>
 </template>
 
 <script setup>
-    import { storeToRefs } from "pinia";
-
     import { onMounted } from "vue";
-
+    import { storeToRefs } from "pinia";
     import usePayloadsStore from "../stores/payloads.js";
-    import Separator from "./Separator.vue";
     import PreferredMetricPicker from "./PreferredMetricPicker.vue";
     import PreferredTimeFramePicker from "./PreferredTimeFramePicker.vue";
     import PreferredGranularityPicker from "./PreferredGranularityPicker.vue";

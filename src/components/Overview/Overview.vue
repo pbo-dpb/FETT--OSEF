@@ -2,9 +2,8 @@
     <div
         v-if="data"
         class="grid grid-cols-4 gap-8">
-        <div class="col-span-full flex items-center">
+        <div class="col-span-full flex flex-wrap items-center gap-x-8 gap-y-4">
             <PreferredMetricPicker />
-            <Separator />
             <PreferredComparisonPeriodPicker />
         </div>
         <div
@@ -33,7 +32,7 @@
                 <h3 class="font-medium">
                     {{ strings.indeterminate_label }}
                 </h3>
-                <p  
+                <p
                     class="text-xl"
                     :class="{
                         'text-red-800': indeterminateAbsoluteDiff < 0,
@@ -178,7 +177,11 @@
             </div>
         </div>
         <div class="col-span-full">
-            <Button type="default" href="./sample-input.xlsx">{{ strings.download_button }}</Button>
+            <Button
+                type="default"
+                href="./sample-input.xlsx"
+                >{{ strings.download_button }}</Button
+            >
         </div>
     </div>
     <div v-else>
@@ -189,7 +192,6 @@
 <script>
     import LoadingIndicator from "../LoadingIndicator.vue";
     import Button from "../Button.vue";
-    import Separator from "../Separator.vue";
     import PreferredComparisonPeriodPicker from "../PreferredComparisonPeriodPicker.vue";
     import PreferredMetricPicker from "../PreferredMetricPicker.vue";
     import numberFormatter from "../../mixins/numberFormatter.js";
@@ -206,9 +208,8 @@
 
     export default {
         components: {
-            LoadingIndicator,
             Button,
-            Separator,
+            LoadingIndicator,
             PreferredComparisonPeriodPicker,
             PreferredMetricPicker,
         },
