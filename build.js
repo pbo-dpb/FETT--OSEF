@@ -23,7 +23,7 @@ const {
 } = require("./build-src/department");
 const importDataSheet = require("./build-src/datasheets");
 const Aggregator = require("./build-src/aggregator");
-const Overviewer = require("./build-src/overviewer");
+const Overviewer = require("./build-src/overviewer").default;
 
 // Get the input .xlsx file from command line arguments
 const inputFile = process.argv[2];
@@ -105,8 +105,10 @@ const overviewer = new Overviewer(
                 name_fr: dept.name_fr,
                 acronym_en: dept.acronym_en,
                 acronym_fr: dept.acronym_fr,
-                total_ftes_per_quarter: aggregator.totalFtesPerQuarterForDepartment(dept.id),
-                total_pops_per_quarter: aggregator.totalPopsPerQuarterForDepartment(dept.id),
+                total_ftes_per_quarter:
+                    aggregator.totalFtesPerQuarterForDepartment(dept.id),
+                total_pops_per_quarter:
+                    aggregator.totalPopsPerQuarterForDepartment(dept.id),
                 latest_ftes: aggregator.latestTotalFtesForDepartment(dept.id),
                 latest_pops: aggregator.latestTotalPopsForDepartment(dept.id),
             };

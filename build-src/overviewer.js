@@ -1,4 +1,4 @@
-module.exports = class Overviewer {
+export default class Overviewer {
     constructor(aggregator, departments, departmentsDetails) {
         this.aggregator = aggregator;
         this.departments = departments;
@@ -106,20 +106,32 @@ module.exports = class Overviewer {
             secondQuarter,
             metric,
         );
+        const excludedDepartmentNames = new Set([
+            "Royal Canadian Mounted Police - Members",
+            "Royal Canadian Mounted Police",
+            "Canadian Armed Forces",
+        ]);
+        const includeInRanking = (dept) =>
+            !excludedDepartmentNames.has(dept.department_name_en);
+
         let topAbsoluteGains = deptDiffs
+            .filter(includeInRanking)
             .sort((a, b) => b.absoluteDiff - a.absoluteDiff)
             .slice(0, 3);
 
         let topAbsoluteDeclines = deptDiffs
+            .filter(includeInRanking)
             .sort((a, b) => a.absoluteDiff - b.absoluteDiff)
             .slice(0, 3);
 
         let topRelativeGains = deptDiffs
+            .filter(includeInRanking)
             .filter((diff) => diff.relativeDiff !== null)
             .sort((a, b) => b.relativeDiff - a.relativeDiff)
             .slice(0, 3);
 
         let topRelativeDeclines = deptDiffs
+            .filter(includeInRanking)
             .filter((diff) => diff.relativeDiff !== null)
             .sort((a, b) => a.relativeDiff - b.relativeDiff)
             .slice(0, 3);
@@ -343,4 +355,4 @@ module.exports = class Overviewer {
             },
         };
     }
-};
+}
