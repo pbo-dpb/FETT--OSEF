@@ -55,5 +55,6 @@
     "tab_navigation_overview_label": "Overview",
     "tab_navigation_composition_label": "Composition",
     "tab_navigation_departments_label": "Comparison",
+    "tab_navigation_notes_label": "Notes",
     "download_button": "Download the data (.xlsx)"
 }

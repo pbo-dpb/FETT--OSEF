@@ -56,6 +56,13 @@
                 },
                 selected: route.name === "departments",
             },
+            {
+                label: strings.value.tab_navigation_notes_label,
+                to: {
+                    name: "notes",
+                },
+                selected: route.name === "notes",
+            },
         ];
     });
 </script>
