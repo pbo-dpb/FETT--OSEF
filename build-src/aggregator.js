@@ -59,6 +59,20 @@ module.exports = class Aggregator {
         return rows.map((row) => this.normalizeMetricRow(row, metric));
     };
 
+    metricTenureInputKeys = function (metric = "fte") {
+        const baseTenures = [
+            "unknown",
+            "indeterminate",
+            "term",
+            "casual",
+            "student",
+            "combined",
+        ];
+        return metric === "pop"
+            ? baseTenures.map((tenure) => `pop_${tenure}`)
+            : baseTenures;
+    };
+
     preparedPaddedMonthlyDepartmentTotals = function () {
         this.paddedMonthlyDepartmentTotals = {};
 
@@ -324,7 +338,7 @@ module.exports = class Aggregator {
     };
 
     monthlyDepartmentTotalsToPeriod = function (department_id) {
-        return this.paddedMonthlyDepartmentTotals[department_id];
+        return this.paddedMonthlyDepartmentTotals[department_id] || [];
     };
 
     loopFunctionOverPeriod = function (settings, period, runnable) {
@@ -384,6 +398,7 @@ module.exports = class Aggregator {
                 this.settings,
             );
         }
+        monthlyTotals = monthlyTotals || [];
 
         let fiscalYearCursor = this.settings.start_year;
         let fiscalYears = [];
@@ -414,14 +429,17 @@ module.exports = class Aggregator {
                 });
 
             let totals = {};
-            // Some objects may not have tenure types, so we find one that does.
-            Object.keys(
-                monthlyTotals.find((x) => Object.keys(x).length > 3),
-            ).forEach((tenureType) => {
-                if (!this.isMetricKey(tenureType, metric)) {
-                    return;
-                }
+            // Some objects may not have tenure types; fall back to known keys when none are present.
+            const sampleMonthlyRow = monthlyTotals.find((x) =>
+                Object.keys(x).some((key) => this.isMetricKey(key, metric)),
+            );
+            const tenureTypes = sampleMonthlyRow
+                ? Object.keys(sampleMonthlyRow).filter((key) =>
+                      this.isMetricKey(key, metric),
+                  )
+                : this.metricTenureInputKeys(metric);
 
+            tenureTypes.forEach((tenureType) => {
                 const outputKey = this.normalizeMetricKey(tenureType, metric);
 
                 if (datapointsForYear.length === 0) {
@@ -459,6 +477,8 @@ module.exports = class Aggregator {
         monthlyTotals,
         metric = "fte",
     ) {
+        monthlyTotals = monthlyTotals || [];
+
         return this.loopFunctionOverPeriod(
             settings,
             "quarter",
@@ -475,36 +495,39 @@ module.exports = class Aggregator {
                     quarter: quarter,
                 };
 
-                Object.keys(monthlyTotals.find((x) => !x.unreported)).forEach(
-                    (tenureType) => {
-                        if (!this.isMetricKey(tenureType, metric)) {
-                            return;
-                        }
-
-                        const outputKey = this.normalizeMetricKey(
-                            tenureType,
-                            metric,
-                        );
-
-                        const monthlyTotalsForTenureArray = monthlyTotals
-                            .filter(
-                                (mt) =>
-                                    mt.year === year &&
-                                    quarterMonths.includes(mt.month),
-                            )
-                            .map((val) => val[tenureType] || 0);
-                        if (monthlyTotalsForTenureArray.length) {
-                            // Average over all months in the quarter
-                            totals[outputKey] =
-                                monthlyTotalsForTenureArray.reduce(
-                                    (a, b) => a + b,
-                                    0,
-                                ) / monthlyTotalsForTenureArray.length;
-                        } else {
-                            totals[outputKey] = 0;
-                        }
-                    },
+                const sampleMonthlyRow = monthlyTotals.find((x) =>
+                    Object.keys(x).some((key) => this.isMetricKey(key, metric)),
                 );
+                const tenureTypes = sampleMonthlyRow
+                    ? Object.keys(sampleMonthlyRow).filter((key) =>
+                          this.isMetricKey(key, metric),
+                      )
+                    : this.metricTenureInputKeys(metric);
+
+                tenureTypes.forEach((tenureType) => {
+                    const outputKey = this.normalizeMetricKey(
+                        tenureType,
+                        metric,
+                    );
+
+                    const monthlyTotalsForTenureArray = monthlyTotals
+                        .filter(
+                            (mt) =>
+                                mt.year === year &&
+                                quarterMonths.includes(mt.month),
+                        )
+                        .map((val) => val[tenureType] || 0);
+                    if (monthlyTotalsForTenureArray.length) {
+                        // Average over all months in the quarter
+                        totals[outputKey] =
+                            monthlyTotalsForTenureArray.reduce(
+                                (a, b) => a + b,
+                                0,
+                            ) / monthlyTotalsForTenureArray.length;
+                    } else {
+                        totals[outputKey] = 0;
+                    }
+                });
                 return totals;
             },
         );
@@ -580,9 +603,9 @@ module.exports = class Aggregator {
     };
 
     latestTotalFtesForDepartment = function (department_id) {
-        const reports = this.paddedMonthlyDepartmentTotals[
-            department_id
-        ].filter((monthEntry) => monthEntry.unreported === false);
+        const reports = (
+            this.paddedMonthlyDepartmentTotals[department_id] || []
+        ).filter((monthEntry) => monthEntry.unreported === false);
         let latestReport =
             reports.length > 0 ? reports[reports.length - 1] : null;
 
@@ -599,9 +622,9 @@ module.exports = class Aggregator {
     };
 
     latestTotalPopsForDepartment = function (department_id) {
-        const reports = this.paddedMonthlyDepartmentTotals[
-            department_id
-        ].filter((monthEntry) => monthEntry.unreported === false);
+        const reports = (
+            this.paddedMonthlyDepartmentTotals[department_id] || []
+        ).filter((monthEntry) => monthEntry.unreported === false);
         let latestReport =
             reports.length > 0 ? reports[reports.length - 1] : null;
 

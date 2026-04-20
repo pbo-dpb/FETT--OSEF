@@ -75,6 +75,22 @@ workbook.SheetNames.forEach((sheetName) => {
     }
 });
 
+const departmentsWithData = new Set(datapoints.map((dp) => dp.department_id));
+const departmentsWithoutData = Object.values(departments).filter(
+    (dept) => !departmentsWithData.has(dept.id),
+);
+
+if (departmentsWithoutData.length > 0) {
+    console.warn(
+        `Warning: ${departmentsWithoutData.length} department(s) in the departments sheet have no matching rows in data-* sheets.`,
+    );
+    console.warn(
+        `Missing data for: ${departmentsWithoutData
+            .map((dept) => dept.name_en)
+            .join(", ")}`,
+    );
+}
+
 /***
  * EXPORT TO JSON FILES
  */
