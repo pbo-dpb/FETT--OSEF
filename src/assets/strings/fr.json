@@ -2,10 +2,6 @@
     "title": "Effectif 360",
     "collapsible_component_handle_about": "À propos de cet outil",
     "last_updated": " Dernière mise à jour : ",
-    "tab_navigation_aria_label": "Onglets de navigation principaux",
-    "tab_navigation_overview_label": "Aperçu",
-    "tab_navigation_composition_label": "Composition",
-    "tab_navigation_departments_label": "Comparer",
     "indeterminate_label": "Indéterminé",
     "term_label": "Déterminé",
     "casual_label": "Occasionnels",
@@ -55,5 +51,9 @@
     "overview_all_headcount_label": "Tous les employés",
     "overview_largest_increase_by_department": "Plus forte hausse par ministère",
     "overview_largest_decrease_by_department": "Plus forte baisse par ministère",
+    "tab_navigation_aria_label": "Onglets de navigation principaux",
+    "tab_navigation_overview_label": "Aperçu",
+    "tab_navigation_composition_label": "Composition",
+    "tab_navigation_departments_label": "Comparaison",
     "download_button": "Téléchargez les données (.xlsx)"
 }
