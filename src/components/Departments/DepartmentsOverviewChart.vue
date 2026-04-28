@@ -47,9 +47,7 @@
     import { LineChart } from "echarts/charts";
     import { LabelLayout, UniversalTransition } from "echarts/features";
     import { SVGRenderer } from "echarts/renderers";
-    import { colors } from "@/assets/colors.json?json";
-    import lightTheme from "@/assets/echarts/light.json?json";
-    import darkTheme from "@/assets/echarts/dark.json?json";
+    import { registerEchartsThemes } from "@/assets/echarts/themes.js";
     import {
         TooltipComponent,
         GridComponent,
@@ -97,12 +95,7 @@
     let chart = shallowRef(null);
     const useDarkTheme = ref(false);
 
-    darkTheme["color"] = colors.dark;
-    darkTheme["graph"]["color"] = colors.dark;
-    echarts.registerTheme("dark", darkTheme);
-    lightTheme["color"] = colors.light;
-    lightTheme["graph"]["color"] = colors.light;
-    echarts.registerTheme("light", lightTheme);
+    registerEchartsThemes(echarts);
 
     const props = defineProps({
         departments: {

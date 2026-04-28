@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import settings from "../assets/settings.json";
-import { colors } from "../assets/colors.json?json";
+import { colors } from "../assets/echarts/colors.json?json";
 
 const previouslySelectedDepartmentIds = sessionStorage.getItem(
     "selectedDepartmentIds",

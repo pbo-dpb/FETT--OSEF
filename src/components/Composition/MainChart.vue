@@ -76,16 +76,7 @@
     import { LineChart } from "echarts/charts";
     import { LabelLayout, UniversalTransition } from "echarts/features";
     import { SVGRenderer } from "echarts/renderers";
-    import { colors } from "@/assets/colors.json?json";
-
-    import darkTheme from "@/assets/echarts/dark.json?json";
-    darkTheme["color"] = colors.dark;
-    darkTheme["graph"]["color"] = colors.dark;
-    echarts.registerTheme("dark", darkTheme);
-    import lightTheme from "@/assets/echarts/light.json?json";
-    lightTheme["color"] = colors.light;
-    lightTheme["graph"]["color"] = colors.light;
-    echarts.registerTheme("light", lightTheme);
+    import { registerEchartsThemes } from "@/assets/echarts/themes.js";
 
     import {
         TooltipComponent,
@@ -112,6 +103,8 @@
         MarkAreaComponent,
         AriaComponent,
     ]);
+
+    registerEchartsThemes(echarts);
 
     const baseData = computed(() => {
         if (preferredGranularity.value === "quarter") {
@@ -300,21 +293,14 @@
             );
         }
 
-        let theme = null;
-
-        if (
+        const prefersDarkTheme =
             window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches
-        ) {
-            theme = "dark";
-            useDarkTheme.value = true;
-        } else {
-            theme = "light";
-        }
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
+        useDarkTheme.value = prefersDarkTheme;
 
         chart.value = echarts.init(
             componentRoot.value.querySelector(`#${uniqueId}`),
-            theme,
+            prefersDarkTheme ? "dark" : "light",
             {
                 renderer: "svg",
                 locale: language.value,

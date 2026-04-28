@@ -122,7 +122,7 @@
     import PickedDepartment from "./PickedDepartment.vue";
 
     import { ArrowBigLeft } from "lucide-vue-next";
-    import { colors } from "@/assets/colors.json?json";
+    import { colors } from "@/assets/echarts/colors.json?json";
 
     import { useRoute, useRouter } from "vue-router";
     const route = useRoute();
