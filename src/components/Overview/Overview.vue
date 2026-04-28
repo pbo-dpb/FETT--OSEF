@@ -15,12 +15,7 @@
                 <h3 class="font-medium">
                     {{ strings[overviewAllLabelKey] }}
                 </h3>
-                <p
-                    class="text-3xl font-bold"
-                    :class="{
-                        'text-red-800': allDepartmentsAbsoluteDiff < 0,
-                        'text-green-800': allDepartmentsAbsoluteDiff > 0,
-                    }">
+                <p class="text-3xl font-bold">
                     {{ numberFormatter(allDepartmentsAbsoluteDiff) }}
                     ({{ numberFormatter(allDepartmentsRelativeDiff, true) }}%)
                     <span v-if="allDepartmentsAbsoluteDiff > 0">↑</span>
@@ -32,12 +27,7 @@
                 <h3 class="font-medium">
                     {{ strings.indeterminate_label }}
                 </h3>
-                <p
-                    class="text-xl"
-                    :class="{
-                        'text-red-800': indeterminateAbsoluteDiff < 0,
-                        'text-green-800': indeterminateAbsoluteDiff > 0,
-                    }">
+                <p class="text-xl">
                     {{ numberFormatter(indeterminateAbsoluteDiff) }}
                     ({{ numberFormatter(indeterminateRelativeDiff, true) }}%)
                     <span v-if="indeterminateAbsoluteDiff > 0">↑</span>
@@ -47,12 +37,7 @@
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="font-medium">{{ strings.term_label }}</h3>
-                <p
-                    class="text-xl"
-                    :class="{
-                        'text-red-800': termAbsoluteDiff < 0,
-                        'text-green-800': termAbsoluteDiff > 0,
-                    }">
+                <p class="text-xl">
                     {{ numberFormatter(termAbsoluteDiff) }} ({{
                         numberFormatter(termRelativeDiff, true)
                     }}%)
@@ -63,12 +48,7 @@
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="font-medium">{{ strings.student_label }}</h3>
-                <p
-                    class="text-xl"
-                    :class="{
-                        'text-red-800': studentAbsoluteDiff < 0,
-                        'text-green-800': studentAbsoluteDiff > 0,
-                    }">
+                <p class="text-xl">
                     {{ numberFormatter(studentAbsoluteDiff) }} ({{
                         numberFormatter(studentRelativeDiff, true)
                     }}%)
@@ -79,17 +59,12 @@
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
                 <h3 class="font-medium">{{ strings.casual_label }}</h3>
-                <p
-                    class="text-xl"
-                    :class="{
-                        'text-red-800': casualAbsoluteDiff < 0,
-                        'text-green-800': casualAbsoluteDiff > 0,
-                    }">
+                <p class="text-xl">
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
                         numberFormatter(casualRelativeDiff, true)
                     }}%)
-                    <span v-if="casualAbsoluteDiff > 0">↑</span>
-                    <span v-else-if="casualAbsoluteDiff < 0">↓</span>
+                    <span v-if="studentAbsoluteDiff > 0">↑</span>
+                    <span v-else-if="studentAbsoluteDiff < 0">↓</span>
                     <span v-else>-</span>
                 </p>
             </div>
@@ -117,11 +92,7 @@
                             >({{ displayDepartmentAcronym(department) }})</span
                         >
                     </div>
-                    <div
-                        :class="{
-                            'text-red-800': department.absoluteDiff < 0,
-                            'text-green-800': department.absoluteDiff > 0,
-                        }">
+                    <div>
                         <span
                             >{{ numberFormatter(department.absoluteDiff) }}
                         </span>
@@ -156,11 +127,7 @@
                             >({{ displayDepartmentAcronym(department) }})</span
                         >
                     </div>
-                    <div
-                        :class="{
-                            'text-red-800': department.absoluteDiff < 0,
-                            'text-green-800': department.absoluteDiff > 0,
-                        }">
+                    <div>
                         <span
                             >{{ numberFormatter(department.absoluteDiff) }}
                         </span>
