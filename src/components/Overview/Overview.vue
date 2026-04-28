@@ -179,7 +179,7 @@
         <div class="col-span-full">
             <Button
                 type="default"
-                href="./sample-input.xlsx"
+                href="./sample-input-current.xlsx"
                 >{{ strings.download_button }}</Button
             >
         </div>
