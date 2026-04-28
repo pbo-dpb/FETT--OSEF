@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import aggregationPayloadUrl from "../assets/composition.json?url";
-import departmentsPayloadUrl from "../assets/departments.json?url";
-import overviewPayloadUrl from "../assets/overview.json?url";
+import aggregationPayloadUrl from "../assets/payloads/composition.json?url";
+import departmentsPayloadUrl from "../assets/payloads/departments.json?url";
+import overviewPayloadUrl from "../assets/payloads/overview.json?url";
 
 let departmentsEagerPayloadsUrls = {};
 let dptUrls = import.meta.glob("../assets/departments/*.json", {
