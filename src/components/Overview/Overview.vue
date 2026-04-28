@@ -18,9 +18,7 @@
                 <p class="text-3xl font-bold">
                     {{ numberFormatter(allDepartmentsAbsoluteDiff) }}
                     ({{ numberFormatter(allDepartmentsRelativeDiff, true) }}%)
-                    <span v-if="allDepartmentsAbsoluteDiff > 0">↑</span>
-                    <span v-else-if="allDepartmentsAbsoluteDiff < 0">↓</span>
-                    <span v-else>-</span>
+                    <TrendIndicator :datapoint="allDepartmentsAbsoluteDiff" />
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
@@ -30,9 +28,7 @@
                 <p class="text-xl">
                     {{ numberFormatter(indeterminateAbsoluteDiff) }}
                     ({{ numberFormatter(indeterminateRelativeDiff, true) }}%)
-                    <span v-if="indeterminateAbsoluteDiff > 0">↑</span>
-                    <span v-else-if="indeterminateAbsoluteDiff < 0">↓</span>
-                    <span v-else>-</span>
+                    <TrendIndicator :datapoint="indeterminateAbsoluteDiff" />
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
@@ -41,9 +37,7 @@
                     {{ numberFormatter(termAbsoluteDiff) }} ({{
                         numberFormatter(termRelativeDiff, true)
                     }}%)
-                    <span v-if="termAbsoluteDiff > 0">↑</span>
-                    <span v-else-if="termAbsoluteDiff < 0">↓</span>
-                    <span v-else>-</span>
+                    <TrendIndicator :datapoint="termAbsoluteDiff" />
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
@@ -52,9 +46,7 @@
                     {{ numberFormatter(studentAbsoluteDiff) }} ({{
                         numberFormatter(studentRelativeDiff, true)
                     }}%)
-                    <span v-if="studentAbsoluteDiff > 0">↑</span>
-                    <span v-else-if="studentAbsoluteDiff < 0">↓</span>
-                    <span v-else>-</span>
+                    <TrendIndicator :datapoint="studentAbsoluteDiff" />
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
@@ -63,9 +55,7 @@
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
                         numberFormatter(casualRelativeDiff, true)
                     }}%)
-                    <span v-if="studentAbsoluteDiff > 0">↑</span>
-                    <span v-else-if="studentAbsoluteDiff < 0">↓</span>
-                    <span v-else>-</span>
+                    <TrendIndicator :datapoint="casualAbsoluteDiff" />
                 </p>
             </div>
             <div
@@ -97,9 +87,7 @@
                             >{{ numberFormatter(department.absoluteDiff) }}
                         </span>
                         ({{ numberFormatter(department.relativeDiff, true) }}%)
-                        <span v-if="department.absoluteDiff > 0">↑</span>
-                        <span v-else-if="department.absoluteDiff < 0">↓</span>
-                        <span v-else>-</span>
+                        <TrendIndicator :datapoint="department.absoluteDiff" />
                     </div>
                 </li>
             </ol>
@@ -132,9 +120,7 @@
                             >{{ numberFormatter(department.absoluteDiff) }}
                         </span>
                         ({{ numberFormatter(department.relativeDiff, true) }}%)
-                        <span v-if="department.absoluteDiff > 0">↑</span>
-                        <span v-else-if="department.absoluteDiff < 0">↓</span>
-                        <span v-else>-</span>
+                        <TrendIndicator :datapoint="department.absoluteDiff" />
                     </div>
                 </li>
             </ol>
@@ -159,6 +145,7 @@
 <script>
     import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
     import Button from "@/components/Shared/UI/Button.vue";
+    import TrendIndicator from "../Shared/UI/TrendIndicator.vue";
     import PreferredComparisonPeriodPicker from "@/components/Shared/Controls/Chart/PreferredComparisonPeriodPicker.vue";
     import PreferredMetricPicker from "@/components/Shared/Controls/Chart/PreferredMetricPicker.vue";
     import numberFormatter from "@/mixins/numberFormatter.js";
@@ -179,6 +166,7 @@
             LoadingIndicator,
             PreferredComparisonPeriodPicker,
             PreferredMetricPicker,
+            TrendIndicator,
         },
         data() {
             return {
