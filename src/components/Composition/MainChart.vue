@@ -251,6 +251,106 @@
         return series;
     });
 
+    const formatTooltipNumber = (value) => {
+        if (
+            value === null ||
+            value === undefined ||
+            Number.isNaN(Number(value))
+        ) {
+            return "N/A";
+        }
+
+        return localizationsStore.localizeNumber(Number(value));
+    };
+
+    const getTooltipNumericValue = (param) => {
+        if (typeof param?.value === "number") {
+            return param.value;
+        }
+
+        if (Array.isArray(param?.value)) {
+            const yIndex = Array.isArray(param?.encode?.y)
+                ? param.encode.y[0]
+                : param.value.length - 1;
+            const candidate = param.value?.[yIndex];
+            const numericCandidate = Number(candidate);
+
+            return Number.isNaN(numericCandidate) ? 0 : numericCandidate;
+        }
+
+        if (param?.data && typeof param.data === "object") {
+            const yIndex = Array.isArray(param?.encode?.y)
+                ? param.encode.y[0]
+                : null;
+            const yDimensionName =
+                yIndex !== null && Array.isArray(param?.dimensionNames)
+                    ? param.dimensionNames[yIndex]
+                    : null;
+
+            if (yDimensionName && yDimensionName in param.data) {
+                const numericCandidate = Number(param.data[yDimensionName]);
+
+                return Number.isNaN(numericCandidate) ? 0 : numericCandidate;
+            }
+        }
+
+        const numericData = Number(param?.data);
+
+        return Number.isNaN(numericData) ? 0 : numericData;
+    };
+
+    const escapeHtml = (text) => {
+        return String(text)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#39;");
+    };
+
+    const buildTooltipRow = ({
+        marker = "",
+        label,
+        value,
+        isBold = true,
+        marginTop = 4,
+    }) => {
+        return `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:${marginTop}px;line-height:1.35;"><span style="display:inline-flex;align-items:center;min-width:0;">${marker}<span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(label)}</span></span><span style="margin-left:12px;font-weight:${isBold ? 700 : 400};text-align:right;">${escapeHtml(value)}</span></div>`;
+    };
+
+    const tooltipFormatter = (rawParams) => {
+        const params = Array.isArray(rawParams) ? rawParams : [rawParams];
+        const firstParam = params[0];
+
+        if (!firstParam) {
+            return "";
+        }
+
+        const timestamp = firstParam.axisValueLabel || firstParam.name || "";
+        const total = params.reduce((sum, param) => {
+            return sum + getTooltipNumericValue(param);
+        }, 0);
+
+        const rows = params.map((param) => {
+            const marker = param.marker || "";
+            const value = formatTooltipNumber(getTooltipNumericValue(param));
+
+            return buildTooltipRow({
+                marker,
+                label: param.seriesName,
+                value,
+            });
+        });
+
+        const totalRow = buildTooltipRow({
+            label: strings.value.total_label,
+            value: formatTooltipNumber(total),
+            marginTop: 4,
+        });
+
+        return `<div><div style="font-weight:400;line-height:1.35;">${escapeHtml(timestamp)}</div>${rows.join("")}<div style="border-top:1px solid rgba(255,255,255,0.2);">${totalRow}</div></div>`;
+    };
+
     const chartOptions = computed(() => {
         const options = {
             aria: {
@@ -267,6 +367,7 @@
             dataZoom: [dataZoom.value],
             tooltip: {
                 trigger: "axis",
+                formatter: tooltipFormatter,
             },
             xAxis: {
                 type: "category",
