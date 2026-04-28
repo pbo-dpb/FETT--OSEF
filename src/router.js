@@ -1,19 +1,21 @@
 import { createWebHashHistory, createRouter } from "vue-router";
 
-const Overview = () => import("./components/Overview/Overview.vue");
-const Composition = () => import("./components/Composition/Composition.vue");
-const Departments = () => import("./components/Departments/Departments.vue");
-const Notes = () => import("./components/Notes/Notes.vue");
+const OverviewPage = () => import("./components/Overview/OverviewPage.vue");
+const CompositionPage = () =>
+    import("./components/Composition/CompositionPage.vue");
+const DepartmentsPage = () =>
+    import("./components/Departments/DepartmentsPage.vue");
+const NotesPage = () => import("./components/Notes/NotesPage.vue");
 
 const routes = [
-    { path: "/", component: Overview, name: "overview" },
-    { path: "/composition", component: Composition, name: "composition" },
+    { path: "/", component: OverviewPage, name: "overview" },
+    { path: "/composition", component: CompositionPage, name: "composition" },
     {
         path: "/departments-and-agencies--ministeres-et-organismes/:departments*",
-        component: Departments,
+        component: DepartmentsPage,
         name: "departments",
     },
-    { path: "/notes", component: Notes, name: "notes" },
+    { path: "/notes", component: NotesPage, name: "notes" },
 ];
 
 export const router = createRouter({

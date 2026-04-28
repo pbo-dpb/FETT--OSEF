@@ -1,0 +1,3 @@
+The information provided is for the Federal Public Service (i.e., Core Public Administration and Separate Agencies). The Core Public Administration consists of the departments and agencies named in schedules I and IV of the Financial Administration Act (FAA). The Treasury Board is the employer of this segment of the Federal Public Service.
+
+Employees on leave without pay as well as employees locally engaged outside of Canada are not included.

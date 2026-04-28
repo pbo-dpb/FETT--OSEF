@@ -2,6 +2,12 @@
     <div
         class="flex flex-col gap-8"
         v-if="departments !== false">
+        <div>
+            <h3 class="mb-4 text-2xl text-balance">
+                {{ strings.comparison_heading }}
+            </h3>
+            <p>{{ strings.comparison_description }}</p>
+        </div>
         <DepartmentsOverviewChart
             :departments="selectedDepartments"
             :highlighted-department-id="highlightedDepartmentId" />

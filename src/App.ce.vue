@@ -22,7 +22,7 @@
     import Tabs from "@/components/Shared/UI/Tabs.vue";
 
     const DebugBar = defineAsyncComponent(
-        () => import("./components/DebugBar.vue"),
+        () => import("@/components/Shared/UI/DebugBar.vue"),
     );
 
     const instance = getCurrentInstance();

@@ -2,6 +2,12 @@
     <div
         v-if="data"
         class="grid grid-cols-4 gap-8">
+        <div class="col-span-full">
+            <h3 class="mb-4 text-2xl text-balance">
+                {{ strings.overview_heading }}
+            </h3>
+            <p>{{ strings.overview_description }}</p>
+        </div>
         <div class="col-span-full flex flex-wrap items-center gap-x-8 gap-y-4">
             <PreferredMetricPicker />
             <PreferredComparisonPeriodPicker />
@@ -9,9 +15,9 @@
         <div
             class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4">
             <div class="col-span-full text-center">
-                <h2 class="mb-8 text-2xl text-balance">
-                    {{ strings.overview_size_heading }}
-                </h2>
+                <h3 class="mb-8 text-2xl text-balance">
+                    {{ strings.overview_general_trends }}
+                </h3>
                 <h3 class="font-medium">
                     {{ strings[overviewAllLabelKey] }}
                 </h3>
@@ -22,9 +28,9 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="font-medium">
+                <h4 class="font-medium">
                     {{ strings.indeterminate_label }}
-                </h3>
+                </h4>
                 <p class="text-xl">
                     {{ numberFormatter(indeterminateAbsoluteDiff) }}
                     ({{ numberFormatter(indeterminateRelativeDiff, true) }}%)
@@ -32,7 +38,7 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="font-medium">{{ strings.term_label }}</h3>
+                <h4 class="font-medium">{{ strings.term_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(termAbsoluteDiff) }} ({{
                         numberFormatter(termRelativeDiff, true)
@@ -41,7 +47,7 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="font-medium">{{ strings.student_label }}</h3>
+                <h4 class="font-medium">{{ strings.student_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(studentAbsoluteDiff) }} ({{
                         numberFormatter(studentRelativeDiff, true)
@@ -50,7 +56,7 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h3 class="font-medium">{{ strings.casual_label }}</h3>
+                <h4 class="font-medium">{{ strings.casual_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
                         numberFormatter(casualRelativeDiff, true)
@@ -65,14 +71,14 @@
         </div>
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
-            <h2 class="mb-8 text-center text-2xl text-balance">
+            <h3 class="mb-8 text-center text-2xl text-balance">
                 {{ strings.overview_largest_increase_by_department }}
-            </h2>
+            </h3>
             <ol class="space-y-2">
                 <li
                     v-for="department in topThreeDepartmentsIncrease"
                     :key="department.department_id">
-                    <div class="font-medium">
+                    <h4 class="font-medium">
                         {{ displayDepartmentName(department) }}
                         <span
                             v-if="
@@ -81,14 +87,14 @@
                             "
                             >({{ displayDepartmentAcronym(department) }})</span
                         >
-                    </div>
-                    <div>
+                    </h4>
+                    <p>
                         <span
                             >{{ numberFormatter(department.absoluteDiff) }}
                         </span>
                         ({{ numberFormatter(department.relativeDiff, true) }}%)
                         <TrendIndicator :datapoint="department.absoluteDiff" />
-                    </div>
+                    </p>
                 </li>
             </ol>
             <div
@@ -98,14 +104,14 @@
         </div>
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
-            <h2 class="mb-8 text-center text-2xl text-balance">
+            <h3 class="mb-8 text-center text-2xl text-balance">
                 {{ strings.overview_largest_decrease_by_department }}
-            </h2>
+            </h3>
             <ol class="space-y-2">
                 <li
                     v-for="department in topThreeDepartmentsDecrease"
                     :key="department.department_id">
-                    <div class="font-medium">
+                    <h4 class="font-medium">
                         {{ displayDepartmentName(department) }}
                         <span
                             v-if="
@@ -114,7 +120,7 @@
                             "
                             >({{ displayDepartmentAcronym(department) }})</span
                         >
-                    </div>
+                    </h4>
                     <div>
                         <span
                             >{{ numberFormatter(department.absoluteDiff) }}
@@ -130,10 +136,10 @@
             </div>
         </div>
         <div class="col-span-full">
-            <Button
+            <BaseButton
                 type="default"
                 href="./sample-input-current.xlsx"
-                >{{ strings.download_button }}</Button
+                >{{ strings.overview_download_button }}</BaseButton
             >
         </div>
     </div>
@@ -144,7 +150,7 @@
 
 <script>
     import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
-    import Button from "@/components/Shared/UI/Button.vue";
+    import BaseButton from "@/components/Shared/UI/BaseButton.vue";
     import TrendIndicator from "../Shared/UI/TrendIndicator.vue";
     import PreferredComparisonPeriodPicker from "@/components/Shared/Controls/Chart/PreferredComparisonPeriodPicker.vue";
     import PreferredMetricPicker from "@/components/Shared/Controls/Chart/PreferredMetricPicker.vue";
@@ -162,7 +168,7 @@
 
     export default {
         components: {
-            Button,
+            BaseButton,
             LoadingIndicator,
             PreferredComparisonPeriodPicker,
             PreferredMetricPicker,

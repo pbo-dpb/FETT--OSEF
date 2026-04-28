@@ -46,7 +46,7 @@
     "overview_compare_same_quarter_last_year": "Même trimestre l’année dernière",
     "overview_compare_previous_quarter": "Trimestre précédent",
     "preferred_comparison_period_label": "Période de comparaison",
-    "overview_size_heading": "Taille de la fonction publique fédérale",
+    "overview_heading": "Variation de l’effectif de la fonction publique fédérale",
     "overview_all_positions_label": "Tous les postes",
     "overview_all_headcount_label": "Tous les employés",
     "overview_largest_increase_by_department": "Plus forte hausse par ministère",
@@ -56,5 +56,9 @@
     "tab_navigation_composition_label": "Composition",
     "tab_navigation_departments_label": "Comparaison",
     "tab_navigation_notes_label": "Notes",
-    "download_button": "Téléchargez les données (.xlsx)"
+    "overview_download_button": "Téléchargez les données (.xlsx)",
+    "composition_heading": "Taille de la fonction publique fédérale, par durée d'emploi",
+    "composition_description": "Ce graphique présente le nombre total de postes et d'équivalents temps plein (ETPs) dans la fonction publique fédérale pour chaque durée d'emploi, de 2015-2016 au dernier trimestre disponible.",
+    "comparison_heading": "Comparaison des effectifs de la fonction publique fédérale par ministère",
+    "comparison_description": "Ce graphique permet de comparer l'évolution des effectifs et des équivalents temps plein (ETPs) entre les ministères sélectionnés. Veuillez sélectionner les ministères ci-dessous pour comparer les tendances en matière de personnel. Vous pouvez également sélectionner la période ainsi que les durées d'emploi affichées pour obtenir des informations plus détaillées."
 }
