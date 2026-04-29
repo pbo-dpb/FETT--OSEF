@@ -145,6 +145,7 @@ const overviewer = new Overviewer(
             __dirname,
             "src",
             "assets",
+            "payloads",
             `${key}.json`,
         );
         fs.writeFileSync(outputFilePath, JSON.stringify(payloads[key]), "utf8");

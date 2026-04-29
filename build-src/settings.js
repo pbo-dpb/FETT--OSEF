@@ -40,7 +40,14 @@ module.exports = function (worksheet) {
     });
 
     fs.writeFileSync(
-        path.join(__dirname, "..", "src", "assets", "settings.json"),
+        path.join(
+            __dirname,
+            "..",
+            "src",
+            "assets",
+            "payloads",
+            "settings.json",
+        ),
         JSON.stringify(settings, null, 2),
     );
 
