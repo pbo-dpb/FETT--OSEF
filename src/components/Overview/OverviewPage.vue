@@ -188,10 +188,10 @@
             },
             generalComparison() {
                 if (this.preferredMetric === "pop") {
-                    return this.comparisonData?.generalPop;
+                    return this.comparisonData?.generalExcludingCombinedPop;
                 }
 
-                return this.comparisonData?.general;
+                return this.comparisonData?.generalExcludingCombined;
             },
             departmentsComparison() {
                 if (this.preferredMetric === "pop") {
