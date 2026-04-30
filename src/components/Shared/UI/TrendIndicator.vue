@@ -7,7 +7,7 @@
 <script setup>
     defineProps({
         datapoint: {
-            type: Number,
+            type: String,
         },
     });
 </script>
