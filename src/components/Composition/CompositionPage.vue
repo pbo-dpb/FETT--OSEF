@@ -2,14 +2,11 @@
     <div class="flex grid-cols-5 flex-col gap-4 lg:grid">
         <template v-if="readyToRender">
             <div class="flex w-full flex-col gap-8 lg:col-span-5">
-                <div>
-                    <h3 class="mb-4 text-2xl text-balance">
-                        {{ strings.composition_heading }}
-                    </h3>
-                    <p>{{ strings.composition_description }}</p>
-                </div>
+                <PageHeader
+                    :heading="strings.composition_heading"
+                    :description="strings.composition_description" />
                 <GeneralChartSettings />
-                <MainChart />
+                <CompositionChart />
             </div>
         </template>
         <LoadingIndicator
@@ -24,8 +21,9 @@
     import usePayloadsStore from "@/stores/payloads.js";
     import useLocalizationStore from "@/stores/localizations.js";
 
+    import PageHeader from "../Shared/UI/PageHeader.vue";
     import GeneralChartSettings from "@/components/Shared/Controls/Chart/GeneralChartSettings.vue";
-    import MainChart from "./MainChart.vue";
+    import CompositionChart from "./CompositionChart.vue";
     import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
 
     const payloadsStore = usePayloadsStore();

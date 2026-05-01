@@ -3,10 +3,9 @@
         v-if="data"
         class="grid grid-cols-4 gap-8">
         <div class="col-span-full">
-            <h3 class="mb-4 text-2xl text-balance">
-                {{ strings.overview_heading }}
-            </h3>
-            <p>{{ strings.overview_description }}</p>
+            <PageHeader
+                :heading="strings.overview_heading"
+                :description="strings.overview_description" />
         </div>
         <div class="col-span-full flex flex-wrap items-center gap-x-8 gap-y-4">
             <PreferredMetricPicker />
@@ -149,6 +148,7 @@
 </template>
 
 <script>
+    import PageHeader from "../Shared/UI/PageHeader.vue";
     import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
     import BaseButton from "@/components/Shared/UI/BaseButton.vue";
     import TrendIndicator from "../Shared/UI/TrendIndicator.vue";
@@ -168,6 +168,7 @@
 
     export default {
         components: {
+            PageHeader,
             BaseButton,
             LoadingIndicator,
             PreferredComparisonPeriodPicker,
