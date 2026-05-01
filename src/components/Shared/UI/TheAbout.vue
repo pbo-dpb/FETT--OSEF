@@ -4,7 +4,7 @@
         class="flex flex-col">
         <div
             v-html="about"
-            class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-light prose-a:text-slate-800 dark:prose-a:text-slate-200 max-w-none"></div>
+            class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-normal prose-a:text-slate-800 dark:prose-a:text-slate-200 max-w-none"></div>
     </div>
 </template>
 
