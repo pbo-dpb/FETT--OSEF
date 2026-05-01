@@ -8,6 +8,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@headlessui/tailwindcss": "^0.2.2",
+        "@headlessui/vue": "^1.7.23",
         "echarts": "^6.0.0",
         "fuse.js": "^7.1.0",
         "lucide-vue-next": "^0.562.0",

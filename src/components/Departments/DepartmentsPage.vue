@@ -1,177 +1,250 @@
 <template>
+    <PageHeader
+        :heading="strings.comparison_heading"
+        :description="strings.comparison_description" />
+    <Combobox
+        v-model="selectedDepartment"
+        immediate
+        as="div"
+        v-slot="{ open }"
+        class="relative w-full">
+        <div
+            class="relative border bg-white shadow-sm"
+            :class="
+                open
+                    ? 'border-slate-500 ring-4 ring-slate-100'
+                    : 'border-slate-300 focus-within:border-slate-500 focus-within:ring-4 focus-within:ring-slate-100 hover:border-slate-400'
+            ">
+            <ComboboxInput
+                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4 text-slate-900 placeholder:text-slate-700"
+                :displayValue="displayDepartment"
+                :placeholder="strings.search_departments_placeholder"
+                @change="query = $event.target.value" />
+            <ComboboxButton
+                class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-slate-700"
+                :aria-label="strings.departments_combobox_toggle_aria_label">
+                <ChevronsUpDown class="size-4" />
+            </ComboboxButton>
+        </div>
+        <ComboboxOptions
+            class="absolute z-20 mt-1 max-h-48 w-full overflow-auto rounded-sm border border-solid border-slate-300 bg-white p-1 shadow-xl ring-1 ring-slate-200 focus:outline-none">
+            <li
+                v-if="departments === false"
+                class="cursor-default rounded-sm px-3 py-2 text-slate-500">
+                {{ strings.departments_loading_message }}
+            </li>
+            <li
+                v-else-if="!filteredDepartments.length"
+                class="cursor-default rounded-sm px-3 py-2 text-slate-500">
+                {{ strings.departments_none_found_message }}
+            </li>
+            <ComboboxOption
+                v-for="department in filteredDepartments"
+                :key="department.id"
+                :value="department"
+                :disabled="isAlreadySelected(department.id)"
+                v-slot="{ active, selected, disabled }"
+                as="template">
+                <li
+                    class="relative flex cursor-pointer items-center rounded-sm py-2.5 pr-3 pl-9 text-sm"
+                    :class="[
+                        active && !disabled
+                            ? 'bg-slate-600 text-white'
+                            : 'text-slate-800',
+                        selected && !active ? 'bg-slate-50 text-slate-900' : '',
+                        disabled
+                            ? 'cursor-not-allowed bg-slate-50 text-slate-400'
+                            : '',
+                    ]">
+                    <span
+                        class="truncate"
+                        :class="selected ? 'font-semibold' : 'font-normal'">
+                        {{ department[`name_${language}`] }} ({{
+                            department[`acronym_${language}`]
+                        }})
+                    </span>
+                    <span
+                        class="absolute inset-y-0 left-0 flex items-center pl-3"
+                        :class="
+                            active && !disabled
+                                ? 'text-white'
+                                : 'text-slate-700'
+                        ">
+                        <Check
+                            v-if="selected"
+                            class="size-4" />
+                        <Plus
+                            v-else-if="!disabled"
+                            class="size-4 opacity-60" />
+                        <CircleX
+                            v-else
+                            class="size-4 opacity-60" />
+                    </span>
+                </li>
+            </ComboboxOption>
+        </ComboboxOptions>
+    </Combobox>
+    <DepartmentsChart
+        v-show="selectedDepartments.length > 0"
+        :departments="selectedDepartments"
+        :highlighted-department-id="highlightedDepartmentId" />
     <div
-        class="flex flex-col gap-8"
-        v-if="departments !== false">
-        <div>
-            <h3 class="mb-4 text-2xl text-balance">
-                {{ strings.comparison_heading }}
-            </h3>
-            <p>{{ strings.comparison_description }}</p>
-        </div>
-        <DepartmentsOverviewChart
-            :departments="selectedDepartments"
-            :highlighted-department-id="highlightedDepartmentId" />
-        <div class="flex flex-col gap-4">
-            <div class="flex justify-end">
-                <fieldset class="flex flex-col">
-                    <legend class="mb-1 font-semibold">
-                        {{ strings.department_fiscal_period_label }}
-                    </legend>
-                    <div class="flex gap-2">
-                        <label
-                            for="year"
-                            class="sr-only"
-                            >{{ strings.department_year }}</label
-                        >
-                        <select
-                            id="year"
-                            class="rounded-sm border border-solid border-gray-300 py-0.5"
-                            v-model="selectedYear">
-                            <option
-                                v-for="year in availableYears"
-                                :key="year"
-                                :value="year">
-                                {{ year }}
-                            </option>
-                        </select>
-                        <label
-                            for="quarter"
-                            class="sr-only"
-                            >{{ strings.department_quarter }}</label
-                        >
-                        <select
-                            id="quarter"
-                            class="rounded-sm border border-solid border-gray-300 py-0.5"
-                            v-model="selectedQuarter">
-                            <option
-                                v-for="quarter in quarterOptions"
-                                :key="quarter.value"
-                                :value="quarter.value"
-                                :disabled="quarter.disabled">
-                                {{ quarter.label }}
-                            </option>
-                        </select>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="grid grid-cols-4 gap-4">
-                <DepartmentPicker :selected-departments="selectedDepartments" />
-                <div
-                    v-if="selectedDepartments.length"
-                    class="col-span-3 flex flex-row gap-8 overflow-x-scroll rounded-t-lg rounded-tl bg-slate-50 p-4 shadow-inner">
-                    <PickedDepartment
-                        v-for="department in selectedDepartments"
-                        :key="department.id"
-                        :department="department"
-                        :selectedQuarter="selectedQuarter"
-                        :selectedYear="selectedYear"
-                        :highlighted="highlightedDepartmentId === department.id"
-                        @remove-department="removeDepartment"
-                        @highlight-department="
-                            (id) => (highlightedDepartmentId = id)
-                        "
-                        @unhighlight-department="
-                            (id) => {
-                                if (highlightedDepartmentId === id)
-                                    highlightedDepartmentId = null;
-                            }
-                        " />
+        v-show="selectedDepartments.length > 0"
+        class="flex flex-col gap-4">
+        <div class="flex justify-end">
+            <fieldset class="flex flex-col">
+                <legend class="mb-1 font-semibold">
+                    {{ strings.department_fiscal_period_label }}
+                </legend>
+                <div class="flex gap-2">
+                    <label
+                        for="year"
+                        class="sr-only"
+                        >{{ strings.department_year }}</label
+                    >
+                    <select
+                        id="year"
+                        class="rounded-sm border border-solid border-gray-300 py-0.5"
+                        v-model="selectedYear">
+                        <option
+                            v-for="year in availableYears"
+                            :key="year"
+                            :value="year">
+                            {{ year }}
+                        </option>
+                    </select>
+                    <label
+                        for="quarter"
+                        class="sr-only"
+                        >{{ strings.department_quarter }}</label
+                    >
+                    <select
+                        id="quarter"
+                        class="rounded-sm border border-solid border-gray-300 py-0.5"
+                        v-model="selectedQuarter">
+                        <option
+                            v-for="quarter in quarterOptions"
+                            :key="quarter.value"
+                            :value="quarter.value"
+                            :disabled="quarter.disabled">
+                            {{ quarter.label }}
+                        </option>
+                    </select>
                 </div>
-            </div>
-            <div
-                v-if="!selectedDepartments.length"
-                class="col-span-3 flex flex-col items-center justify-center gap-2 bg-slate-50 p-4 text-slate-500">
-                <p class="text-lg font-medium">
-                    {{
-                        strings.departments_overview_no_departments_selected_message
-                    }}
-                </p>
-                <ArrowBigLeft class="size-8" />
-            </div>
+            </fieldset>
         </div>
-    </div>
-    <div v-else>
-        <LoadingIndicator class="size-6" />
+        <table class="w-full">
+            <caption class="mb-2 text-left text-xl">
+                {{
+                    strings.departments_table_caption
+                }}
+            </caption>
+            <thead class="mb-4">
+                <tr>
+                    <th
+                        scope="col"
+                        class="p-2 text-left font-semibold">
+                        {{ strings.departments_table_department_column }}
+                    </th>
+                    <th
+                        scope="col"
+                        class="p-2 font-semibold">
+                        {{ strings.dep_indeterminate }}
+                    </th>
+                    <th
+                        scope="col"
+                        class="p-2 font-semibold">
+                        {{ strings.dep_term }}
+                    </th>
+                    <th
+                        scope="col"
+                        class="p-2 font-semibold">
+                        {{ strings.dep_student }}
+                    </th>
+                    <th
+                        scope="col"
+                        class="p-2 font-semibold">
+                        {{ strings.dep_casual }}
+                    </th>
+                    <th
+                        scope="col"
+                        class="p-2 font-semibold">
+                        {{ strings.total_label }}
+                    </th>
+                    <th
+                        scope="col"
+                        class="sr-only p-2 font-semibold">
+                        {{ strings.departments_table_actions_column }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <SelectedDepartment
+                    v-for="department in selectedDepartments"
+                    :key="department.id"
+                    :department="department"
+                    :selected-quarter="selectedQuarter"
+                    :selected-year="selectedYear"
+                    :highlighted="highlightedDepartmentId === department.id"
+                    @remove-department="removeDepartment"
+                    @highlight-department="
+                        (id) => (highlightedDepartmentId = id)
+                    "
+                    @unhighlight-department="
+                        (id) => {
+                            if (highlightedDepartmentId === id)
+                                highlightedDepartmentId = null;
+                        }
+                    " />
+            </tbody>
+        </table>
     </div>
 </template>
+
 <script setup>
     import { computed, onMounted, ref, watch } from "vue";
-
-    defineOptions({
-        name: "DepartmentsView",
-    });
-
     import { storeToRefs } from "pinia";
-
-    import usePayloadsStore from "@/stores/payloads.js";
-    const payloadsStore = usePayloadsStore();
-    const { departments } = storeToRefs(payloadsStore);
+    import PageHeader from "../Shared/UI/PageHeader.vue";
+    import SelectedDepartment from "./SelectedDepartment.vue";
+    import DepartmentsChart from "./DepartmentsChart.vue";
+    import { Check, ChevronsUpDown, CircleX, Plus } from "lucide-vue-next";
+    import { colors } from "@/assets/echarts/colors.json?json";
+    import {
+        Combobox,
+        ComboboxButton,
+        ComboboxInput,
+        ComboboxOptions,
+        ComboboxOption,
+    } from "@headlessui/vue";
+    import { useRoute, useRouter } from "vue-router";
 
     import useLocalizationsStore from "@/stores/localizations.js";
-    const localizationStore = useLocalizationsStore();
-    const { strings } = storeToRefs(localizationStore);
+    const localizationsStore = useLocalizationsStore();
+    const { language, strings } = storeToRefs(localizationsStore);
+
+    import usePayloadStore from "@/stores/payloads.js";
+    const payloadsStore = usePayloadStore();
+    const { departments } = storeToRefs(payloadsStore);
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
     const { start_quarter, start_year, end_year, end_quarter } =
         storeToRefs(settingsStore);
-
-    import DepartmentPicker from "./DepartmentPicker.vue";
-    import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
-    import DepartmentsOverviewChart from "./DepartmentsOverviewChart.vue";
-    import PickedDepartment from "./PickedDepartment.vue";
-
-    import { ArrowBigLeft } from "lucide-vue-next";
-    import { colors } from "@/assets/echarts/colors.json?json";
-
-    import { useRoute, useRouter } from "vue-router";
     const route = useRoute();
     const router = useRouter();
 
+    const selectedDepartment = ref(null);
+    const selectedDepartmentMeta = ref([]); // [{ id, color }]
     const highlightedDepartmentId = ref(null);
     const selectedQuarter = ref(end_quarter.value);
     const selectedYear = ref(end_year.value);
-
-    onMounted(() => {
-        if (departments.value === false) {
-            payloadsStore.fetchDepartments();
-        }
-    });
-
-    const selectedDepartments = computed(() => {
-        if (!departments.value) return [];
-
-        const departmanetIds = route.params.departments || [];
-        let index = 0;
-        let useDarkTheme =
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        return departmanetIds
-            .map((did) => {
-                return departments.value.find((d) => d.id === did);
-            })
-            .filter((d) => (d ? true : false))
-            .map((dpt) => {
-                let dptx = {
-                    ...dpt,
-                    color: useDarkTheme
-                        ? colors.dark[index]
-                        : colors.light[index],
-                };
-
-                index++;
-                return dptx;
-            });
-    });
+    const query = ref("");
 
     const availableYears = computed(() => {
         const years = [];
-
         for (let year = end_year.value; year >= start_year.value; year--) {
             years.push(year);
         }
-
         return years;
     });
 
@@ -187,58 +260,180 @@
         }));
     });
 
-    const removeDepartment = (departmentId) => {
-        const newSelectedDepartments = selectedDepartments.value
-            .map((dept) => dept.id)
-            .filter((id) => id !== departmentId);
+    const useDarkTheme = computed(
+        () =>
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches,
+    );
 
-        router.push({
-            name: "departments",
-            params: { departments: newSelectedDepartments },
+    const selectedDepartments = computed(() => {
+        if (!departments.value) return [];
+        return selectedDepartmentMeta.value
+            .map(({ id, color }) => {
+                const dept = departments.value.find((d) => d.id === id);
+                return dept ? { ...dept, color } : null;
+            })
+            .filter(Boolean);
+    });
+
+    const filteredDepartments = computed(() => {
+        if (departments.value === false) {
+            return [];
+        }
+
+        const nameKey = `name_${language.value}`;
+        const acronymKey = `acronym_${language.value}`;
+        const trimmedQuery = query.value.trim().toLowerCase();
+
+        const sorted = [...departments.value].sort((a, b) =>
+            a[nameKey].localeCompare(b[nameKey]),
+        );
+
+        if (!trimmedQuery) {
+            return sorted;
+        }
+
+        return sorted.filter((department) => {
+            const name = (department[nameKey] || "").toLowerCase();
+            const acronym = (department[acronymKey] || "").toLowerCase();
+
+            return (
+                name.includes(trimmedQuery) || acronym.includes(trimmedQuery)
+            );
         });
+    });
+
+    const displayDepartment = (department) => {
+        if (!department) {
+            return "";
+        }
+
+        return department[`name_${language.value}`] || "";
     };
 
-    watch(selectedDepartments, (newVal) => {
-        newVal.forEach((department) => {
-            if (!department.eagerLoaded) {
-                payloadsStore.eagerLoadDepartment(department.id);
-            }
-        });
-
-        settingsStore.setPreviouslySelectedDepartmentIds(
-            newVal.map((d) => d.id) || [],
+    const removeDepartment = (departmentId) => {
+        selectedDepartmentMeta.value = selectedDepartmentMeta.value.filter(
+            ({ id }) => id !== departmentId,
         );
+    };
+
+    const normalizeDepartmentIds = (rawIds) => {
+        if (Array.isArray(rawIds)) {
+            return rawIds;
+        }
+
+        return rawIds ? [rawIds] : [];
+    };
+
+    const idsAreEqual = (left, right) => {
+        if (left.length !== right.length) {
+            return false;
+        }
+
+        return left.every((id, index) => id === right[index]);
+    };
+
+    const buildDepartmentMetaFromIds = (ids) => {
+        const colorPalette = useDarkTheme.value ? colors.dark : colors.light;
+
+        return ids
+            .map((id, index) => {
+                const department = departments.value?.find((d) => d.id === id);
+                if (!department) {
+                    return null;
+                }
+
+                if (!department.eagerLoaded) {
+                    payloadsStore.eagerLoadDepartment(department.id);
+                }
+
+                return {
+                    id,
+                    color: colorPalette[index],
+                };
+            })
+            .filter(Boolean);
+    };
+
+    const isAlreadySelected = (departmentId) => {
+        return selectedDepartmentMeta.value.some(
+            ({ id }) => id === departmentId,
+        );
+    };
+
+    watch(selectedDepartment, (department) => {
+        if (!department) {
+            return;
+        }
+
+        const alreadySelected = selectedDepartmentMeta.value.some(
+            ({ id }) => id === department.id,
+        );
+
+        if (!alreadySelected) {
+            const index = selectedDepartmentMeta.value.length;
+            const colorPalette = useDarkTheme.value
+                ? colors.dark
+                : colors.light;
+            selectedDepartmentMeta.value = [
+                ...selectedDepartmentMeta.value,
+                { id: department.id, color: colorPalette[index] },
+            ];
+            payloadsStore.eagerLoadDepartment(department.id);
+        }
+
+        selectedDepartment.value = null;
+        query.value = "";
     });
 
     watch(
-        availableYears,
-        (years) => {
-            if (!years.length) {
-                return;
+        selectedDepartmentMeta,
+        (meta) => {
+            const ids = meta.map(({ id }) => id);
+            const routeIds = normalizeDepartmentIds(route.params.departments);
+
+            if (!idsAreEqual(ids, routeIds)) {
+                router.push({
+                    name: "departments",
+                    params: { departments: ids },
+                });
             }
 
-            if (!years.includes(selectedYear.value)) {
-                selectedYear.value = years[0];
-            }
+            settingsStore.setPreviouslySelectedDepartmentIds(ids);
         },
-        { immediate: true },
+        { deep: true },
     );
 
     watch(
-        [selectedYear, start_year, start_quarter, end_year, end_quarter],
-        () => {
-            if (
-                selectedYear.value === start_year.value &&
-                selectedQuarter.value < start_quarter.value
-            ) {
-                selectedQuarter.value = start_quarter.value;
-            } else if (
-                selectedYear.value === end_year.value &&
-                selectedQuarter.value > end_quarter.value
-            ) {
-                selectedQuarter.value = end_quarter.value;
+        () => route.params.departments,
+        (departmentParamIds) => {
+            if (!departments.value) {
+                return;
             }
+
+            const routeIds = normalizeDepartmentIds(departmentParamIds);
+            const currentIds = selectedDepartmentMeta.value.map(({ id }) => id);
+
+            if (idsAreEqual(routeIds, currentIds)) {
+                return;
+            }
+
+            selectedDepartmentMeta.value = buildDepartmentMetaFromIds(routeIds);
         },
-        { immediate: true },
     );
+
+    onMounted(async () => {
+        await payloadsStore.fetchDepartments();
+
+        const routeDepartmentIds = normalizeDepartmentIds(
+            route.params.departments,
+        );
+
+        if (!routeDepartmentIds.length) {
+            return;
+        }
+
+        selectedDepartmentMeta.value =
+            buildDepartmentMetaFromIds(routeDepartmentIds);
+    });
 </script>

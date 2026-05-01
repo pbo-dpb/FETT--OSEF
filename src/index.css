@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@headlessui/tailwindcss";
 @plugin "@tailwindcss/typography";
 
 /*
