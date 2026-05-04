@@ -16,8 +16,8 @@
                     aria-hidden="true" />
                 <span class="font-normal">
                     {{ department[`name_${language}`] }}
-                    <span v-if="department[`acronym_${language}`]">
-                        ({{ department[`acronym_${language}`] }})</span
+                    <template v-if="department[`acronym_${language}`]">
+                        ({{ department[`acronym_${language}`] }})</template
                     >
                 </span>
             </span>
