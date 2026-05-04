@@ -134,52 +134,54 @@
                 </div>
             </fieldset>
         </div>
-        <table class="w-full">
-            <caption class="mb-2 text-left text-xl">
+        <table class="block w-full border-separate border-spacing-y-2 md:table">
+            <caption class="sr-only">
                 {{
                     strings.departments_table_caption
                 }}
             </caption>
-            <thead class="mb-4">
+            <thead class="mb-4 hidden md:table-header-group">
                 <tr>
                     <th
                         scope="col"
-                        class="p-2 text-left font-semibold">
+                        class="border-b-1 border-solid border-gray-300 p-2 text-left font-semibold">
                         {{ strings.departments_table_department_column }}
                     </th>
                     <th
                         scope="col"
-                        class="p-2 font-semibold">
+                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
                         {{ strings.dep_indeterminate }}
                     </th>
                     <th
                         scope="col"
-                        class="p-2 font-semibold">
+                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
                         {{ strings.dep_term }}
                     </th>
                     <th
                         scope="col"
-                        class="p-2 font-semibold">
+                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
                         {{ strings.dep_student }}
                     </th>
                     <th
                         scope="col"
-                        class="p-2 font-semibold">
+                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
                         {{ strings.dep_casual }}
                     </th>
                     <th
                         scope="col"
-                        class="p-2 font-semibold">
+                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
                         {{ strings.total_label }}
                     </th>
                     <th
                         scope="col"
-                        class="sr-only p-2 font-semibold">
-                        {{ strings.departments_table_actions_column }}
+                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
+                        <span class="sr-only">{{
+                            strings.departments_table_actions_column
+                        }}</span>
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="block md:table-row-group">
                 <SelectedDepartment
                     v-for="department in selectedDepartments"
                     :key="department.id"

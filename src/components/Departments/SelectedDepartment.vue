@@ -2,19 +2,21 @@
     <tr
         @mouseenter="$emit('highlight-department', department.id)"
         @mouseleave="$emit('unhighlight-department', department.id)"
-        class="border-t-1 border-solid border-slate-300"
-        :class="{ 'bg-slate-100': highlighted }">
+        class="mb-2 block border-l-3 border-solid p-2 md:mb-0 md:table-row md:border-l-0 md:p-0"
+        :class="{ 'bg-slate-100': highlighted }"
+        :style="{ borderColor: department.color || 'transparent' }">
         <th
             scope="row"
-            class="p-2 text-left">
+            class="block p-2 text-left md:table-cell md:border-l-3 md:border-solid"
+            :style="{ borderColor: department.color || 'transparent' }">
             <span class="inline-flex items-center gap-2">
                 <span
-                    class="size-2.5 rounded-full"
+                    class="hidden md:size-2.5 md:shrink-0 md:rounded-full"
                     :style="{
                         backgroundColor: department.color || 'transparent',
                     }"
                     aria-hidden="true" />
-                <span class="font-normal">
+                <span class="text-xl font-normal md:text-base">
                     {{ department[`name_${language}`] }}
                     <template v-if="department[`acronym_${language}`]">
                         ({{ department[`acronym_${language}`] }})</template
@@ -22,45 +24,78 @@
                 </span>
             </span>
         </th>
-        <td class="p-2 text-center">
-            {{
-                hasBreakdown
-                    ? numberFormatter(
-                          Math.round(selectedValues?.indeterminate || 0),
-                      )
-                    : "N/A"
-            }}
+        <td
+            class="block flex items-center justify-between p-2 text-center md:table-cell">
+            <span class="md:hidden">{{ strings.dep_indeterminate }}</span>
+            <span class="text-right md:text-center">
+                {{
+                    hasBreakdown
+                        ? numberFormatter(
+                              Math.round(selectedValues?.indeterminate || 0),
+                          )
+                        : "N/A"
+                }}
+            </span>
         </td>
-        <td class="p-2 text-center">
-            {{
-                hasBreakdown
-                    ? numberFormatter(Math.round(selectedValues?.term || 0))
-                    : "N/A"
-            }}
+        <td
+            class="block flex items-center justify-between p-2 text-center md:table-cell">
+            <span class="md:hidden">{{ strings.dep_term }}</span>
+            <span class="text-right md:text-center">
+                {{
+                    hasBreakdown
+                        ? numberFormatter(Math.round(selectedValues?.term || 0))
+                        : "N/A"
+                }}
+            </span>
         </td>
-        <td class="p-2 text-center">
-            {{
-                hasBreakdown
-                    ? numberFormatter(Math.round(selectedValues?.student || 0))
-                    : "N/A"
-            }}
+        <td
+            class="block flex items-center justify-between p-2 text-center md:table-cell">
+            <span class="md:hidden">{{ strings.dep_student }}</span>
+            <span class="text-right md:text-center">
+                {{
+                    hasBreakdown
+                        ? numberFormatter(
+                              Math.round(selectedValues?.student || 0),
+                          )
+                        : "N/A"
+                }}
+            </span>
         </td>
-        <td class="p-2 text-center">
-            {{
-                hasBreakdown
-                    ? numberFormatter(Math.round(selectedValues?.casual || 0))
-                    : "N/A"
-            }}
+        <td
+            class="block flex items-center justify-between p-2 text-center md:table-cell">
+            <span class="md:hidden">{{ strings.dep_casual }}</span>
+            <span class="text-right md:text-center">
+                {{
+                    hasBreakdown
+                        ? numberFormatter(
+                              Math.round(selectedValues?.casual || 0),
+                          )
+                        : "N/A"
+                }}
+            </span>
         </td>
-        <td class="p-2 text-center font-semibold">
-            {{ numberFormatter(total) }}
+        <td
+            class="block flex items-center justify-between p-2 text-center font-semibold md:table-cell">
+            <span class="md:hidden">{{ strings.total_label }}</span>
+            <span class="text-right md:text-center">
+                {{ numberFormatter(total) }}
+            </span>
         </td>
-        <td class="p-2 text-center align-middle">
+        <td
+            class="block flex items-center justify-between p-2 text-center align-middle md:table-cell">
+            <span class="hidden md:sr-only">{{
+                strings.departments_table_actions_column
+            }}</span>
             <button
                 @click="$emit('remove-department', department.id)"
-                class="mx-auto inline-flex size-8 cursor-pointer items-center justify-center"
+                class="flex w-full cursor-pointer items-center justify-center rounded-sm border border-solid border-gray-300 bg-white py-2 font-semibold md:mx-auto md:inline-flex md:size-8 md:border-none md:bg-transparent"
                 :aria-label="strings.dep_card_remove_button_aria_label">
-                <CircleX size="20" />
+                <span class="md:hidden">{{
+                    strings.dep_card_remove_button_aria_label
+                }}</span>
+                <CircleX
+                    class="hidden md:block"
+                    size="20" />
             </button>
         </td>
     </tr>
