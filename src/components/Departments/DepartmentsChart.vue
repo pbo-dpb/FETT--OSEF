@@ -272,6 +272,9 @@
         const formatter = numberFormatter;
 
         const options = {
+            aria: {
+                enabled: true,
+            },
             grid: {
                 top: 0,
                 right: 0,
