@@ -2,13 +2,13 @@
     <tr
         @mouseenter="$emit('highlight-department', department.id)"
         @mouseleave="$emit('unhighlight-department', department.id)"
-        class="mb-2 block border-l-3 border-solid p-2 md:mb-0 md:table-row md:border-l-0 md:p-0"
+        class="mb-4 block rounded-sm border-y-1 border-r-1 border-l-4 border-solid p-2 md:mb-0 md:mb-2 md:table-row md:border-l-0 md:p-0"
         :class="{ 'bg-slate-100': highlighted }"
-        :style="{ borderColor: department.color || 'transparent' }">
+        :style="{ borderLeftColor: department.color || 'transparent' }">
         <th
             scope="row"
             class="block p-2 text-left md:table-cell md:border-l-3 md:border-solid"
-            :style="{ borderColor: department.color || 'transparent' }">
+            :style="{ borderLeftColor: department.color || 'transparent' }">
             <span class="inline-flex items-center gap-2">
                 <span
                     class="hidden md:size-2.5 md:shrink-0 md:rounded-full"
