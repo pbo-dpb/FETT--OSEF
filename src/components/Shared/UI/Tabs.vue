@@ -6,11 +6,12 @@
             v-for="tab in tabs"
             :key="tab.to.name"
             :to="tab.to"
-            :class="{
-                'flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-medium': true,
-                'border-transparent hover:border-gray-300': !tab.selected,
-                '-mb-0.25 border-b-3 border-gray-600 pb-2.25': tab.selected,
-            }"
+            :class="[
+                'flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-semibold',
+                tab.selected
+                    ? 'border-gray-600 text-gray-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-600',
+            ]"
             :aria-selected="tab.selected.toString()">
             {{ tab.label }}
         </RouterLink>

@@ -17,7 +17,7 @@
                 <h3 class="mb-8 text-2xl text-balance">
                     {{ strings.overview_general_trends }}
                 </h3>
-                <h3 class="font-medium">
+                <h3 class="font-semibold">
                     {{ strings[overviewAllLabelKey] }}
                 </h3>
                 <p class="text-3xl font-bold">
@@ -27,7 +27,7 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h4 class="font-medium">
+                <h4 class="font-semibold">
                     {{ strings.indeterminate_label }}
                 </h4>
                 <p class="text-xl">
@@ -37,7 +37,7 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h4 class="font-medium">{{ strings.term_label }}</h4>
+                <h4 class="font-semibold">{{ strings.term_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(termAbsoluteDiff) }} ({{
                         numberFormatter(termRelativeDiff, true)
@@ -46,7 +46,7 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h4 class="font-medium">{{ strings.student_label }}</h4>
+                <h4 class="font-semibold">{{ strings.student_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(studentAbsoluteDiff) }} ({{
                         numberFormatter(studentRelativeDiff, true)
@@ -55,7 +55,7 @@
                 </p>
             </div>
             <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
-                <h4 class="font-medium">{{ strings.casual_label }}</h4>
+                <h4 class="font-semibold">{{ strings.casual_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
                         numberFormatter(casualRelativeDiff, true)
@@ -63,7 +63,7 @@
                     <TrendIndicator :datapoint="casualAbsoluteDiff" />
                 </p>
             </div>
-            <div class="col-span-full text-right text-xs font-medium">
+            <div class="col-span-full text-right text-xs font-semibold">
                 {{ formattedDateLabel }}
             </div>
         </div>
@@ -76,7 +76,7 @@
                 <li
                     v-for="department in topThreeDepartmentsIncrease"
                     :key="department.department_id">
-                    <h4 class="font-medium">
+                    <h4 class="font-semibold">
                         {{ displayDepartmentName(department) }}
                         <span
                             v-if="
@@ -95,7 +95,7 @@
                     </p>
                 </li>
             </ol>
-            <div class="col-span-full text-right text-xs font-medium">
+            <div class="col-span-full text-right text-xs font-semibold">
                 {{ formattedDateLabel }}
             </div>
         </div>
@@ -108,7 +108,7 @@
                 <li
                     v-for="department in topThreeDepartmentsDecrease"
                     :key="department.department_id">
-                    <h4 class="font-medium">
+                    <h4 class="font-semibold">
                         {{ displayDepartmentName(department) }}
                         <span
                             v-if="
@@ -127,7 +127,7 @@
                     </div>
                 </li>
             </ol>
-            <div class="col-span-full text-right text-xs font-medium">
+            <div class="col-span-full text-right text-xs font-semibold">
                 {{ formattedDateLabel }}
             </div>
         </div>

@@ -42,15 +42,13 @@
                 v-for="department in filteredDepartments"
                 :key="department.id"
                 :value="department"
-                :disabled="isAlreadySelected(department.id)"
                 v-slot="{ active, selected, disabled }"
                 as="template">
                 <li
                     class="relative flex cursor-pointer items-center rounded-sm py-2.5 pr-3 pl-9 text-sm"
                     :class="[
-                        active && !disabled ? 'bg-gray-600' : '',
+                        active && !disabled ? 'bg-gray-100' : '',
                         selected && !active ? 'bg-gray-50' : '',
-                        disabled ? 'cursor-not-allowed bg-gray-50' : '',
                     ]">
                     <span
                         class="truncate"
@@ -62,15 +60,7 @@
                     </span>
                     <span
                         class="absolute inset-y-0 left-0 flex items-center pl-3">
-                        <Check
-                            v-if="selected"
-                            class="size-4" />
-                        <Plus
-                            v-else-if="!disabled"
-                            class="size-4 opacity-60" />
-                        <CircleX
-                            v-else
-                            class="size-4 opacity-60" />
+                        <Plus class="size-4" />
                     </span>
                 </li>
             </ComboboxOption>
@@ -201,7 +191,7 @@
     import PageHeader from "../Shared/UI/PageHeader.vue";
     import SelectedDepartment from "./SelectedDepartment.vue";
     import DepartmentsChart from "./DepartmentsChart.vue";
-    import { Check, ChevronsUpDown, CircleX, Plus } from "lucide-vue-next";
+    import { ChevronsUpDown, Plus } from "lucide-vue-next";
     import { colors } from "@/assets/echarts/colors.json?json";
     import {
         Combobox,
@@ -279,15 +269,19 @@
         const acronymKey = `acronym_${language.value}`;
         const trimmedQuery = query.value.trim().toLowerCase();
 
-        const sorted = [...departments.value].sort((a, b) =>
-            a[nameKey].localeCompare(b[nameKey]),
+        const selectedIds = new Set(
+            selectedDepartmentMeta.value.map(({ id }) => id),
         );
 
+        const available = [...departments.value]
+            .filter((department) => !selectedIds.has(department.id))
+            .sort((a, b) => a[nameKey].localeCompare(b[nameKey]));
+
         if (!trimmedQuery) {
-            return sorted;
+            return available;
         }
 
-        return sorted.filter((department) => {
+        return available.filter((department) => {
             const name = (department[nameKey] || "").toLowerCase();
             const acronym = (department[acronymKey] || "").toLowerCase();
 
@@ -347,12 +341,6 @@
                 };
             })
             .filter(Boolean);
-    };
-
-    const isAlreadySelected = (departmentId) => {
-        return selectedDepartmentMeta.value.some(
-            ({ id }) => id === departmentId,
-        );
     };
 
     watch(selectedDepartment, (department) => {

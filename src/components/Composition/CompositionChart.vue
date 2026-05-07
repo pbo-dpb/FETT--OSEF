@@ -9,7 +9,8 @@
         <div class="flex items-center justify-end gap-4 xl:flex-row">
             <label
                 class="flex w-fit items-center gap-2 self-end rounded border-solid bg-gray-100 p-2">
-                <div class="pr-2 text-xs leading-none font-medium select-none">
+                <div
+                    class="pr-2 text-xs leading-none font-semibold select-none">
                     {{ strings.include_combined_data_label }}
                 </div>
                 <SwitchRoot
@@ -22,7 +23,8 @@
 
             <label
                 class="flex w-fit items-center gap-2 self-end rounded border-solid bg-gray-100 p-2">
-                <div class="pr-2 text-xs leading-none font-medium select-none">
+                <div
+                    class="pr-2 text-xs leading-none font-semibold select-none">
                     {{ strings.should_split_by_tenure_label }}
                 </div>
                 <SwitchRoot
@@ -66,7 +68,7 @@
     const componentRoot = useTemplateRef("componentRoot");
     const resObserver = shallowRef(null);
 
-    const shouldIncludeCombinedData = ref(false);
+    const shouldIncludeCombinedData = ref(true);
     const shouldSplitByTenure = ref(true);
     const useDarkTheme = ref(false);
 

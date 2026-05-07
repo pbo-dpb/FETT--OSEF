@@ -6,7 +6,7 @@
             v-html="intro"
             class="prose prose-headings:text-gray-700 dark:prose-invert prose-headings:mt-0 prose-headings:font-light max-w-none"></div>
         <div class="mt-4 border-t border-solid py-4 text-sm">
-            <span class="font-medium">{{ strings.last_updated }}</span
+            <span class="font-semibold">{{ strings.last_updated }}</span
             >{{ displayableLastUpdated }}
         </div>
     </div>
