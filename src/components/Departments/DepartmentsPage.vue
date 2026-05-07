@@ -7,7 +7,10 @@
         immediate
         as="div"
         v-slot="{ open }"
-        class="relative w-full">
+        class="relative w-full"
+        :class="{
+            'mb-48': selectedDepartments.length === 0,
+        }">
         <div
             class="relative border bg-white shadow-sm"
             :class="
@@ -18,7 +21,9 @@
             <ComboboxInput
                 class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4"
                 :displayValue="displayDepartment"
-                :placeholder="strings.search_departments_placeholder"
+                :placeholder="
+                    strings.departments_overview_no_departments_selected_message
+                "
                 @change="query = $event.target.value" />
             <ComboboxButton
                 class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3"
@@ -66,122 +71,122 @@
             </ComboboxOption>
         </ComboboxOptions>
     </Combobox>
-    <DepartmentsChart
-        v-show="selectedDepartments.length > 0"
-        :departments="selectedDepartments"
-        :highlighted-department-id="highlightedDepartmentId" />
-    <div
-        v-show="selectedDepartments.length > 0"
-        class="flex flex-col gap-4">
-        <div class="flex justify-end">
-            <fieldset class="flex flex-col">
-                <legend class="mb-1 font-semibold">
-                    {{ strings.department_fiscal_period_label }}
-                </legend>
-                <div class="flex gap-2">
-                    <label
-                        for="year"
-                        class="sr-only"
-                        >{{ strings.department_year }}</label
-                    >
-                    <select
-                        id="year"
-                        class="rounded-sm border border-solid border-gray-300 py-0.5"
-                        v-model="selectedYear">
-                        <option
-                            v-for="year in availableYears"
-                            :key="year"
-                            :value="year">
-                            {{ year }}
-                        </option>
-                    </select>
-                    <label
-                        for="quarter"
-                        class="sr-only"
-                        >{{ strings.department_quarter }}</label
-                    >
-                    <select
-                        id="quarter"
-                        class="rounded-sm border border-solid border-gray-300 py-0.5"
-                        v-model="selectedQuarter">
-                        <option
-                            v-for="quarter in quarterOptions"
-                            :key="quarter.value"
-                            :value="quarter.value"
-                            :disabled="quarter.disabled">
-                            {{ quarter.label }}
-                        </option>
-                    </select>
-                </div>
-            </fieldset>
+    <div v-if="selectedDepartments.length > 0">
+        <DepartmentsChart
+            :departments="selectedDepartments"
+            :highlighted-department-id="highlightedDepartmentId" />
+        <div class="flex flex-col gap-4">
+            <div class="flex justify-end">
+                <fieldset class="flex flex-col">
+                    <legend class="mb-1 font-semibold">
+                        {{ strings.department_fiscal_period_label }}
+                    </legend>
+                    <div class="flex gap-2">
+                        <label
+                            for="year"
+                            class="sr-only"
+                            >{{ strings.department_year }}</label
+                        >
+                        <select
+                            id="year"
+                            class="rounded-sm border border-solid border-gray-300 py-0.5"
+                            v-model="selectedYear">
+                            <option
+                                v-for="year in availableYears"
+                                :key="year"
+                                :value="year">
+                                {{ year }}
+                            </option>
+                        </select>
+                        <label
+                            for="quarter"
+                            class="sr-only"
+                            >{{ strings.department_quarter }}</label
+                        >
+                        <select
+                            id="quarter"
+                            class="rounded-sm border border-solid border-gray-300 py-0.5"
+                            v-model="selectedQuarter">
+                            <option
+                                v-for="quarter in quarterOptions"
+                                :key="quarter.value"
+                                :value="quarter.value"
+                                :disabled="quarter.disabled">
+                                {{ quarter.label }}
+                            </option>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <table
+                class="block w-full border-separate border-spacing-y-2 md:table">
+                <caption class="sr-only">
+                    {{
+                        strings.departments_table_caption
+                    }}
+                </caption>
+                <thead class="mb-4 hidden md:table-header-group">
+                    <tr>
+                        <th
+                            scope="col"
+                            class="border-b-1 border-solid border-gray-300 p-2 text-left font-semibold">
+                            {{ strings.departments_table_department_column }}
+                        </th>
+                        <th
+                            scope="col"
+                            class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
+                            {{ strings.dep_indeterminate }}
+                        </th>
+                        <th
+                            scope="col"
+                            class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
+                            {{ strings.dep_term }}
+                        </th>
+                        <th
+                            scope="col"
+                            class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
+                            {{ strings.dep_student }}
+                        </th>
+                        <th
+                            scope="col"
+                            class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
+                            {{ strings.dep_casual }}
+                        </th>
+                        <th
+                            scope="col"
+                            class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
+                            {{ strings.total_label }}
+                        </th>
+                        <th
+                            scope="col"
+                            class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
+                            <span class="sr-only">{{
+                                strings.departments_table_actions_column
+                            }}</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="block md:table-row-group">
+                    <SelectedDepartment
+                        v-for="department in selectedDepartments"
+                        :key="department.id"
+                        :department="department"
+                        :selected-quarter="selectedQuarter"
+                        :selected-year="selectedYear"
+                        :highlighted="highlightedDepartmentId === department.id"
+                        @remove-department="removeDepartment"
+                        @highlight-department="
+                            (id) => (highlightedDepartmentId = id)
+                        "
+                        @unhighlight-department="
+                            (id) => {
+                                if (highlightedDepartmentId === id)
+                                    highlightedDepartmentId = null;
+                            }
+                        " />
+                </tbody>
+            </table>
         </div>
-        <table class="block w-full border-separate border-spacing-y-2 md:table">
-            <caption class="sr-only">
-                {{
-                    strings.departments_table_caption
-                }}
-            </caption>
-            <thead class="mb-4 hidden md:table-header-group">
-                <tr>
-                    <th
-                        scope="col"
-                        class="border-b-1 border-solid border-gray-300 p-2 text-left font-semibold">
-                        {{ strings.departments_table_department_column }}
-                    </th>
-                    <th
-                        scope="col"
-                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                        {{ strings.dep_indeterminate }}
-                    </th>
-                    <th
-                        scope="col"
-                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                        {{ strings.dep_term }}
-                    </th>
-                    <th
-                        scope="col"
-                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                        {{ strings.dep_student }}
-                    </th>
-                    <th
-                        scope="col"
-                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                        {{ strings.dep_casual }}
-                    </th>
-                    <th
-                        scope="col"
-                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                        {{ strings.total_label }}
-                    </th>
-                    <th
-                        scope="col"
-                        class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                        <span class="sr-only">{{
-                            strings.departments_table_actions_column
-                        }}</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="block md:table-row-group">
-                <SelectedDepartment
-                    v-for="department in selectedDepartments"
-                    :key="department.id"
-                    :department="department"
-                    :selected-quarter="selectedQuarter"
-                    :selected-year="selectedYear"
-                    :highlighted="highlightedDepartmentId === department.id"
-                    @remove-department="removeDepartment"
-                    @highlight-department="
-                        (id) => (highlightedDepartmentId = id)
-                    "
-                    @unhighlight-department="
-                        (id) => {
-                            if (highlightedDepartmentId === id)
-                                highlightedDepartmentId = null;
-                        }
-                    " />
-            </tbody>
-        </table>
     </div>
 </template>
 
