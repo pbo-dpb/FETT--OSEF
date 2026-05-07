@@ -109,6 +109,10 @@
 
     const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 
+    import useSettingsStore from "@/stores/settings.js";
+    const settingsStore = useSettingsStore();
+    const { preferredMetric } = storeToRefs(settingsStore);
+
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
 
@@ -137,8 +141,14 @@
         },
     });
 
+    const metricDataKey = computed(() => {
+        return preferredMetric.value === "pop"
+            ? "total_pops_per_quarter"
+            : "total_ftes_per_quarter";
+    });
+
     const selectedValues = computed(() => {
-        return props.department.total_ftes_per_quarter?.find(
+        return props.department[metricDataKey.value]?.find(
             (item) =>
                 item.year === props.selectedYear &&
                 item.quarter === props.selectedQuarter,
