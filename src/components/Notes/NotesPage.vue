@@ -4,7 +4,7 @@
         class="flex flex-col">
         <div
             v-html="intro"
-            class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-light prose-a:text-slate-800 dark:prose-a:text-slate-200 max-w-none"></div>
+            class="prose prose-headings:text-gray-700 dark:prose-invert prose-headings:mt-0 prose-headings:font-light max-w-none"></div>
         <div class="mt-4 border-t border-solid py-4 text-sm">
             <span class="font-medium">{{ strings.last_updated }}</span
             >{{ displayableLastUpdated }}

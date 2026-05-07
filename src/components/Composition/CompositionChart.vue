@@ -8,28 +8,26 @@
 
         <div class="flex items-center justify-end gap-4 xl:flex-row">
             <label
-                class="flex w-fit items-center gap-2 self-end rounded border-solid bg-slate-100 p-2">
-                <div
-                    class="pr-2 text-xs leading-none font-medium text-stone-700 select-none dark:text-white">
+                class="flex w-fit items-center gap-2 self-end rounded border-solid bg-gray-100 p-2">
+                <div class="pr-2 text-xs leading-none font-medium select-none">
                     {{ strings.include_combined_data_label }}
                 </div>
                 <SwitchRoot
                     v-model="shouldIncludeCombinedData"
-                    class="relative flex h-[20px] w-[32px] rounded-full border border-stone-300 shadow-sm transition-[background] focus-within:border-stone-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-stone-800 focus-within:outline-none data-[state=checked]:border-stone-700 data-[state=checked]:bg-stone-800 data-[state=unchecked]:bg-stone-300 dark:border-stone-700 dark:data-[state=checked]:bg-stone-700 dark:data-[state=unchecked]:bg-stone-800">
+                    class="relative flex h-[20px] w-[32px] rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
                     <SwitchThumb
                         class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
                 </SwitchRoot>
             </label>
 
             <label
-                class="flex w-fit items-center gap-2 self-end rounded border-solid bg-slate-100 p-2">
-                <div
-                    class="pr-2 text-xs leading-none font-medium text-stone-700 select-none dark:text-white">
+                class="flex w-fit items-center gap-2 self-end rounded border-solid bg-gray-100 p-2">
+                <div class="pr-2 text-xs leading-none font-medium select-none">
                     {{ strings.should_split_by_tenure_label }}
                 </div>
                 <SwitchRoot
                     v-model="shouldSplitByTenure"
-                    class="relative flex h-[20px] w-[32px] rounded-full border border-stone-300 shadow-sm transition-[background] focus-within:border-stone-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-stone-800 focus-within:outline-none data-[state=checked]:border-stone-700 data-[state=checked]:bg-stone-800 data-[state=unchecked]:bg-stone-300 dark:border-stone-700 dark:data-[state=checked]:bg-stone-700 dark:data-[state=unchecked]:bg-stone-800">
+                    class="relative flex h-[20px] w-[32px] rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
                     <SwitchThumb
                         class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
                 </SwitchRoot>

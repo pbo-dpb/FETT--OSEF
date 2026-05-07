@@ -11,6 +11,18 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+    :host,
+    body {
+        color: var(--color-gray-700);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :host,
+        body {
+            color: var(--color-gray-100);
+        }
+    }
+
     *,
     ::after,
     ::before,

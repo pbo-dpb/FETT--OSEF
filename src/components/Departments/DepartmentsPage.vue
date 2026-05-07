@@ -12,30 +12,30 @@
             class="relative border bg-white shadow-sm"
             :class="
                 open
-                    ? 'border-slate-500 ring-4 ring-slate-100'
-                    : 'border-slate-300 focus-within:border-slate-500 focus-within:ring-4 focus-within:ring-slate-100 hover:border-slate-400'
+                    ? 'border-gray-500 ring-4 ring-gray-100'
+                    : 'border-gray-300 focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-100 hover:border-gray-400'
             ">
             <ComboboxInput
-                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4 text-slate-900 placeholder:text-slate-700"
+                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4"
                 :displayValue="displayDepartment"
                 :placeholder="strings.search_departments_placeholder"
                 @change="query = $event.target.value" />
             <ComboboxButton
-                class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-slate-700"
+                class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3"
                 :aria-label="strings.departments_combobox_toggle_aria_label">
                 <ChevronsUpDown class="size-4" />
             </ComboboxButton>
         </div>
         <ComboboxOptions
-            class="absolute z-20 mt-1 max-h-48 w-full overflow-auto rounded-sm border border-solid border-slate-300 bg-white p-1 shadow-xl ring-1 ring-slate-200 focus:outline-none">
+            class="absolute z-20 mt-1 max-h-48 w-full overflow-auto rounded-sm border border-solid border-gray-300 bg-white p-1 shadow-xl ring-1 ring-gray-200 focus:outline-none">
             <li
                 v-if="departments === false"
-                class="cursor-default rounded-sm px-3 py-2 text-slate-500">
+                class="cursor-default rounded-sm px-3 py-2">
                 {{ strings.departments_loading_message }}
             </li>
             <li
                 v-else-if="!filteredDepartments.length"
-                class="cursor-default rounded-sm px-3 py-2 text-slate-500">
+                class="cursor-default rounded-sm px-3 py-2">
                 {{ strings.departments_none_found_message }}
             </li>
             <ComboboxOption
@@ -48,13 +48,9 @@
                 <li
                     class="relative flex cursor-pointer items-center rounded-sm py-2.5 pr-3 pl-9 text-sm"
                     :class="[
-                        active && !disabled
-                            ? 'bg-slate-600 text-white'
-                            : 'text-slate-800',
-                        selected && !active ? 'bg-slate-50 text-slate-900' : '',
-                        disabled
-                            ? 'cursor-not-allowed bg-slate-50 text-slate-400'
-                            : '',
+                        active && !disabled ? 'bg-gray-600' : '',
+                        selected && !active ? 'bg-gray-50' : '',
+                        disabled ? 'cursor-not-allowed bg-gray-50' : '',
                     ]">
                     <span
                         class="truncate"
@@ -65,12 +61,7 @@
                         </template>
                     </span>
                     <span
-                        class="absolute inset-y-0 left-0 flex items-center pl-3"
-                        :class="
-                            active && !disabled
-                                ? 'text-white'
-                                : 'text-slate-700'
-                        ">
+                        class="absolute inset-y-0 left-0 flex items-center pl-3">
                         <Check
                             v-if="selected"
                             class="size-4" />

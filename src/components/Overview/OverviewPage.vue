@@ -63,8 +63,7 @@
                     <TrendIndicator :datapoint="casualAbsoluteDiff" />
                 </p>
             </div>
-            <div
-                class="col-span-full text-right text-xs font-medium text-slate-500">
+            <div class="col-span-full text-right text-xs font-medium">
                 {{ formattedDateLabel }}
             </div>
         </div>
@@ -96,8 +95,7 @@
                     </p>
                 </li>
             </ol>
-            <div
-                class="col-span-full text-right text-xs font-medium text-slate-500">
+            <div class="col-span-full text-right text-xs font-medium">
                 {{ formattedDateLabel }}
             </div>
         </div>
@@ -129,8 +127,7 @@
                     </div>
                 </li>
             </ol>
-            <div
-                class="col-span-full text-right text-xs font-medium text-slate-500">
+            <div class="col-span-full text-right text-xs font-medium">
                 {{ formattedDateLabel }}
             </div>
         </div>

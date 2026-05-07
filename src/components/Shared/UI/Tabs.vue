@@ -8,10 +8,8 @@
             :to="tab.to"
             :class="{
                 'flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-medium': true,
-                'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-600':
-                    !tab.selected,
-                '-mb-0.25 border-b-3 border-slate-600 pb-2.25 text-slate-800':
-                    tab.selected,
+                'border-transparent hover:border-gray-300': !tab.selected,
+                '-mb-0.25 border-b-3 border-gray-600 pb-2.25': tab.selected,
             }"
             :aria-selected="tab.selected.toString()">
             {{ tab.label }}

@@ -3,7 +3,7 @@
         @mouseenter="$emit('highlight-department', department.id)"
         @mouseleave="$emit('unhighlight-department', department.id)"
         class="mb-4 block rounded-sm border-y-1 border-r-1 border-l-4 border-solid p-2 md:mb-0 md:mb-2 md:table-row md:border-l-0 md:p-0"
-        :class="{ 'bg-slate-100': highlighted }"
+        :class="{ 'bg-gray-100': highlighted }"
         :style="{ borderLeftColor: department.color || 'transparent' }">
         <th
             scope="row"

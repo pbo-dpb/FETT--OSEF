@@ -1,7 +1,7 @@
 <template>
     <component
         :is="'button'"
-        class="rounded-sm px-4 py-2 font-bold"
+        class="rounded-sm px-4 py-2 font-bold text-gray-100"
         :class="buttonClasses"
         type="button"
         @click="click"
@@ -13,9 +13,7 @@
             <slot></slot>
         </div>
 
-        <span
-            color="text-white"
-            v-if="loading">
+        <span v-if="loading">
             <loading-indicator class="h-6 w-6"></loading-indicator>
         </span>
     </component>
@@ -93,7 +91,7 @@
         },
         computed: {
             buttonClasses() {
-                let base = ["text-white", ...this.classes];
+                let base = [...this.classes];
 
                 if (this.loading || this.disabled) {
                     base.push(this.colors.disabled);
@@ -110,7 +108,7 @@
                     base.push(this.colors.base);
                     base.push(this.colors.hover);
                     base.push("transition-all hover:shadow-lg");
-                    base.push("cursor-pointer")
+                    base.push("cursor-pointer");
                 }
                 return base;
             },
@@ -119,10 +117,10 @@
                 switch (this.type) {
                     case "primary":
                         return {
-                            disabled: "bg-slate-500",
-                            base: "bg-slate-800",
-                            hover: "hover:bg-slate-700",
-                            active: "bg-slate-900",
+                            disabled: "bg-gray-500",
+                            base: "bg-gray-800",
+                            hover: "hover:bg-gray-700",
+                            active: "bg-gray-900",
                         };
                     case "positive":
                         return {
