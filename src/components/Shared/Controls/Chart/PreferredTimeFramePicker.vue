@@ -9,7 +9,7 @@
             v-model="preferredTimeframe"
             type="single"
             aria-labelledby="preferred-metric-label"
-            class="flex flex-row gap-2">
+            class="flex flex-row flex-wrap gap-2">
             <ToggleGroupItem
                 value="1Y"
                 :class="toggleGroupItemClasses"

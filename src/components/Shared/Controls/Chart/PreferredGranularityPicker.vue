@@ -9,7 +9,7 @@
             v-model="preferredGranularity"
             type="single"
             aria-labelledby="preferred-granularity-label"
-            class="flex flex-row gap-2"
+            class="flex flex-row flex-wrap gap-2"
             required>
             <ToggleGroupItem
                 value="quarter"
