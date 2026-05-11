@@ -3,8 +3,8 @@ import { createWebHashHistory, createRouter } from "vue-router";
 const OverviewPage = () => import("./components/Overview/OverviewPage.vue");
 const CompositionPage = () =>
     import("./components/Composition/CompositionPage.vue");
-const DepartmentsPage = () =>
-    import("./components/Departments/DepartmentsPage.vue");
+const ComparisonPage = () =>
+    import("./components/Comparison/ComparisonPage.vue");
 const NotesPage = () => import("./components/Notes/NotesPage.vue");
 
 const routes = [
@@ -12,7 +12,7 @@ const routes = [
     { path: "/composition", component: CompositionPage, name: "composition" },
     {
         path: "/departments-and-agencies--ministeres-et-organismes/:departments*",
-        component: DepartmentsPage,
+        component: ComparisonPage,
         name: "departments",
     },
     { path: "/notes", component: NotesPage, name: "notes" },

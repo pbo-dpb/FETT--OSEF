@@ -72,7 +72,7 @@
         </ComboboxOptions>
     </Combobox>
     <div v-if="selectedDepartments.length > 0">
-        <DepartmentsChart
+        <ComparisonChart
             :departments="selectedDepartments"
             :highlighted-department-id="highlightedDepartmentId" />
         <div class="flex flex-col gap-4">
@@ -195,7 +195,7 @@
     import { storeToRefs } from "pinia";
     import PageHeader from "../Shared/UI/PageHeader.vue";
     import SelectedDepartment from "./SelectedDepartment.vue";
-    import DepartmentsChart from "./DepartmentsChart.vue";
+    import ComparisonChart from "./ComparisonChart.vue";
     import { ChevronsUpDown, Plus } from "lucide-vue-next";
     import { colors } from "@/assets/echarts/colors.json?json";
     import {
