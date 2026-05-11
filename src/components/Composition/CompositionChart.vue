@@ -352,6 +352,10 @@
     };
 
     const chartOptions = computed(() => {
+        const legendBottom = 8;
+        const legendHeight = 32;
+        const xAxisLabelReserve = 36;
+
         const options = {
             aria: {
                 enabled: true,
@@ -363,6 +367,7 @@
                 top: 0,
                 left: 0,
                 right: 0,
+                bottom: legendBottom + legendHeight + xAxisLabelReserve,
             },
             dataZoom: [dataZoom.value],
             tooltip: {
@@ -378,8 +383,13 @@
         };
 
         options["legend"] = {
+            type: "scroll",
             data: options.series.map((serie) => serie.name),
             itemHeight: 24,
+            orient: "horizontal",
+            left: "center",
+            bottom: legendBottom,
+            selectedMode: false,
         };
 
         return options;
