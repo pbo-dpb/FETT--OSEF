@@ -5,6 +5,7 @@ export const toggleGroupItemClasses = [
     "font-semibold",
     "rounded",
     "select-none",
-    "data-[state=on]:bg-gray-300",
+    "data-[state=on]:text-white",
+    "data-[state=on]:bg-gray-900",
     "data-[state=off]:cursor-pointer",
 ];

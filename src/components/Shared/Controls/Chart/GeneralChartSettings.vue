@@ -10,6 +10,7 @@
     import { onMounted } from "vue";
     import { storeToRefs } from "pinia";
     import usePayloadsStore from "@/stores/payloads.js";
+
     import PreferredMetricPicker from "./PreferredMetricPicker.vue";
     import PreferredTimeFramePicker from "./PreferredTimeFramePicker.vue";
     import PreferredGranularityPicker from "./PreferredGranularityPicker.vue";

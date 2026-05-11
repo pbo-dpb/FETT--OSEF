@@ -22,12 +22,12 @@
 
 <script setup>
     import { storeToRefs } from "pinia";
-    import useLocalizationStore from "@/stores/localizations.js";
+
     import useSettingsStore from "@/stores/settings.js";
-
-    const localizationsStore = useLocalizationStore();
-    const { strings } = storeToRefs(localizationsStore);
-
     const settingsStore = useSettingsStore();
     const { preferredTenure } = storeToRefs(settingsStore);
+
+    import useLocalizationStore from "@/stores/localizations.js";
+    const localizationsStore = useLocalizationStore();
+    const { strings } = storeToRefs(localizationsStore);
 </script>

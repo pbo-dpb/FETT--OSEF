@@ -28,15 +28,15 @@
 </template>
 
 <script setup>
-    import { ToggleGroupItem, ToggleGroupRoot } from "reka-ui";
     import { storeToRefs } from "pinia";
+    import { ToggleGroupItem, ToggleGroupRoot } from "reka-ui";
     import { toggleGroupItemClasses } from "./pickerStyles.js";
-    import useLocalizationsStore from "@/stores/localizations.js";
-
-    const localizationsStore = useLocalizationsStore();
-    const { strings } = storeToRefs(localizationsStore);
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
     const { preferredMetric } = storeToRefs(settingsStore);
+
+    import useLocalizationsStore from "@/stores/localizations.js";
+    const localizationsStore = useLocalizationsStore();
+    const { strings } = storeToRefs(localizationsStore);
 </script>

@@ -31,11 +31,11 @@
     import { storeToRefs } from "pinia";
     import { toggleGroupItemClasses } from "./pickerStyles.js";
 
-    import useLocalizationsStore from "@/stores/localizations.js";
-    const localizationsStore = useLocalizationsStore();
-    const { strings } = storeToRefs(localizationsStore);
-
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
     const { preferredGranularity } = storeToRefs(settingsStore);
+
+    import useLocalizationsStore from "@/stores/localizations.js";
+    const localizationsStore = useLocalizationsStore();
+    const { strings } = storeToRefs(localizationsStore);
 </script>
