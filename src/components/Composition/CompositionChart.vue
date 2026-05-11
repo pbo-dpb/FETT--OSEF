@@ -12,7 +12,7 @@
                     </div>
                     <SwitchRoot
                         v-model="shouldIncludeCombinedData"
-                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
+                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] data-[state=checked]:bg-gray-900 data-[state=unchecked]:bg-gray-300">
                         <SwitchThumb
                             class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
                     </SwitchRoot>
@@ -23,7 +23,7 @@
                     </div>
                     <SwitchRoot
                         v-model="shouldSplitByTenure"
-                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
+                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] data-[state=checked]:bg-gray-900 data-[state=unchecked]:bg-gray-300">
                         <SwitchThumb
                             class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
                     </SwitchRoot>
