@@ -76,7 +76,7 @@
             :departments="selectedDepartments"
             :highlighted-department-id="highlightedDepartmentId" />
         <div class="flex flex-col gap-4">
-            <div class="flex justify-end rounded-sm bg-gray-100 p-4">
+            <div class="flex rounded-sm bg-gray-100 p-4">
                 <fieldset class="flex flex-col">
                     <legend class="mb-1 font-semibold">
                         {{ strings.department_fiscal_period_label }}
