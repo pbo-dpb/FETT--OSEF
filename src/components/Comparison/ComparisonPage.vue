@@ -76,7 +76,7 @@
             :departments="selectedDepartments"
             :highlighted-department-id="highlightedDepartmentId" />
         <div class="flex flex-col gap-4">
-            <div class="flex justify-end">
+            <div class="flex justify-end rounded-sm bg-gray-100 p-4">
                 <fieldset class="flex flex-col">
                     <legend class="mb-1 font-semibold">
                         {{ strings.department_fiscal_period_label }}
@@ -89,7 +89,7 @@
                         >
                         <select
                             id="year"
-                            class="rounded-sm border border-solid border-gray-300 py-0.5"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5"
                             v-model="selectedYear">
                             <option
                                 v-for="year in availableYears"
@@ -105,7 +105,7 @@
                         >
                         <select
                             id="quarter"
-                            class="rounded-sm border border-solid border-gray-300 py-0.5"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5"
                             v-model="selectedQuarter">
                             <option
                                 v-for="quarter in quarterOptions"

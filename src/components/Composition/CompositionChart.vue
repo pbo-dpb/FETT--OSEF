@@ -1,40 +1,38 @@
 <template>
     <div
         ref="componentRoot"
-        class="flex w-full flex-col gap-2">
+        class="flex flex-col gap-8">
+        <div
+            class="flex flex-col gap-y-6 rounded-sm bg-gray-100 p-4 2xl:flex-row 2xl:items-end 2xl:justify-between">
+            <GeneralChartSettings />
+            <div class="flex flex-col gap-x-8 gap-y-6 md:flex-row md:flex-wrap">
+                <label class="flex w-fit cursor-pointer">
+                    <div class="pr-2 leading-none font-semibold">
+                        {{ strings.include_combined_data_label }}
+                    </div>
+                    <SwitchRoot
+                        v-model="shouldIncludeCombinedData"
+                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
+                        <SwitchThumb
+                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
+                    </SwitchRoot>
+                </label>
+                <label class="flex w-fit cursor-pointer">
+                    <div class="pr-2 leading-none font-semibold">
+                        {{ strings.should_split_by_tenure_label }}
+                    </div>
+                    <SwitchRoot
+                        v-model="shouldSplitByTenure"
+                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
+                        <SwitchThumb
+                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
+                    </SwitchRoot>
+                </label>
+            </div>
+        </div>
         <div
             :id="uniqueId"
-            class="h-[80vh] w-full"></div>
-
-        <div class="flex items-center justify-end gap-4 xl:flex-row">
-            <label
-                class="flex w-fit items-center gap-2 self-end rounded border-solid bg-gray-100 p-2">
-                <div
-                    class="pr-2 text-xs leading-none font-semibold select-none">
-                    {{ strings.include_combined_data_label }}
-                </div>
-                <SwitchRoot
-                    v-model="shouldIncludeCombinedData"
-                    class="relative flex h-[20px] w-[32px] rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
-                    <SwitchThumb
-                        class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
-                </SwitchRoot>
-            </label>
-
-            <label
-                class="flex w-fit items-center gap-2 self-end rounded border-solid bg-gray-100 p-2">
-                <div
-                    class="pr-2 text-xs leading-none font-semibold select-none">
-                    {{ strings.should_split_by_tenure_label }}
-                </div>
-                <SwitchRoot
-                    v-model="shouldSplitByTenure"
-                    class="relative flex h-[20px] w-[32px] rounded-full border border-gray-300 shadow-sm transition-[background] focus-within:border-gray-800 focus-within:shadow-[0_0_0_1px] focus-within:shadow-gray-800 focus-within:outline-none data-[state=checked]:border-gray-700 data-[state=checked]:bg-gray-800 data-[state=unchecked]:bg-gray-300 dark:border-gray-700 dark:data-[state=checked]:bg-gray-700 dark:data-[state=unchecked]:bg-gray-800">
-                    <SwitchThumb
-                        class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
-                </SwitchRoot>
-            </label>
-        </div>
+            class="h-[300px] md:h-[600px]"></div>
     </div>
 </template>
 
@@ -63,6 +61,8 @@
     const settingsStore = useSettingsStore();
     const { preferredTimeframe, preferredGranularity, preferredMetric } =
         storeToRefs(settingsStore);
+
+    import GeneralChartSettings from "../Shared/Controls/Chart/GeneralChartSettings.vue";
 
     const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
     const componentRoot = useTemplateRef("componentRoot");

@@ -2,12 +2,12 @@
     <div class="flex flex-col gap-1">
         <label
             for="preferred-tenure"
-            class="font-semibold"
+            class="cursor-pointer font-semibold"
             >{{ strings.preferred_tenure_label }}</label
         >
         <select
             id="preferred-tenure"
-            class="rounded-sm border border-solid border-gray-300 py-0.5"
+            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5"
             v-model="preferredTenure">
             <option value="indeterminate">
                 {{ strings.dep_indeterminate }}

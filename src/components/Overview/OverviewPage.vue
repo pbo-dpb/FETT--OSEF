@@ -7,7 +7,8 @@
                 :heading="strings.overview_heading"
                 :description="strings.overview_description" />
         </div>
-        <div class="col-span-full flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div
+            class="col-span-full flex flex-wrap items-center gap-x-8 gap-y-4 rounded-sm bg-gray-100 p-4">
             <PreferredMetricPicker />
             <PreferredComparisonPeriodPicker />
         </div>

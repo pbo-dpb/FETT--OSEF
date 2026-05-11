@@ -5,7 +5,7 @@
                 <PageHeader
                     :heading="strings.composition_heading"
                     :description="strings.composition_description" />
-                <GeneralChartSettings />
+
                 <CompositionChart />
             </div>
         </template>
@@ -22,7 +22,6 @@
     import useLocalizationStore from "@/stores/localizations.js";
 
     import PageHeader from "../Shared/UI/PageHeader.vue";
-    import GeneralChartSettings from "@/components/Shared/Controls/Chart/GeneralChartSettings.vue";
     import CompositionChart from "./CompositionChart.vue";
     import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
 

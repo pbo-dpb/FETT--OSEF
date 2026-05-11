@@ -1,7 +1,7 @@
 export const toggleGroupItemClasses = [
     "px-2",
     "py-0.5",
-    "bg-gray-100",
+    "bg-white",
     "font-semibold",
     "rounded",
     "select-none",

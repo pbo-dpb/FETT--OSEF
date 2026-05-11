@@ -1,23 +1,16 @@
 <template>
     <div
         ref="componentRoot"
-        class="flex w-full flex-col gap-8"
-        :class="{
-            blur: !departments.length,
-        }">
-        <div class="flex flex-wrap items-center justify-between gap-y-4">
+        class="flex w-full flex-col gap-8">
+        <div
+            class="flex flex-wrap items-center justify-between gap-y-4 rounded-sm bg-gray-100 p-4">
             <GeneralChartSettings />
             <PreferredTenurePicker />
         </div>
         <div
             v-show="departments.length"
             :id="uniqueId"
-            class="h-[40vh] w-full"></div>
-        <img
-            v-show="!departments.length"
-            :src="departmentsOverviewPlaceholderUrl"
-            alt=""
-            style="aspect-ratio: 1470/364" />
+            class="h-[300px] md:h-[600px]"></div>
     </div>
 </template>
 
@@ -39,7 +32,6 @@
     import usePayloadsStore from "@/stores/payloads.js";
     import numberFormatterMixin from "@/mixins/numberFormatter.js";
 
-    import departmentsOverviewPlaceholderUrl from "@/assets/departments-overview-placeholder.svg?url";
     import GeneralChartSettings from "@/components/Shared/Controls/Chart/GeneralChartSettings.vue";
     import PreferredTenurePicker from "@/components/Shared/Controls/Chart/PreferredTenurePicker.vue";
 
