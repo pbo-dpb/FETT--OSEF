@@ -7,10 +7,8 @@
             :key="tab.to.name"
             :to="tab.to"
             :class="[
-                'flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-semibold',
-                tab.selected
-                    ? 'border-gray-600 text-gray-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-600',
+                'tab-focus flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-semibold text-gray-700',
+                tab.selected ? 'border-gray-600' : 'border-transparent',
             ]"
             :aria-selected="tab.selected.toString()">
             {{ tab.label }}

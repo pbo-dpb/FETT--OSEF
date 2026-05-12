@@ -133,10 +133,11 @@
             </div>
         </div>
         <div class="col-span-full">
-            <BaseButton
-                type="default"
+            <a
                 href="./sample-input-current.xlsx"
-                >{{ strings.overview_download_button }}</BaseButton
+                download="Workforce-360-Data--Effectif-360-Données"
+                class="cursor-pointer rounded-sm bg-gray-900 px-4 py-2 font-semibold text-white hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 focus-visible:outline-solid"
+                >{{ strings.overview_download_button }}</a
             >
         </div>
     </div>
@@ -146,28 +147,24 @@
 </template>
 
 <script>
-    import PageHeader from "../Shared/UI/PageHeader.vue";
-    import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
-    import BaseButton from "@/components/Shared/UI/BaseButton.vue";
-    import TrendIndicator from "../Shared/UI/TrendIndicator.vue";
-    import PreferredComparisonPeriodPicker from "@/components/Shared/Controls/Chart/PreferredComparisonPeriodPicker.vue";
-    import PreferredMetricPicker from "@/components/Shared/Controls/Chart/PreferredMetricPicker.vue";
+    import { storeToRefs } from "pinia";
+
     import numberFormatter from "@/mixins/numberFormatter.js";
     import { formatAsOfDateLabel } from "@/mixins/formattedDateLabel.js";
 
-    import { storeToRefs } from "pinia";
-
-    import useLocalizationsStore from "@/stores/localizations.js";
-
     import usePayloadsStore from "@/stores/payloads.js";
     import useSettingsStore from "@/stores/settings.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
 
-    import { toRaw } from "vue";
+    import PageHeader from "../Shared/UI/PageHeader.vue";
+    import PreferredMetricPicker from "@/components/Shared/Controls/Chart/PreferredMetricPicker.vue";
+    import PreferredComparisonPeriodPicker from "@/components/Shared/Controls/Chart/PreferredComparisonPeriodPicker.vue";
+    import TrendIndicator from "../Shared/UI/TrendIndicator.vue";
+    import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
 
     export default {
         components: {
             PageHeader,
-            BaseButton,
             LoadingIndicator,
             PreferredComparisonPeriodPicker,
             PreferredMetricPicker,
@@ -300,8 +297,6 @@
 
             this.data = overview.value;
             this.isLoading = false;
-
-            console.log(toRaw(this.data.quarterly.comparisons));
         },
     };
 </script>

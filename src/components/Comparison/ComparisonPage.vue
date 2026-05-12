@@ -15,11 +15,11 @@
             class="relative border bg-white shadow-sm"
             :class="
                 open
-                    ? 'border-gray-500 ring-4 ring-gray-100'
-                    : 'border-gray-300 focus-within:border-gray-500 focus-within:ring-4 focus-within:ring-gray-100 hover:border-gray-400'
+                    ? 'border-gray-500'
+                    : 'border-gray-300 hover:border-gray-400'
             ">
             <ComboboxInput
-                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4"
+                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4 outline-offset-4"
                 :displayValue="displayDepartment"
                 :placeholder="
                     strings.departments_overview_no_departments_selected_message
@@ -32,7 +32,7 @@
             </ComboboxButton>
         </div>
         <ComboboxOptions
-            class="absolute z-20 mt-1 max-h-48 w-full overflow-auto rounded-sm border border-solid border-gray-300 bg-white p-1 shadow-xl ring-1 ring-gray-200 focus:outline-none">
+            class="absolute z-20 mt-2 max-h-48 w-full overflow-auto rounded-sm border border-solid border-gray-300 bg-white p-1 shadow-xl focus:outline-none">
             <li
                 v-if="departments === false"
                 class="cursor-default rounded-sm px-3 py-2">
@@ -50,9 +50,9 @@
                 v-slot="{ active, selected, disabled }"
                 as="template">
                 <li
-                    class="relative flex cursor-pointer items-center rounded-sm py-2.5 pr-3 pl-9 text-sm"
+                    class="relative flex cursor-pointer items-center rounded-sm py-2 pr-3 pl-8"
                     :class="[
-                        active && !disabled ? 'bg-gray-100' : '',
+                        active && !disabled ? 'bg-gray-900 text-white' : '',
                         selected && !active ? 'bg-gray-50' : '',
                     ]">
                     <span
@@ -89,7 +89,7 @@
                         >
                         <select
                             id="year"
-                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 focus-visible:outline-offset-4"
                             v-model="selectedYear">
                             <option
                                 v-for="year in availableYears"
@@ -105,7 +105,7 @@
                         >
                         <select
                             id="quarter"
-                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 focus-visible:outline-offset-4"
                             v-model="selectedQuarter">
                             <option
                                 v-for="quarter in quarterOptions"

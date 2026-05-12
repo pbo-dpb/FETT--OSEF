@@ -31,3 +31,23 @@
         border-color: var(--color-gray-200, currentcolor);
     }
 }
+
+@layer components {
+    .tab-focus {
+        position: relative;
+    }
+
+    .tab-focus:focus,
+    .tab-focus:focus-visible {
+        outline: 2px solid var(--color-gray-900);
+        outline-offset: 4px;
+        border-radius: 0.125rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .tab-focus:focus,
+        .tab-focus:focus-visible {
+            outline-color: var(--color-gray-100);
+        }
+    }
+}
