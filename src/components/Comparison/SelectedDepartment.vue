@@ -3,11 +3,15 @@
         @mouseenter="$emit('highlight-department', department.id)"
         @mouseleave="$emit('unhighlight-department', department.id)"
         class="mb-4 block rounded-sm border-y-1 border-r-1 border-l-4 border-solid p-2 md:mb-0 md:mb-2 md:table-row md:border-l-0 md:p-0"
-        :class="{ 'bg-gray-100': highlighted }"
-        :style="{ borderLeftColor: department.color || 'transparent' }">
+        :style="{
+            backgroundColor: highlighted
+                ? `${department.color}10`
+                : 'transparent',
+            borderLeftColor: department.color || 'transparent',
+        }">
         <th
             scope="row"
-            class="block p-2 text-left md:table-cell md:border-l-3 md:border-solid"
+            class="block p-2 text-left md:table-cell md:border-l-4 md:border-solid"
             :style="{ borderLeftColor: department.color || 'transparent' }">
             <span class="inline-flex items-center gap-2">
                 <span

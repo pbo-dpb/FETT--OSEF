@@ -340,6 +340,12 @@
                     payloadsStore.eagerLoadDepartment(department.id);
                 }
 
+                if (index >= colorPalette.length) {
+                    index = 0;
+                }
+
+                console.log(colorPalette.length);
+
                 return {
                     id,
                     color: colorPalette[index],
@@ -358,10 +364,13 @@
         );
 
         if (!alreadySelected) {
-            const index = selectedDepartmentMeta.value.length;
+            let index = selectedDepartmentMeta.value.length;
             const colorPalette = useDarkTheme.value
                 ? colors.dark
                 : colors.light;
+            if (index >= colorPalette.length) {
+                index = 0;
+            }
             selectedDepartmentMeta.value = [
                 ...selectedDepartmentMeta.value,
                 { id: department.id, color: colorPalette[index] },
