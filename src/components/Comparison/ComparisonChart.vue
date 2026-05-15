@@ -32,8 +32,10 @@
     import usePayloadsStore from "@/stores/payloads.js";
     import numberFormatterMixin from "@/mixins/numberFormatter.js";
 
-    import GeneralChartSettings from "@/components/Shared/Controls/Chart/GeneralChartSettings.vue";
-    import PreferredTenurePicker from "@/components/Shared/Controls/Chart/PreferredTenurePicker.vue";
+    import {
+        GeneralChartSettings,
+        PreferredTenurePicker,
+    } from "@/components/Shared";
 
     import * as echarts from "echarts/core";
     import { LineChart } from "echarts/charts";

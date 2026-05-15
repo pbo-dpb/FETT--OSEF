@@ -62,7 +62,7 @@
     const { preferredTimeframe, preferredGranularity, preferredMetric } =
         storeToRefs(settingsStore);
 
-    import GeneralChartSettings from "../Shared/Controls/Chart/GeneralChartSettings.vue";
+    import { GeneralChartSettings } from "@/components/Shared";
 
     const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
     const componentRoot = useTemplateRef("componentRoot");

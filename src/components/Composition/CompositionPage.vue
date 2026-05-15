@@ -21,9 +21,8 @@
     import usePayloadsStore from "@/stores/payloads.js";
     import useLocalizationStore from "@/stores/localizations.js";
 
-    import PageHeader from "../Shared/UI/PageHeader.vue";
+    import { LoadingIndicator, PageHeader } from "@/components/Shared";
     import CompositionChart from "./CompositionChart.vue";
-    import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
 
     const payloadsStore = usePayloadsStore();
     const { composition } = storeToRefs(payloadsStore);

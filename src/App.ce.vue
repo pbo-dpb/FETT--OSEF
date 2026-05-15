@@ -18,12 +18,12 @@
     import WrapperEventDispatcher from "./WrapperEventDispatcher.js";
     import { storeToRefs } from "pinia";
     import useLocalizationsStore from "./stores/localizations.js";
-    import TheAbout from "@/components/Shared/UI/TheAbout.vue";
-    import Tabs from "@/components/Shared/UI/Tabs.vue";
+    import { TheAbout, Tabs } from "@/components/Shared";
 
-    const DebugBar = defineAsyncComponent(
-        () => import("@/components/Shared/UI/DebugBar.vue"),
-    );
+    const DebugBar = defineAsyncComponent(async () => {
+        const mod = await import("@/components/Shared");
+        return mod.DebugBar;
+    });
 
     const instance = getCurrentInstance();
 

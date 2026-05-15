@@ -10,7 +10,7 @@
 
 <script>
     import { mapWritableState } from "pinia";
-    import BaseButton from "@/components/Shared/UI/BaseButton.vue";
+    import BaseButton from "./BaseButton.vue";
     import Localizations from "@/stores/localizations.js";
 
     export default {

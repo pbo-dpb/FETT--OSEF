@@ -156,11 +156,13 @@
     import useSettingsStore from "@/stores/settings.js";
     import useLocalizationsStore from "@/stores/localizations.js";
 
-    import PageHeader from "../Shared/UI/PageHeader.vue";
-    import PreferredMetricPicker from "@/components/Shared/Controls/Chart/PreferredMetricPicker.vue";
-    import PreferredComparisonPeriodPicker from "@/components/Shared/Controls/Chart/PreferredComparisonPeriodPicker.vue";
-    import TrendIndicator from "../Shared/UI/TrendIndicator.vue";
-    import LoadingIndicator from "@/components/Shared/UI/LoadingIndicator.vue";
+    import {
+        LoadingIndicator,
+        PageHeader,
+        PreferredComparisonPeriodPicker,
+        PreferredMetricPicker,
+        TrendIndicator,
+    } from "@/components/Shared";
 
     export default {
         components: {

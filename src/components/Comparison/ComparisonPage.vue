@@ -193,7 +193,7 @@
 <script setup>
     import { computed, onMounted, ref, watch } from "vue";
     import { storeToRefs } from "pinia";
-    import PageHeader from "../Shared/UI/PageHeader.vue";
+    import { PageHeader } from "@/components/Shared";
     import SelectedDepartment from "./SelectedDepartment.vue";
     import ComparisonChart from "./ComparisonChart.vue";
     import { ChevronsUpDown, Plus } from "lucide-vue-next";
