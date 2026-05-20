@@ -19,7 +19,7 @@
                     : 'border-gray-300 hover:border-gray-400'
             ">
             <ComboboxInput
-                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4 outline-offset-4"
+                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4 outline-offset-4 placeholder:text-gray-500"
                 :displayValue="displayDepartment"
                 :placeholder="
                     strings.departments_overview_no_departments_selected_message
