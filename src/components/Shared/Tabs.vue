@@ -10,7 +10,7 @@
                 'tab-focus flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-semibold text-gray-700',
                 tab.selected ? 'border-gray-600' : 'border-transparent',
             ]"
-            :aria-selected="tab.selected.toString()">
+            :aria-current="tab.selected.toString() ? 'page' : undefined">
             {{ tab.label }}
         </RouterLink>
     </nav>
@@ -22,13 +22,13 @@
 
     import useLocalizationsStore from "@/stores/localizations.js";
     const localizationsStore = useLocalizationsStore();
-    const { language, strings } = storeToRefs(localizationsStore);
+    const { strings } = storeToRefs(localizationsStore);
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
     const { previouslySelectedDepartmentIds } = storeToRefs(settingsStore);
 
-    import { useRoute, useRouter } from "vue-router";
+    import { useRoute } from "vue-router";
     const route = useRoute();
 
     const tabs = computed(() => {
