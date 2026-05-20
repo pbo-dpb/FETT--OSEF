@@ -33,7 +33,7 @@
     "include_combined_data_label": "Include CAF & RCMP Members",
     "include_combined_data_tooltip": "Toggle to include or exclude combined data from CAF and RCMP members in the chart.",
     "should_split_by_tenure_label": "Split by Tenure",
-    "departments_overview_no_departments_selected_message": "Search and select one or more departments to compare",
+    "departments_overview_no_departments_selected_message": "Select departments",
     "department_latest_ftes_as_of": "FTEs as of {date}",
     "department_latest_pops_as_of": "Headcount as of {date}",
     "department_latest_ftes_combined_note": "Note: Detailed breakdown is not available.",

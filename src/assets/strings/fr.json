@@ -33,7 +33,7 @@
     "include_combined_data_label": "Inclure les membres des FAC et de la GRC",
     "include_combined_data_tooltip": "Permet d’inclure ou d’exclure les données combinées des membres des FAC et de la GRC dans le graphique.",
     "should_split_by_tenure_label": "Ventiler par catégorie d’emploi",
-    "departments_overview_no_departments_selected_message": "Recherchez et sélectionnez un ou plusieurs ministères à comparer.",
+    "departments_overview_no_departments_selected_message": "Sélectionnez les ministères",
     "department_latest_ftes_as_of": "ETP {date}",
     "department_latest_pops_as_of": "Effectif {date}",
     "department_latest_ftes_combined_note": "Remarque : La ventilation détaillée n’est pas disponible.",
