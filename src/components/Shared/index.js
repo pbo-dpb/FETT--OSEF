@@ -12,5 +12,3 @@ export { default as Separator } from "./Separator.vue";
 export { default as Tabs } from "./Tabs.vue";
 export { default as TheAbout } from "./TheAbout.vue";
 export { default as TrendIndicator } from "./TrendIndicator.vue";
-
-export * from "./pickerStyles.js";

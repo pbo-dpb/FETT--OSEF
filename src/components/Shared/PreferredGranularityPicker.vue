@@ -5,31 +5,49 @@
             class="font-semibold">
             {{ strings.preferred_granularity_label }}
         </span>
-        <ToggleGroupRoot
-            v-model="preferredGranularity"
-            type="single"
-            aria-labelledby="preferred-granularity-label"
-            class="flex flex-row flex-wrap gap-2"
-            required>
-            <ToggleGroupItem
-                value="quarter"
-                :class="toggleGroupItemClasses"
-                :disabled="preferredGranularity === 'quarter'">
+        <div class="flex flex-row flex-wrap gap-2">
+            <label
+                for="gran-quarter"
+                :class="[
+                    ...toggleRadioBaseClasses,
+                    preferredGranularity === 'quarter'
+                        ? 'bg-gray-900 text-white'
+                        : 'border border-solid border-gray-300 bg-white',
+                ]">
+                <input
+                    type="radio"
+                    name="preferred_granularity"
+                    id="gran-quarter"
+                    value="quarter"
+                    :checked="preferredGranularity === 'quarter'"
+                    @change="preferredGranularity = 'quarter'"
+                    class="sr-only" />
                 {{ strings.preferred_granularity_quarter }}
-            </ToggleGroupItem>
-            <ToggleGroupItem
-                value="fiscal_year"
-                :class="toggleGroupItemClasses"
-                :disabled="preferredGranularity === 'fiscal_year'">
+            </label>
+            <label
+                for="gran-fiscal_year"
+                :class="[
+                    ...toggleRadioBaseClasses,
+                    preferredGranularity === 'fiscal_year'
+                        ? 'bg-gray-900 text-white'
+                        : 'border border-solid border-gray-300 bg-white',
+                ]">
+                <input
+                    type="radio"
+                    name="preferred_granularity"
+                    id="gran-fiscal_year"
+                    value="fiscal_year"
+                    :checked="preferredGranularity === 'fiscal_year'"
+                    @change="preferredGranularity = 'fiscal_year'"
+                    class="sr-only" />
                 {{ strings.preferred_granularity_fiscal_year }}
-            </ToggleGroupItem>
-        </ToggleGroupRoot>
+            </label>
+        </div>
     </div>
 </template>
 <script setup>
-    import { ToggleGroupItem, ToggleGroupRoot } from "reka-ui";
     import { storeToRefs } from "pinia";
-    import { toggleGroupItemClasses } from "./pickerStyles.js";
+    import { toggleRadioBaseClasses } from "./toggleRadioClasses.js";
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
