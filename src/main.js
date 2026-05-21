@@ -9,7 +9,7 @@ import App from "./App.ce.vue";
 const plugins = [];
 
 customElements.define(
-    "pbotool-workforce360",
+    "pbotool-federal-employment-tracking-tool",
     defineCustomElement({
         render: () => h(App),
         styles: [stl],

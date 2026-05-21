@@ -1,4 +1,4 @@
-# Workforce 360 // Effectif 360
+# Federal Employment Tracking Tool // Outil de suivi de l’emploi dans la fonction publique fédérale
 
 ## Description
 
@@ -56,8 +56,8 @@ npm run build
 
 ### English
 
-Insert this web component using the `<pbotool-workforce360></pbotool-workforce360>` tag. An example of how the component is loaded is available in `index.html`.
+Insert this web component using the `<pbotool-federal-employment-tracking-tool></pbotool-federal-employment-tracking-tool>` tag. An example of how the component is loaded is available in `index.html`.
 
 ### Français
 
-Insérez ce composant web en utilisant la balise `<pbotool-workforce360></pbotool-workforce360>`. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
+Insérez ce composant web en utilisant la balise `<pbotool-federal-employment-tracking-tool></pbotool-federal-employment-tracking-tool>`. Un exemple de la façon dont le composant est chargé est disponible dans `index.html`.
