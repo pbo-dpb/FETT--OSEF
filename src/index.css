@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@plugin "@headlessui/tailwindcss";
 @plugin "@tailwindcss/typography";
+@plugin "@headlessui/tailwindcss";
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
