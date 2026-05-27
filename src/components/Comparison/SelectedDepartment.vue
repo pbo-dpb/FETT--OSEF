@@ -115,7 +115,8 @@
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
-    const { preferredMetric } = storeToRefs(settingsStore);
+    const { preferredMetric, preferredGranularity } =
+        storeToRefs(settingsStore);
 
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
@@ -133,7 +134,7 @@
         },
         selectedQuarter: {
             type: Number,
-            required: true,
+            default: null,
         },
         selectedYear: {
             type: Number,
@@ -146,17 +147,33 @@
     });
 
     const metricDataKey = computed(() => {
-        return preferredMetric.value === "pop"
-            ? "total_pops_per_quarter"
-            : "total_ftes_per_quarter";
+        const isQuarterly = preferredGranularity.value === "quarter";
+
+        if (preferredMetric.value === "pop") {
+            return isQuarterly
+                ? "total_pops_per_quarter"
+                : "total_pops_per_fiscal_year";
+        }
+
+        return isQuarterly
+            ? "total_ftes_per_quarter"
+            : "total_ftes_per_fiscal_year";
     });
 
     const selectedValues = computed(() => {
-        return props.department[metricDataKey.value]?.find(
-            (item) =>
-                item.year === props.selectedYear &&
-                item.quarter === props.selectedQuarter,
-        );
+        const isQuarterly = preferredGranularity.value === "quarter";
+
+        return props.department[metricDataKey.value]?.find((item) => {
+            if (item.year !== props.selectedYear) {
+                return false;
+            }
+
+            if (!isQuarterly) {
+                return true;
+            }
+
+            return item.quarter === props.selectedQuarter;
+        });
     });
 
     const hasBreakdown = computed(() => {

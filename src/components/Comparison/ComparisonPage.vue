@@ -99,11 +99,13 @@
                             </option>
                         </select>
                         <label
+                            v-if="isQuarterlyGranularity"
                             for="quarter"
                             class="sr-only"
                             >{{ strings.department_quarter }}</label
                         >
                         <select
+                            v-if="isQuarterlyGranularity"
                             id="quarter"
                             class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 focus-visible:outline-offset-4"
                             v-model="selectedQuarter">
@@ -171,7 +173,9 @@
                         v-for="department in selectedDepartments"
                         :key="department.id"
                         :department="department"
-                        :selected-quarter="selectedQuarter"
+                        :selected-quarter="
+                            isQuarterlyGranularity ? selectedQuarter : null
+                        "
                         :selected-year="selectedYear"
                         :highlighted="highlightedDepartmentId === department.id"
                         @remove-department="removeDepartment"
@@ -217,8 +221,13 @@
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
-    const { start_quarter, start_year, end_year, end_quarter } =
-        storeToRefs(settingsStore);
+    const {
+        start_quarter,
+        start_year,
+        end_year,
+        end_quarter,
+        preferredGranularity,
+    } = storeToRefs(settingsStore);
     const route = useRoute();
     const router = useRouter();
 
@@ -248,6 +257,10 @@
                     quarter > end_quarter.value),
         }));
     });
+
+    const isQuarterlyGranularity = computed(
+        () => preferredGranularity.value === "quarter",
+    );
 
     const useDarkTheme = computed(
         () =>
