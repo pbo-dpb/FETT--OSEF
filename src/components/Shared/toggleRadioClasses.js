@@ -10,5 +10,5 @@ export const toggleRadioBaseClasses = [
     "has-[:focus-visible]:outline-2",
     "has-[:focus-visible]:outline-solid",
     "has-[:focus-visible]:outline-offset-2",
-    "has-[:focus-visible]:outline-gray-900",
+    "toggle-focus-primary",
 ];

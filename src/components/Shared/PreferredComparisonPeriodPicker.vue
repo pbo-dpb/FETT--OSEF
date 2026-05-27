@@ -11,8 +11,8 @@
                 :class="[
                     ...toggleRadioBaseClasses,
                     selectedComparisonPeriod === 'sameQuarterLastYear'
-                        ? 'bg-gray-900 text-white'
-                        : 'border border-solid border-gray-300 bg-white',
+                        ? 'bg-primary text-white dark:bg-gray-100 dark:text-gray-700'
+                        : 'border border-solid border-gray-300 bg-white dark:bg-gray-950',
                 ]">
                 <input
                     type="radio"
@@ -31,8 +31,8 @@
                 :class="[
                     ...toggleRadioBaseClasses,
                     selectedComparisonPeriod === 'previousQuarter'
-                        ? 'bg-gray-900 text-white'
-                        : 'border border-solid border-gray-300 bg-white',
+                        ? 'bg-primary text-white dark:bg-gray-100 dark:text-gray-700'
+                        : 'border border-solid border-gray-300 bg-white dark:bg-gray-950',
                 ]">
                 <input
                     type="radio"

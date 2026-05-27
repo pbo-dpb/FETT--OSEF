@@ -1,9 +1,9 @@
 <template>
     <div
         ref="componentRoot"
-        class="flex flex-col gap-8">
+        class="flex flex-col gap-8 rounded-sm border border-transparent dark:border-gray-700">
         <div
-            class="flex flex-col gap-y-6 rounded-sm bg-gray-100 p-4 2xl:flex-row 2xl:items-end 2xl:justify-between">
+            class="flex flex-col gap-y-6 rounded-sm bg-gray-100 p-4 2xl:flex-row 2xl:items-end 2xl:justify-between dark:bg-gray-900">
             <GeneralChartSettings />
             <div class="flex flex-col gap-x-8 gap-y-6 md:flex-row md:flex-wrap">
                 <label class="flex w-fit cursor-pointer">
@@ -12,9 +12,9 @@
                     </div>
                     <SwitchRoot
                         v-model="shouldIncludeCombinedData"
-                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 focus-visible:outline-solid data-[state=checked]:bg-gray-900 data-[state=unchecked]:bg-gray-300">
+                        class="switch-primary focus-outline-primary relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-1 border-solid border-gray-100 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid data-[state=unchecked]:bg-gray-300 dark:data-[state=checked]:bg-gray-100 dark:data-[state=unchecked]:bg-gray-950">
                         <SwitchThumb
-                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
+                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full dark:bg-gray-950 dark:data-[state=unchecked]:bg-gray-100" />
                     </SwitchRoot>
                 </label>
                 <label class="flex w-fit cursor-pointer">
@@ -23,9 +23,9 @@
                     </div>
                     <SwitchRoot
                         v-model="shouldSplitByTenure"
-                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 focus-visible:outline-solid data-[state=checked]:bg-gray-900 data-[state=unchecked]:bg-gray-300">
+                        class="switch-primary focus-outline-primary relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-1 border-solid border-gray-100 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid data-[state=unchecked]:bg-gray-300 dark:data-[state=checked]:bg-gray-100 dark:data-[state=unchecked]:bg-gray-950">
                         <SwitchThumb
-                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
+                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full dark:bg-gray-950 dark:data-[state=unchecked]:bg-gray-100" />
                     </SwitchRoot>
                 </label>
             </div>

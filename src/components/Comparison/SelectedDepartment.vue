@@ -5,7 +5,7 @@
         class="mb-4 block rounded-sm border-y-1 border-r-1 border-l-4 border-solid p-2 md:mb-0 md:mb-2 md:table-row md:border-l-0 md:p-0"
         :style="{
             backgroundColor: highlighted
-                ? `${department.color}10`
+                ? `${department.color}${highlightOpacityHex}`
                 : 'transparent',
             borderLeftColor: department.color || 'transparent',
         }">
@@ -215,5 +215,16 @@
         if (props.excludeCombinedFallback) return sum;
         if (sum === 0 && combined > 0) return combined;
         return sum;
+    });
+
+    const highlightOpacityHex = computed(() => {
+        if (
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+            return "20";
+        }
+
+        return "10";
     });
 </script>

@@ -29,8 +29,10 @@
             :key="tab.to.name"
             :to="tab.to"
             :class="[
-                'tab-focus flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-semibold text-gray-700',
-                tab.selected ? 'border-gray-600' : 'border-transparent',
+                'tab-focus flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-semibold text-gray-700 dark:text-gray-100',
+                tab.selected
+                    ? 'border-primary dark:border-gray-100'
+                    : 'border-transparent',
             ]"
             :aria-current="tab.selected ? 'page' : undefined">
             {{ tab.label }}

@@ -8,7 +8,7 @@
                 :description="strings.overview_description" />
         </div>
         <div
-            class="col-span-full flex flex-wrap items-center gap-x-8 gap-y-4 rounded-sm bg-gray-100 p-4">
+            class="col-span-full flex flex-wrap items-center gap-x-8 gap-y-4 rounded-sm bg-gray-100 p-4 dark:bg-gray-900">
             <PreferredMetricPicker />
             <PreferredComparisonPeriodPicker />
         </div>
@@ -189,7 +189,7 @@
             <a
                 href="./20260512.xlsx"
                 download="Federal-Employment-Tracking-Tool-Data--Outil-de-suivi-de-l-emploi-dans-la-fonction-publique-fédérale-Données"
-                class="cursor-pointer rounded-sm bg-gray-900 px-4 py-2 font-semibold text-white hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 focus-visible:outline-solid"
+                class="bg-primary bg-primary-hover focus-outline-primary cursor-pointer rounded-sm px-4 py-2 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid"
                 >{{ strings.overview_download_button }}</a
             >
         </div>

@@ -3,7 +3,7 @@
         ref="componentRoot"
         class="flex w-full flex-col gap-8">
         <div
-            class="flex flex-wrap items-center justify-between gap-y-4 rounded-sm bg-gray-100 p-4">
+            class="flex flex-wrap items-center justify-between gap-y-4 rounded-sm bg-gray-100 p-4 dark:bg-gray-900">
             <GeneralChartSettings />
             <PreferredTenurePicker />
         </div>

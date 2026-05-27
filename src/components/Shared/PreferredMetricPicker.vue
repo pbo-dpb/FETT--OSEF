@@ -19,10 +19,10 @@
                     'has-[:focus-visible]:outline-2',
                     'has-[:focus-visible]:outline-solid',
                     'has-[:focus-visible]:outline-offset-2',
-                    'has-[:focus-visible]:outline-gray-900',
+                    'toggle-focus-primary',
                     preferredMetric === 'fte'
-                        ? 'bg-gray-900 text-white'
-                        : 'border border-solid border-gray-300 bg-white',
+                        ? 'bg-primary text-white dark:bg-gray-100 dark:text-gray-700'
+                        : 'border border-solid border-gray-300 bg-white dark:bg-gray-950',
                 ]">
                 <input
                     type="radio"
@@ -47,10 +47,10 @@
                     'has-[:focus-visible]:outline-2',
                     'has-[:focus-visible]:outline-solid',
                     'has-[:focus-visible]:outline-offset-2',
-                    'has-[:focus-visible]:outline-gray-900',
+                    'toggle-focus-primary',
                     preferredMetric === 'pop'
-                        ? 'bg-gray-900 text-white'
-                        : 'border border-solid border-gray-300 bg-white',
+                        ? 'bg-primary text-white dark:bg-gray-100 dark:text-gray-700'
+                        : 'border border-solid border-gray-300 bg-white dark:bg-gray-950',
                 ]">
                 <input
                     type="radio"

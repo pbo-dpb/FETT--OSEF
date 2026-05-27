@@ -2,6 +2,21 @@
 @plugin "@tailwindcss/typography";
 @plugin "@headlessui/tailwindcss";
 
+:root,
+:host {
+    --brand-primary: #2a5673;
+    --brand-primary-hover: #2a5673;
+    --brand-primary-active: #2a5673;
+    --brand-primary-focus: black;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root,
+    :host {
+        --brand-primary-focus: #93c5fd;
+    }
+}
+
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -33,19 +48,85 @@
 }
 
 @layer components {
+    .prose {
+        --tw-prose-links: var(--brand-primary) !important;
+        --tw-prose-invert-links: var(--brand-primary) !important;
+    }
+
+    .prose a {
+        color: var(--brand-primary) !important;
+    }
+
+    .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+        color: var(--brand-primary-hover) !important;
+    }
+
+    .prose :where(a):not(:where(.not-prose, .not-prose *)):active {
+        color: var(--brand-primary-active) !important;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .tab-focus:focus-visible {
+            outline-color: var(--brand-primary-focus);
+        }
+
+        .prose {
+            --tw-prose-invert-links: var(--tw-prose-invert-body) !important;
+        }
+
+        .prose a {
+            color: var(--tw-prose-invert-body) !important;
+        }
+
+        .prose :where(a):not(:where(.not-prose, .not-prose *)):hover {
+            color: var(--tw-prose-invert-body) !important;
+        }
+
+        .prose :where(a):not(:where(.not-prose, .not-prose *)):active {
+            color: var(--tw-prose-invert-body) !important;
+        }
+    }
+
+    .prose :where(a):not(:where(.not-prose, .not-prose *)):focus-visible {
+        outline: 2px solid var(--brand-primary-focus);
+        outline-offset: 2px;
+        border-radius: 0.125rem;
+    }
+
+    .bg-primary {
+        background-color: var(--brand-primary);
+    }
+
+    .border-primary {
+        border-color: var(--brand-primary);
+    }
+
+    .bg-primary-hover:hover {
+        background-color: var(--brand-primary-hover);
+    }
+
+    .bg-primary-active {
+        background-color: var(--brand-primary-active);
+    }
+
+    .focus-outline-primary:focus-visible {
+        outline-color: var(--brand-primary-focus);
+    }
+
+    .switch-primary[data-state="checked"] {
+        background-color: var(--brand-primary);
+    }
+
+    .toggle-focus-primary:has(:focus-visible) {
+        outline-color: var(--brand-primary-focus);
+    }
+
     .tab-focus {
         position: relative;
     }
 
     .tab-focus:focus-visible {
-        outline: 2px solid var(--color-gray-900);
+        outline: 2px solid var(--brand-primary-focus);
         outline-offset: 4px;
-        border-radius: 0.125rem;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .tab-focus:focus-visible {
-            outline-color: var(--color-gray-100);
-        }
     }
 }

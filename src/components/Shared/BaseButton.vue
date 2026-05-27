@@ -118,9 +118,9 @@
                     case "primary":
                         return {
                             disabled: "bg-gray-500",
-                            base: "bg-gray-800",
-                            hover: "hover:bg-gray-700",
-                            active: "bg-gray-900",
+                            base: "bg-primary",
+                            hover: "bg-primary-hover",
+                            active: "bg-primary-active",
                         };
                     case "positive":
                         return {
@@ -139,9 +139,9 @@
                 }
                 return {
                     disabled: "bg-gray-500",
-                    base: "bg-gray-900",
-                    hover: "hover:bg-gray-700",
-                    active: "bg-gray-900",
+                    base: "bg-primary",
+                    hover: "bg-primary-hover",
+                    active: "bg-primary-active",
                 };
             },
         },

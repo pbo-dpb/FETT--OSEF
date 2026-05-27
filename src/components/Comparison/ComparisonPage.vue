@@ -12,27 +12,27 @@
             'mb-48': selectedDepartments.length === 0,
         }">
         <div
-            class="relative border bg-white shadow-sm"
+            class="relative border bg-white shadow-sm dark:bg-gray-950"
             :class="
                 open
-                    ? 'border-gray-500'
-                    : 'border-gray-300 hover:border-gray-400'
+                    ? 'border-gray-500 dark:border-gray-100'
+                    : 'border-gray-300 hover:border-gray-400 dark:border-gray-700 dark:hover:border-gray-100'
             ">
             <ComboboxInput
-                class="w-full rounded-sm border border-solid border-gray-300 py-2 pr-12 pl-4 outline-offset-4 placeholder:text-gray-500"
+                class="w-full rounded-sm border border-solid border-gray-300 bg-white py-2 pr-12 pl-4 text-gray-700 outline-offset-4 placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100 dark:placeholder:text-gray-300"
                 :displayValue="displayDepartment"
                 :placeholder="
                     strings.departments_overview_no_departments_selected_message
                 "
                 @change="query = $event.target.value" />
             <ComboboxButton
-                class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3"
+                class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-gray-700 dark:text-gray-100"
                 :aria-label="strings.departments_combobox_toggle_aria_label">
                 <ChevronsUpDown class="size-4" />
             </ComboboxButton>
         </div>
         <ComboboxOptions
-            class="absolute z-20 mt-2 max-h-48 w-full overflow-auto rounded-sm border border-solid border-gray-300 bg-white p-1 shadow-xl focus:outline-none">
+            class="absolute z-20 mt-2 max-h-48 w-full overflow-auto rounded-sm border border-solid border-gray-300 bg-white p-1 text-gray-700 shadow-xl focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100">
             <li
                 v-if="departments === false"
                 class="cursor-default rounded-sm px-3 py-2">
@@ -52,8 +52,12 @@
                 <li
                     class="relative flex cursor-pointer items-center rounded-sm py-2 pr-3 pl-8"
                     :class="[
-                        active && !disabled ? 'bg-gray-900 text-white' : '',
-                        selected && !active ? 'bg-gray-50' : '',
+                        active && !disabled
+                            ? 'bg-primary text-white dark:bg-gray-100 dark:text-gray-700'
+                            : '',
+                        selected && !active
+                            ? 'bg-gray-50 dark:bg-gray-100 dark:text-gray-900'
+                            : '',
                     ]">
                     <span
                         class="truncate"
@@ -65,7 +69,14 @@
                     </span>
                     <span
                         class="absolute inset-y-0 left-0 flex items-center pl-3">
-                        <Plus class="size-4" />
+                        <Plus
+                            class="size-4"
+                            :class="[
+                                active && !disabled
+                                    ? 'text-white dark:text-gray-700'
+                                    : '',
+                                selected && !active ? 'dark:text-gray-900' : '',
+                            ]" />
                     </span>
                 </li>
             </ComboboxOption>
@@ -77,7 +88,7 @@
             :highlighted-department-id="highlightedDepartmentId" />
         <div class="flex flex-col gap-4">
             <div
-                class="flex flex-col gap-4 rounded-sm bg-gray-100 p-4 md:flex-row md:items-end md:justify-between">
+                class="flex flex-col gap-4 rounded-sm bg-gray-100 p-4 md:flex-row md:items-end md:justify-between dark:bg-gray-900">
                 <fieldset class="flex flex-col">
                     <legend class="mb-1 font-semibold">
                         {{ strings.department_fiscal_period_label }}
@@ -90,7 +101,7 @@
                         >
                         <select
                             id="year"
-                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 focus-visible:outline-offset-4"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
                             v-model="selectedYear">
                             <option
                                 v-for="year in availableYears"
@@ -108,7 +119,7 @@
                         <select
                             v-if="isQuarterlyGranularity"
                             id="quarter"
-                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 focus-visible:outline-offset-4"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
                             v-model="selectedQuarter">
                             <option
                                 v-for="quarter in quarterOptions"
@@ -126,9 +137,9 @@
                     </div>
                     <SwitchRoot
                         v-model="showAllDepartments"
-                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 focus-visible:outline-solid data-[state=checked]:bg-gray-900 data-[state=unchecked]:bg-gray-300">
+                        class="switch-primary focus-outline-primary relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-1 border-solid border-gray-100 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid data-[state=unchecked]:bg-gray-300 dark:data-[state=checked]:bg-gray-100 dark:data-[state=unchecked]:bg-gray-950">
                         <SwitchThumb
-                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
+                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full dark:bg-gray-950 dark:data-[state=unchecked]:bg-gray-100" />
                     </SwitchRoot>
                 </label>
             </div>
@@ -183,7 +194,7 @@
                 <tbody class="block md:table-row-group">
                     <tr
                         v-if="allDepartmentsRow && showAllDepartments"
-                        class="mb-4 block rounded-sm border-1 border-solid p-2 font-semibold md:mb-0 md:table-row md:border-0 md:bg-gray-200 md:p-0">
+                        class="mb-4 block rounded-sm border-1 border-solid border-gray-300 p-2 font-semibold md:mb-0 md:table-row md:border-0 md:bg-gray-200 md:p-0 dark:border-gray-700 dark:bg-gray-800 md:dark:bg-gray-800">
                         <th
                             scope="row"
                             class="block p-2 text-left md:table-cell md:pl-3">
