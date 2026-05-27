@@ -32,7 +32,7 @@
         </div>
         <div
             :id="uniqueId"
-            class="h-[300px] md:h-[600px]"></div>
+            class="h-[300px] md:h-[400px]"></div>
     </div>
 </template>
 
