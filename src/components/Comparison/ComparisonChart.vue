@@ -10,7 +10,7 @@
         <div
             v-show="departments.length"
             :id="uniqueId"
-            class="h-[300px] md:h-[600px]"></div>
+            class="h-[300px] md:h-[400px]"></div>
     </div>
 </template>
 
@@ -71,13 +71,12 @@
     const localizationsStore = useLocalizationsStore();
     const { language } = storeToRefs(localizationsStore);
 
-    const settingsStore = useSettingsStore();
     const {
         preferredTimeframe,
         preferredGranularity,
         preferredMetric,
         preferredTenure,
-    } = storeToRefs(settingsStore);
+    } = storeToRefs(useSettingsStore());
 
     const payloadsStore = usePayloadsStore();
 

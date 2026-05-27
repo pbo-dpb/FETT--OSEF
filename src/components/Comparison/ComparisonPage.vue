@@ -76,7 +76,8 @@
             :departments="selectedDepartments"
             :highlighted-department-id="highlightedDepartmentId" />
         <div class="flex flex-col gap-4">
-            <div class="flex rounded-sm bg-gray-100 p-4">
+            <div
+                class="flex flex-col gap-4 rounded-sm bg-gray-100 p-4 md:flex-row md:items-end md:justify-between">
                 <fieldset class="flex flex-col">
                     <legend class="mb-1 font-semibold">
                         {{ strings.department_fiscal_period_label }}
@@ -119,15 +120,26 @@
                         </select>
                     </div>
                 </fieldset>
+                <label class="flex w-fit cursor-pointer">
+                    <div class="pr-2 leading-none font-semibold">
+                        {{ strings.comparison_show_all_departments_label }}
+                    </div>
+                    <SwitchRoot
+                        v-model="showAllDepartments"
+                        class="relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-gray-300 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 focus-visible:outline-solid data-[state=checked]:bg-gray-900 data-[state=unchecked]:bg-gray-300">
+                        <SwitchThumb
+                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full" />
+                    </SwitchRoot>
+                </label>
             </div>
             <table
-                class="block w-full border-separate border-spacing-y-2 md:table">
+                class="block w-full border-separate border-spacing-y-0 md:table">
                 <caption class="sr-only">
                     {{
                         strings.departments_table_caption
                     }}
                 </caption>
-                <thead class="mb-4 hidden md:table-header-group">
+                <thead class="hidden md:table-header-group">
                     <tr>
                         <th
                             scope="col"
@@ -169,6 +181,87 @@
                     </tr>
                 </thead>
                 <tbody class="block md:table-row-group">
+                    <tr
+                        v-if="allDepartmentsRow && showAllDepartments"
+                        class="mb-4 block rounded-sm border-1 border-solid p-2 font-semibold md:mb-0 md:table-row md:border-0 md:bg-gray-200 md:p-0">
+                        <th
+                            scope="row"
+                            class="block p-2 text-left md:table-cell md:pl-3">
+                            <span class="inline-flex items-center">
+                                <span
+                                    class="hidden md:size-2.5 md:shrink-0 md:rounded-full"
+                                    aria-hidden="true" />
+                                <span class="text-xl font-normal md:text-base">
+                                    ({{
+                                        allDepartmentsRow[`name_${language}`]
+                                    }})
+                                </span>
+                            </span>
+                        </th>
+                        <td
+                            class="block flex items-center justify-between p-2 text-center md:table-cell">
+                            <span class="md:hidden">{{
+                                strings.dep_indeterminate
+                            }}</span>
+                            <span class="text-right md:text-center">
+                                {{
+                                    numberFormatter(
+                                        allDepartmentsValues?.indeterminate ||
+                                            0,
+                                    )
+                                }}
+                            </span>
+                        </td>
+                        <td
+                            class="block flex items-center justify-between p-2 text-center md:table-cell">
+                            <span class="md:hidden">{{
+                                strings.dep_term
+                            }}</span>
+                            <span class="text-right md:text-center">
+                                {{
+                                    numberFormatter(
+                                        allDepartmentsValues?.term || 0,
+                                    )
+                                }}
+                            </span>
+                        </td>
+                        <td
+                            class="block flex items-center justify-between p-2 text-center md:table-cell">
+                            <span class="md:hidden">{{
+                                strings.dep_student
+                            }}</span>
+                            <span class="text-right md:text-center">
+                                {{
+                                    numberFormatter(
+                                        allDepartmentsValues?.student || 0,
+                                    )
+                                }}
+                            </span>
+                        </td>
+                        <td
+                            class="block flex items-center justify-between p-2 text-center md:table-cell">
+                            <span class="md:hidden">{{
+                                strings.dep_casual
+                            }}</span>
+                            <span class="text-right md:text-center">
+                                {{
+                                    numberFormatter(
+                                        allDepartmentsValues?.casual || 0,
+                                    )
+                                }}
+                            </span>
+                        </td>
+                        <td
+                            class="block flex items-center justify-between p-2 text-center font-semibold md:table-cell">
+                            <span class="md:hidden">{{
+                                strings.total_label
+                            }}</span>
+                            <span class="text-right md:text-center">
+                                {{ numberFormatter(allDepartmentsTotal) }}
+                            </span>
+                        </td>
+                        <td class="hidden md:table-cell"></td>
+                    </tr>
                     <SelectedDepartment
                         v-for="department in selectedDepartments"
                         :key="department.id"
@@ -195,11 +288,13 @@
 </template>
 
 <script setup>
+    import { SwitchRoot, SwitchThumb } from "reka-ui";
     import { computed, onMounted, ref, watch } from "vue";
     import { storeToRefs } from "pinia";
     import { PageHeader } from "@/components/Shared";
     import SelectedDepartment from "./SelectedDepartment.vue";
     import ComparisonChart from "./ComparisonChart.vue";
+    import numberFormatterMixin from "@/mixins/numberFormatter.js";
     import { ChevronsUpDown, Plus } from "lucide-vue-next";
     import { colors } from "@/assets/echarts/colors.json?json";
     import {
@@ -217,7 +312,7 @@
 
     import usePayloadStore from "@/stores/payloads.js";
     const payloadsStore = usePayloadStore();
-    const { departments } = storeToRefs(payloadsStore);
+    const { departments, composition } = storeToRefs(payloadsStore);
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
@@ -228,10 +323,16 @@
         end_quarter,
         preferredGranularity,
     } = storeToRefs(settingsStore);
+    const showAllDepartments = computed({
+        get: () => settingsStore.showAllDepartments,
+        set: (value) => settingsStore.setShowAllDepartments(value),
+    });
     const route = useRoute();
     const router = useRouter();
+    const cumulativeQueryKey = "cumulative";
 
     const selectedDepartment = ref(null);
+    const numberFormatter = numberFormatterMixin.methods.numberFormatter;
     const selectedDepartmentMeta = ref([]); // [{ id, color }]
     const highlightedDepartmentId = ref(null);
     const selectedQuarter = ref(end_quarter.value);
@@ -278,6 +379,63 @@
             .filter(Boolean);
     });
 
+    const allDepartmentsRow = computed(() => {
+        if (!composition.value) return null;
+
+        return {
+            id: "all-departments",
+            name_en: strings.value.comparison_all_departments_label,
+            name_fr: strings.value.comparison_all_departments_label,
+            color: "#6b7280",
+            ...composition.value,
+        };
+    });
+
+    const allDepartmentsDataKey = computed(() => {
+        const isQuarterly = preferredGranularity.value === "quarter";
+
+        if (settingsStore.preferredMetric === "pop") {
+            return isQuarterly
+                ? "total_pops_per_quarter"
+                : "total_pops_per_fiscal_year";
+        }
+
+        return isQuarterly
+            ? "total_ftes_per_quarter"
+            : "total_ftes_per_fiscal_year";
+    });
+
+    const allDepartmentsValues = computed(() => {
+        if (!allDepartmentsRow.value) return null;
+
+        const isQuarterly = preferredGranularity.value === "quarter";
+
+        return allDepartmentsRow.value[allDepartmentsDataKey.value]?.find(
+            (item) => {
+                if (item.year !== selectedYear.value) {
+                    return false;
+                }
+
+                if (!isQuarterly) {
+                    return true;
+                }
+
+                return item.quarter === selectedQuarter.value;
+            },
+        );
+    });
+
+    const allDepartmentsTotal = computed(() => {
+        if (!allDepartmentsValues.value) return 0;
+
+        return (
+            (allDepartmentsValues.value.indeterminate || 0) +
+            (allDepartmentsValues.value.term || 0) +
+            (allDepartmentsValues.value.student || 0) +
+            (allDepartmentsValues.value.casual || 0)
+        );
+    });
+
     const filteredDepartments = computed(() => {
         if (departments.value === false) {
             return [];
@@ -318,17 +476,19 @@
     };
 
     const removeDepartment = (departmentId) => {
-        selectedDepartmentMeta.value = selectedDepartmentMeta.value.filter(
+        const remainingDepartments = selectedDepartmentMeta.value.filter(
             ({ id }) => id !== departmentId,
         );
+
+        selectedDepartmentMeta.value = remainingDepartments;
     };
 
     const normalizeDepartmentIds = (rawIds) => {
         if (Array.isArray(rawIds)) {
-            return rawIds;
+            return rawIds.filter(Boolean);
         }
 
-        return rawIds ? [rawIds] : [];
+        return rawIds ? [rawIds].filter(Boolean) : [];
     };
 
     const idsAreEqual = (left, right) => {
@@ -405,6 +565,7 @@
                 router.push({
                     name: "departments",
                     params: { departments: ids },
+                    query: route.query,
                 });
             }
 
@@ -431,8 +592,46 @@
         },
     );
 
+    watch(
+        () => route.query[cumulativeQueryKey],
+        (queryValue) => {
+            const enabled = queryValue === "1";
+
+            if (showAllDepartments.value !== enabled) {
+                showAllDepartments.value = enabled;
+            }
+        },
+        { immediate: true },
+    );
+
+    watch(showAllDepartments, async (enabled) => {
+        const nextQuery = { ...route.query };
+
+        if (enabled) {
+            nextQuery[cumulativeQueryKey] = "1";
+        } else {
+            delete nextQuery[cumulativeQueryKey];
+        }
+
+        const queryAlreadyInSync =
+            (enabled && route.query[cumulativeQueryKey] === "1") ||
+            (!enabled && route.query[cumulativeQueryKey] === undefined);
+
+        if (!queryAlreadyInSync) {
+            router.replace({ query: nextQuery });
+        }
+
+        if (enabled && !composition.value) {
+            await payloadsStore.fetchComposition();
+        }
+    });
+
     onMounted(async () => {
         await payloadsStore.fetchDepartments();
+
+        if (showAllDepartments.value) {
+            await payloadsStore.fetchComposition();
+        }
 
         const routeDepartmentIds = normalizeDepartmentIds(
             route.params.departments,

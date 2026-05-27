@@ -48,13 +48,31 @@
 
     import useSettingsStore from "@/stores/settings.js";
     const settingsStore = useSettingsStore();
-    const { previouslySelectedDepartmentIds } = storeToRefs(settingsStore);
+    const { previouslySelectedDepartmentIds, showAllDepartments } =
+        storeToRefs(settingsStore);
 
     import { useRoute, useRouter } from "vue-router";
     const route = useRoute();
     const router = useRouter();
 
     const tabs = computed(() => {
+        const departmentsQuery = showAllDepartments.value
+            ? { cumulative: "1" }
+            : {};
+
+        const departmentsParams =
+            route.name === "departments"
+                ? {
+                      departments: Array.isArray(route.params.departments)
+                          ? route.params.departments.filter(Boolean)
+                          : route.params.departments
+                            ? [route.params.departments].filter(Boolean)
+                            : [],
+                  }
+                : {
+                      departments: previouslySelectedDepartmentIds.value,
+                  };
+
         return [
             {
                 label: strings.value.tab_navigation_overview_label,
@@ -70,9 +88,11 @@
                 label: strings.value.tab_navigation_departments_label,
                 to: {
                     name: "departments",
-                    params: {
-                        departments: previouslySelectedDepartmentIds.value,
-                    },
+                    params: departmentsParams,
+                    query:
+                        route.name === "departments"
+                            ? route.query
+                            : departmentsQuery,
                 },
                 selected: route.name === "departments",
             },

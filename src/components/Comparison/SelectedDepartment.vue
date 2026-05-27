@@ -1,7 +1,7 @@
 <template>
     <tr
-        @mouseenter="$emit('highlight-department', department.id)"
-        @mouseleave="$emit('unhighlight-department', department.id)"
+        @mouseenter="handleMouseEnter"
+        @mouseleave="handleMouseLeave"
         class="mb-4 block rounded-sm border-y-1 border-r-1 border-l-4 border-solid p-2 md:mb-0 md:mb-2 md:table-row md:border-l-0 md:p-0"
         :style="{
             backgroundColor: highlighted
@@ -34,9 +34,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(
-                              Math.round(selectedValues?.indeterminate || 0),
-                          )
+                        ? numberFormatter(selectedValues?.indeterminate || 0)
                         : "N/A"
                 }}
             </span>
@@ -47,7 +45,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(Math.round(selectedValues?.term || 0))
+                        ? numberFormatter(selectedValues?.term || 0)
                         : "N/A"
                 }}
             </span>
@@ -58,9 +56,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(
-                              Math.round(selectedValues?.student || 0),
-                          )
+                        ? numberFormatter(selectedValues?.student || 0)
                         : "N/A"
                 }}
             </span>
@@ -71,9 +67,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(
-                              Math.round(selectedValues?.casual || 0),
-                          )
+                        ? numberFormatter(selectedValues?.casual || 0)
                         : "N/A"
                 }}
             </span>
@@ -91,6 +85,7 @@
                 strings.departments_table_actions_column
             }}</span>
             <button
+                v-if="showRemoveButton"
                 @click="$emit('remove-department', department.id)"
                 class="flex w-full cursor-pointer items-center justify-center rounded-sm border border-solid border-gray-300 bg-white py-2 font-semibold md:mx-auto md:inline-flex md:size-8 md:border-none md:bg-transparent"
                 :aria-label="strings.dep_card_remove_button_aria_label">
@@ -101,6 +96,10 @@
                     class="hidden md:block"
                     size="20" />
             </button>
+            <span
+                v-else
+                class="hidden md:block"
+                aria-hidden="true"></span>
         </td>
     </tr>
 </template>
@@ -121,7 +120,7 @@
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
 
-    defineEmits([
+    const emit = defineEmits([
         "remove-department",
         "highlight-department",
         "unhighlight-department",
@@ -144,7 +143,31 @@
             type: Boolean,
             default: false,
         },
+        excludeCombinedFallback: {
+            type: Boolean,
+            default: false,
+        },
+        enableHighlight: {
+            type: Boolean,
+            default: true,
+        },
+        showRemoveButton: {
+            type: Boolean,
+            default: true,
+        },
     });
+
+    const handleMouseEnter = () => {
+        if (props.enableHighlight) {
+            emit("highlight-department", props.department.id);
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (props.enableHighlight) {
+            emit("unhighlight-department", props.department.id);
+        }
+    };
 
     const metricDataKey = computed(() => {
         const isQuarterly = preferredGranularity.value === "quarter";
@@ -178,6 +201,7 @@
 
     const hasBreakdown = computed(() => {
         if (!selectedValues.value) return false;
+        if (props.excludeCombinedFallback) return true;
         const { indeterminate, combined } = selectedValues.value;
         return !(indeterminate === 0 && combined > 0);
     });
@@ -187,11 +211,9 @@
         const { indeterminate, term, casual, student, combined } =
             selectedValues.value;
         const sum =
-            Math.round(indeterminate || 0) +
-            Math.round(term || 0) +
-            Math.round(casual || 0) +
-            Math.round(student || 0);
-        if (sum === 0 && combined > 0) return Math.round(combined);
+            (indeterminate || 0) + (term || 0) + (casual || 0) + (student || 0);
+        if (props.excludeCombinedFallback) return sum;
+        if (sum === 0 && combined > 0) return combined;
         return sum;
     });
 </script>

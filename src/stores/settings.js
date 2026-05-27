@@ -13,6 +13,7 @@ export default defineStore("settings", {
         preferredGranularity: "quarter",
         selectedComparisonPeriod: "sameQuarterLastYear",
         preferredTenure: "combined",
+        showAllDepartments: false,
         colors: colors,
         previouslySelectedDepartmentIds: previouslySelectedDepartmentIds
             ? JSON.parse(previouslySelectedDepartmentIds).map((id) =>
@@ -29,6 +30,10 @@ export default defineStore("settings", {
 
         setSelectedComparisonPeriod(comparisonPeriod) {
             this.selectedComparisonPeriod = comparisonPeriod;
+        },
+
+        setShowAllDepartments(value) {
+            this.showAllDepartments = value;
         },
 
         // since we rely on `this`, we cannot use an arrow function

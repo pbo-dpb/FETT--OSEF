@@ -33,6 +33,8 @@
     "include_combined_data_label": "Inclure les membres des FAC et de la GRC",
     "include_combined_data_tooltip": "Permet d’inclure ou d’exclure les données combinées des membres des FAC et de la GRC dans le graphique.",
     "should_split_by_tenure_label": "Ventiler par catégorie d’emploi",
+    "comparison_show_all_departments_label": "Afficher les données cumulées",
+    "comparison_all_departments_label": "Tous les ministères",
     "departments_overview_no_departments_selected_message": "Sélectionnez les ministères",
     "department_latest_ftes_as_of": "ETP {date}",
     "department_latest_pops_as_of": "Effectif {date}",
