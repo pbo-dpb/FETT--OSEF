@@ -12,22 +12,69 @@
             <PreferredMetricPicker />
             <PreferredComparisonPeriodPicker />
         </div>
+
+        <!-- Latest Numbers -->
         <div
-            class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4">
+            class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
+            <div class="col-span-full text-center">
+                <h3 class="mb-8 text-2xl text-balance">
+                    {{ strings.overview_latest_numbers }}
+                </h3>
+                <h4 class="font-semibold">
+                    {{ strings[overviewAllLabelKey] }}
+                </h4>
+                <p class="text-3xl font-bold">
+                    {{ numberFormatter(allDepartmentsLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">
+                    {{ strings.indeterminate_label }}
+                </h4>
+                <p class="text-xl">
+                    {{ numberFormatter(indeterminateLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.term_label }}</h4>
+                <p class="text-xl">
+                    {{ numberFormatter(termLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.student_label }}</h4>
+                <p class="text-xl">
+                    {{ numberFormatter(studentLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.casual_label }}</h4>
+                <p class="text-xl">
+                    {{ numberFormatter(casualLatestNumber) }}
+                </p>
+            </div>
+            <div class="col-span-full text-right text-xs font-semibold">
+                {{ formattedDateLabel }}
+            </div>
+        </div>
+
+        <!-- General Trends -->
+        <div
+            class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
             <div class="col-span-full text-center">
                 <h3 class="mb-8 text-2xl text-balance">
                     {{ strings.overview_general_trends }}
                 </h3>
-                <h3 class="font-semibold">
+                <h4 class="font-semibold">
                     {{ strings[overviewAllLabelKey] }}
-                </h3>
+                </h4>
                 <p class="text-3xl font-bold">
                     {{ numberFormatter(allDepartmentsAbsoluteDiff) }}
                     ({{ numberFormatter(allDepartmentsRelativeDiff, true) }}%)
                     <TrendIndicator :datapoint="allDepartmentsAbsoluteDiff" />
                 </p>
             </div>
-            <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">
                     {{ strings.indeterminate_label }}
                 </h4>
@@ -37,7 +84,7 @@
                     <TrendIndicator :datapoint="indeterminateAbsoluteDiff" />
                 </p>
             </div>
-            <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">{{ strings.term_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(termAbsoluteDiff) }} ({{
@@ -46,7 +93,7 @@
                     <TrendIndicator :datapoint="termAbsoluteDiff" />
                 </p>
             </div>
-            <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">{{ strings.student_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(studentAbsoluteDiff) }} ({{
@@ -55,7 +102,7 @@
                     <TrendIndicator :datapoint="studentAbsoluteDiff" />
                 </p>
             </div>
-            <div class="col-span-full text-center md:col-span-2 xl:col-span-1">
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">{{ strings.casual_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
@@ -68,6 +115,8 @@
                 {{ formattedDateLabel }}
             </div>
         </div>
+
+        <!-- Largest Increase -->
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
             <h3 class="mb-8 text-center text-2xl text-balance">
@@ -100,6 +149,8 @@
                 {{ formattedDateLabel }}
             </div>
         </div>
+
+        <!-- Largest Decrease -->
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
             <h3 class="mb-8 text-center text-2xl text-balance">
@@ -132,6 +183,8 @@
                 {{ formattedDateLabel }}
             </div>
         </div>
+
+        <!-- Download Button -->
         <div class="col-span-full">
             <a
                 href="./20260512.xlsx"
@@ -147,6 +200,7 @@
 </template>
 
 <script>
+    import { toRaw } from "vue";
     import { storeToRefs } from "pinia";
 
     import numberFormatter from "@/mixins/numberFormatter.js";
@@ -179,6 +233,38 @@
             };
         },
         computed: {
+            preferredMetric() {
+                const settingsStore = useSettingsStore();
+
+                return settingsStore.preferredMetric;
+            },
+            selectedComparisonPeriod() {
+                const settingsStore = useSettingsStore();
+
+                return settingsStore.selectedComparisonPeriod;
+            },
+            strings() {
+                const localizationsStore = useLocalizationsStore();
+
+                return localizationsStore.strings;
+            },
+            language() {
+                const localizationsStore = useLocalizationsStore();
+
+                return localizationsStore.language;
+            },
+            formattedDateLabel() {
+                const settingsStore = useSettingsStore();
+
+                return formatAsOfDateLabel({
+                    preferredMetric: settingsStore.preferredMetric,
+                    preferredGranularity: settingsStore.preferredGranularity,
+                    language: this.language,
+                    strings: this.strings,
+                    year: settingsStore.end_year,
+                    quarter: settingsStore.end_quarter,
+                });
+            },
             comparisonData() {
                 return this.data?.quarterly?.comparisons[
                     this.selectedComparisonPeriod
@@ -203,6 +289,23 @@
                     ? "overview_all_headcount_label"
                     : "overview_all_positions_label";
             },
+
+            allDepartmentsLatestNumber() {
+                return this.generalComparison?.to;
+            },
+            indeterminateLatestNumber() {
+                return this.generalComparison?.tenures?.indeterminate?.to;
+            },
+            termLatestNumber() {
+                return this.generalComparison?.tenures?.term?.to;
+            },
+            studentLatestNumber() {
+                return this.generalComparison?.tenures?.student?.to;
+            },
+            casualLatestNumber() {
+                return this.generalComparison?.tenures?.casual?.to;
+            },
+
             allDepartmentsAbsoluteDiff() {
                 return this.generalComparison?.absoluteDiff;
             },
@@ -241,38 +344,6 @@
             topThreeDepartmentsDecrease() {
                 return this.departmentsComparison?.top_absolute_declines;
             },
-            preferredMetric() {
-                const settingsStore = useSettingsStore();
-
-                return settingsStore.preferredMetric;
-            },
-            selectedComparisonPeriod() {
-                const settingsStore = useSettingsStore();
-
-                return settingsStore.selectedComparisonPeriod;
-            },
-            strings() {
-                const localizationsStore = useLocalizationsStore();
-
-                return localizationsStore.strings;
-            },
-            language() {
-                const localizationsStore = useLocalizationsStore();
-
-                return localizationsStore.language;
-            },
-            formattedDateLabel() {
-                const settingsStore = useSettingsStore();
-
-                return formatAsOfDateLabel({
-                    preferredMetric: settingsStore.preferredMetric,
-                    preferredGranularity: settingsStore.preferredGranularity,
-                    language: this.language,
-                    strings: this.strings,
-                    year: settingsStore.end_year,
-                    quarter: settingsStore.end_quarter,
-                });
-            },
         },
         methods: {
             displayDepartmentName(department) {
@@ -299,6 +370,8 @@
 
             this.data = overview.value;
             this.isLoading = false;
+
+            console.log(toRaw(overview.value));
         },
     };
 </script>
