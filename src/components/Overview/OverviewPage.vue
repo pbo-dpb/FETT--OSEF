@@ -13,12 +13,12 @@
             <PreferredComparisonPeriodPicker />
         </div>
 
-        <!-- Latest Numbers -->
+        <!-- Panel 1 -->
         <div
             class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
             <div class="col-span-full text-center">
                 <h3 class="mb-8 text-2xl text-balance">
-                    {{ strings.overview_latest_numbers }}
+                    {{ strings.overview_current_numbers }}
                 </h3>
                 <h4 class="font-semibold">
                     {{ strings[overviewAllLabelKey] }}
@@ -54,16 +54,16 @@
                 </p>
             </div>
             <div class="col-span-full text-right text-xs font-semibold">
-                {{ formattedDateLabel }}
+                {{ currentDataLabel }}
             </div>
         </div>
 
-        <!-- General Trends -->
+        <!-- Panel 2 -->
         <div
             class="col-span-full grid grid-cols-4 space-y-8 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
             <div class="col-span-full text-center">
                 <h3 class="mb-8 text-2xl text-balance">
-                    {{ strings.overview_general_trends }}
+                    {{ strings.overview_delta }}
                 </h3>
                 <h4 class="font-semibold">
                     {{ strings[overviewAllLabelKey] }}
@@ -112,11 +112,11 @@
                 </p>
             </div>
             <div class="col-span-full text-right text-xs font-semibold">
-                {{ formattedDateLabel }}
+                {{ deltaDataLabel }}
             </div>
         </div>
 
-        <!-- Largest Increase -->
+        <!-- Panel 3 -->
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
             <h3 class="mb-8 text-center text-2xl text-balance">
@@ -146,11 +146,11 @@
                 </li>
             </ol>
             <div class="col-span-full text-right text-xs font-semibold">
-                {{ formattedDateLabel }}
+                {{ deltaDataLabel }}
             </div>
         </div>
 
-        <!-- Largest Decrease -->
+        <!-- Panel 4 -->
         <div
             class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
             <h3 class="mb-8 text-center text-2xl text-balance">
@@ -180,7 +180,7 @@
                 </li>
             </ol>
             <div class="col-span-full text-right text-xs font-semibold">
-                {{ formattedDateLabel }}
+                {{ deltaDataLabel }}
             </div>
         </div>
 
@@ -204,7 +204,6 @@
     import { storeToRefs } from "pinia";
 
     import numberFormatter from "@/mixins/numberFormatter.js";
-    import { formatAsOfDateLabel } from "@/mixins/formattedDateLabel.js";
 
     import usePayloadsStore from "@/stores/payloads.js";
     import useSettingsStore from "@/stores/settings.js";
@@ -253,17 +252,46 @@
 
                 return localizationsStore.language;
             },
-            formattedDateLabel() {
-                const settingsStore = useSettingsStore();
+            currentDataLabel() {
+                const { strings } = useLocalizationsStore();
+                const { preferredMetric, end_quarter, end_year } =
+                    useSettingsStore();
+                const baseString =
+                    preferredMetric === "fte"
+                        ? strings.department_latest_ftes_as_of
+                        : strings.department_latest_pops_as_of;
 
-                return formatAsOfDateLabel({
-                    preferredMetric: settingsStore.preferredMetric,
-                    preferredGranularity: settingsStore.preferredGranularity,
-                    language: this.language,
-                    strings: this.strings,
-                    year: settingsStore.end_year,
-                    quarter: settingsStore.end_quarter,
-                });
+                return baseString
+                    .replace("{quarter}", end_quarter)
+                    .replace("{year}", end_year);
+            },
+            deltaDataLabel() {
+                const { strings } = useLocalizationsStore();
+                const {
+                    preferredMetric,
+                    selectedComparisonPeriod,
+                    end_quarter,
+                    end_year,
+                } = useSettingsStore();
+                const baseString =
+                    preferredMetric === "fte"
+                        ? strings.department_change_ftes_between
+                        : strings.department_change_pops_between;
+                let start_quarter, start_year;
+
+                if (selectedComparisonPeriod === "sameQuarterLastYear") {
+                    start_quarter = end_quarter;
+                    start_year = end_year - 1;
+                } else {
+                    start_quarter = end_quarter === 1 ? 4 : end_quarter - 1;
+                    start_year = end_quarter === 1 ? end_year - 1 : end_year;
+                }
+
+                return baseString
+                    .replace("{start_quarter}", start_quarter)
+                    .replace("{start_year}", start_year)
+                    .replace("{end_quarter}", end_quarter)
+                    .replace("{end_year}", end_year);
             },
             comparisonData() {
                 return this.data?.quarterly?.comparisons[
