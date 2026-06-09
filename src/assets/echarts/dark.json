@@ -75,16 +75,12 @@
         "splitLine": {
             "show": true,
             "lineStyle": {
-                "color": [
-                    "#aaaaaa"
-                ]
+                "color": ["#aaaaaa"]
             }
         },
         "splitArea": {
             "areaStyle": {
-                "color": [
-                    "#eeeeee"
-                ]
+                "color": ["#eeeeee"]
             }
         }
     },
@@ -104,16 +100,12 @@
         },
         "splitLine": {
             "lineStyle": {
-                "color": [
-                    "#aaaaaa"
-                ]
+                "color": ["#aaaaaa"]
             }
         },
         "splitArea": {
             "areaStyle": {
-                "color": [
-                    "#eeeeee"
-                ]
+                "color": ["#eeeeee"]
             }
         }
     },
@@ -133,16 +125,12 @@
         },
         "splitLine": {
             "lineStyle": {
-                "color": [
-                    "#aaaaaa"
-                ]
+                "color": ["#aaaaaa"]
             }
         },
         "splitArea": {
             "areaStyle": {
-                "color": [
-                    "#eeeeee"
-                ]
+                "color": ["#eeeeee"]
             }
         }
     },
@@ -162,16 +150,12 @@
         },
         "splitLine": {
             "lineStyle": {
-                "color": [
-                    "#aaaaaa"
-                ]
+                "color": ["#aaaaaa"]
             }
         },
         "splitArea": {
             "areaStyle": {
-                "color": [
-                    "#eeeeee"
-                ]
+                "color": ["#eeeeee"]
             }
         }
     },
@@ -234,11 +218,7 @@
         }
     },
     "visualMap": {
-        "color": [
-            "#bf444c",
-            "#d88273",
-            "#f6efa6"
-        ]
+        "color": ["#bf444c", "#d88273", "#f6efa6"]
     },
     "dataZoom": {
         "dataBackgroundColor": "rgba(255,255,255,0.3)",
