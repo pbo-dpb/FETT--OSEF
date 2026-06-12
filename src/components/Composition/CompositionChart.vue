@@ -3,30 +3,54 @@
         ref="componentRoot"
         class="flex flex-col gap-8 rounded-sm border border-transparent dark:border-gray-700">
         <div
-            class="flex flex-col gap-y-6 rounded-sm bg-gray-100 p-4 2xl:flex-row 2xl:items-end 2xl:justify-between dark:bg-gray-900">
+            class="flex flex-col justify-between gap-y-4 rounded-sm bg-gray-100 p-4 md:flex-row dark:bg-gray-900">
             <GeneralChartSettings />
-            <div class="flex flex-col gap-x-8 gap-y-6 md:flex-row md:flex-wrap">
-                <label class="flex w-fit cursor-pointer">
-                    <div class="pr-2 leading-none font-semibold">
-                        {{ strings.include_combined_data_label }}
-                    </div>
+            <div class="grid gap-4 md:grid-cols-2">
+                <div class="flex flex-col gap-2">
+                    <label class="flex w-fit cursor-pointer gap-2 md:mt-1">
+                        <SwitchRoot
+                            v-model="shouldSplitByTenure"
+                            class="switch-primary focus-outline-primary relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-1 border-solid border-gray-100 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid data-[state=unchecked]:bg-gray-300 dark:data-[state=checked]:bg-gray-100 dark:data-[state=unchecked]:bg-gray-950">
+                            <SwitchThumb
+                                class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full dark:bg-gray-950 dark:data-[state=unchecked]:bg-gray-100" />
+                        </SwitchRoot>
+                        <div class="leading-none font-semibold">
+                            {{ strings.should_split_by_tenure_label }}
+                        </div>
+                    </label>
+                    <fieldset
+                        v-if="shouldSplitByTenure"
+                        class="flex grid grid-cols-2 flex-col gap-x-2">
+                        <legend class="sr-only">
+                            {{ strings.composition_selected_tenures }}
+                        </legend>
+                        <label
+                            v-for="tenure in allTenures"
+                            :key="tenure"
+                            class="cols-span-1 cursor-pointer items-center gap-2">
+                            <input
+                                type="checkbox"
+                                :value="tenure"
+                                v-model="selectedTenures"
+                                class="accent-[#2a5673]"
+                                :disabled="
+                                    selectedTenures.length === 1 &&
+                                    selectedTenures.includes(tenure)
+                                " />
+                            {{ tenureStringMap[tenure] }}
+                        </label>
+                    </fieldset>
+                </div>
+                <label class="flex w-fit cursor-pointer gap-2 md:mt-1">
                     <SwitchRoot
                         v-model="shouldIncludeCombinedData"
                         class="switch-primary focus-outline-primary relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-1 border-solid border-gray-100 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid data-[state=unchecked]:bg-gray-300 dark:data-[state=checked]:bg-gray-100 dark:data-[state=unchecked]:bg-gray-950">
                         <SwitchThumb
                             class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full dark:bg-gray-950 dark:data-[state=unchecked]:bg-gray-100" />
                     </SwitchRoot>
-                </label>
-                <label class="flex w-fit cursor-pointer">
-                    <div class="pr-2 leading-none font-semibold">
-                        {{ strings.should_split_by_tenure_label }}
+                    <div class="leading-none font-semibold">
+                        {{ strings.include_combined_data_label }}
                     </div>
-                    <SwitchRoot
-                        v-model="shouldSplitByTenure"
-                        class="switch-primary focus-outline-primary relative flex h-[20px] w-[32px] cursor-pointer rounded-full border border-1 border-solid border-gray-100 shadow-sm transition-[background] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid data-[state=unchecked]:bg-gray-300 dark:data-[state=checked]:bg-gray-100 dark:data-[state=unchecked]:bg-gray-950">
-                        <SwitchThumb
-                            class="my-auto flex h-3.5 w-3.5 translate-x-0.5 items-center justify-center rounded-full bg-white text-xs shadow-xl transition-transform will-change-transform data-[state=checked]:translate-x-full dark:bg-gray-950 dark:data-[state=unchecked]:bg-gray-100" />
-                    </SwitchRoot>
                 </label>
             </div>
         </div>
@@ -37,7 +61,6 @@
 </template>
 
 <script setup>
-    import { SwitchRoot, SwitchThumb } from "reka-ui";
     import {
         onMounted,
         onBeforeUnmount,
@@ -48,29 +71,13 @@
         ref,
     } from "vue";
     import { storeToRefs } from "pinia";
+    import { SwitchRoot, SwitchThumb } from "reka-ui";
+
+    import colors from "@/assets/echarts/colors.json";
 
     import usePayloadsStore from "@/stores/payloads.js";
-    const payloadsStore = usePayloadsStore();
-    const { composition } = storeToRefs(payloadsStore);
-
     import useLocalizationsStore from "@/stores/localizations.js";
-    const localizationsStore = useLocalizationsStore();
-    const { language, strings } = storeToRefs(localizationsStore);
-
     import useSettingsStore from "@/stores/settings.js";
-    const settingsStore = useSettingsStore();
-    const { preferredTimeframe, preferredGranularity, preferredMetric } =
-        storeToRefs(settingsStore);
-
-    import { GeneralChartSettings } from "@/components/Shared";
-
-    const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
-    const componentRoot = useTemplateRef("componentRoot");
-    const resObserver = shallowRef(null);
-
-    const shouldIncludeCombinedData = ref(true);
-    const shouldSplitByTenure = ref(true);
-    const useDarkTheme = ref(false);
 
     import * as echarts from "echarts/core";
     import { LineChart } from "echarts/charts";
@@ -88,6 +95,44 @@
         MarkAreaComponent,
         AriaComponent,
     } from "echarts/components";
+
+    import { GeneralChartSettings } from "@/components/Shared";
+
+    const payloadsStore = usePayloadsStore();
+    const { composition } = storeToRefs(payloadsStore);
+
+    const localizationsStore = useLocalizationsStore();
+    const { language, strings } = storeToRefs(localizationsStore);
+
+    const settingsStore = useSettingsStore();
+    const { preferredTimeframe, preferredGranularity, preferredMetric } =
+        storeToRefs(settingsStore);
+
+    const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
+    const componentRoot = useTemplateRef("componentRoot");
+    const resObserver = shallowRef(null);
+
+    const shouldIncludeCombinedData = ref(true);
+    const shouldSplitByTenure = ref(true);
+    const useDarkTheme = ref(false);
+
+    const allTenures = ["indeterminate", "term", "casual", "student"];
+    const selectedTenures = ref([...allTenures]);
+    const activeTenures = computed(() =>
+        shouldSplitByTenure.value ? selectedTenures.value : allTenures,
+    );
+
+    const palette = computed(() =>
+        useDarkTheme.value ? colors.color.dark : colors.color.light,
+    );
+
+    const tenureColorMap = computed(() => {
+        return activeTenures.value.reduce((accumulator, tenure, index) => {
+            accumulator[tenure] = palette.value[index];
+
+            return accumulator;
+        }, {});
+    });
 
     echarts.use([
         LineChart,
@@ -156,28 +201,31 @@
 
     const dataset = computed(() => {
         let dimensions = [
-            "indeterminate",
-            "term",
-            "casual",
-            "student",
+            ...activeTenures.value,
             shouldIncludeCombinedData.value ? "combined" : null,
         ].filter(Boolean);
 
         if (!shouldSplitByTenure.value) {
             return {
-                dimensions: ["timestamp", "total"].filter(Boolean),
+                dimensions: ["timestamp", "value"],
                 source: baseData.value.map((item) => {
-                    let dims = {
-                        timestamp:
-                            preferredGranularity.value === "month"
-                                ? `${item.year}-${String(item.month).padStart(2, "0")}`
-                                : `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`,
-                        total: Math.round(
-                            dimensions.reduce((sum, dim) => sum + item[dim], 0),
-                        ),
-                    };
+                    const timestamp =
+                        preferredGranularity.value === "fiscal_year"
+                            ? `${item.year}-${item.year + 1}`
+                            : `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`;
 
-                    return dims;
+                    const value = shouldIncludeCombinedData.value
+                        ? Math.round(item.combined)
+                        : Math.round(
+                              allTenures.reduce((sum, tenure) => {
+                                  return sum + Number(item[tenure] || 0);
+                              }, 0),
+                          );
+
+                    return {
+                        timestamp,
+                        value,
+                    };
                 }),
             };
         }
@@ -185,7 +233,7 @@
         return {
             dimensions: ["timestamp", ...dimensions].filter(Boolean),
             source: baseData.value.map((item) => {
-                let dims = {
+                let dimensions = {
                     timestamp:
                         preferredGranularity.value === "fiscal_year"
                             ? `${item.year}-${item.year + 1}`
@@ -197,10 +245,17 @@
                     combined: Math.round(item.combined),
                 };
 
-                return dims;
+                return dimensions;
             }),
         };
     });
+
+    const tenureStringMap = {
+        indeterminate: strings.value.indeterminate_label,
+        term: strings.value.term_label,
+        casual: strings.value.casual_label,
+        student: strings.value.student_label,
+    };
 
     const series = computed(() => {
         const baseSerie = {
@@ -208,9 +263,7 @@
             stack: "Total",
             areaStyle: {},
             smooth: true,
-            lineStyle: {
-                width: 0,
-            },
+            lineStyle: { width: 0 },
             showSymbol: false,
         };
 
@@ -219,36 +272,33 @@
                 {
                     ...baseSerie,
                     name: strings.value.total_label,
+                    encode: {
+                        x: "timestamp",
+                        y: "value",
+                    },
                 },
-            ].filter(Boolean);
+            ];
         }
 
-        let series = [
-            {
-                ...baseSerie,
-                name: strings.value.indeterminate_label,
+        const s = activeTenures.value.map((tenure) => ({
+            ...baseSerie,
+            name: tenureStringMap[tenure],
+            itemStyle: {
+                color: tenureColorMap[tenure],
             },
-            {
-                ...baseSerie,
-                name: strings.value.term_label,
-            },
-            {
-                ...baseSerie,
-                name: strings.value.casual_label,
-            },
-            {
-                ...baseSerie,
-                name: strings.value.student_label,
-            },
-            shouldIncludeCombinedData.value
-                ? {
-                      ...baseSerie,
-                      name: strings.value.combined_label,
-                  }
-                : null,
-        ].filter(Boolean);
+        }));
 
-        return series;
+        if (shouldIncludeCombinedData.value) {
+            s.push({
+                ...baseSerie,
+                name: strings.value.combined_label,
+                itemStyle: {
+                    color: tenureColorMap.combined,
+                },
+            });
+        }
+
+        return s;
     });
 
     const formatTooltipNumber = (value) => {
@@ -351,6 +401,8 @@
         return `<div><div style="font-weight:400;line-height:1.35;">${escapeHtml(timestamp)}</div>${rows.join("")}<div style="border-top:1px solid rgba(255,255,255,0.2);">${totalRow}</div></div>`;
     };
 
+    let chart = shallowRef(null);
+
     const chartOptions = computed(() => {
         const legendBottom = 8;
         const legendHeight = 32;
@@ -395,7 +447,16 @@
         return options;
     });
 
-    let chart = shallowRef(null);
+    onBeforeUnmount(() => {
+        if (chart.value) {
+            chart.value.dispose();
+            chart.value = null;
+        }
+        if (resObserver.value) {
+            resObserver.value.disconnect();
+            resObserver.value = null;
+        }
+    });
 
     onMounted(() => {
         if (composition.value === false) {
@@ -425,33 +486,28 @@
                 chart.value.resize();
             }
         }).observe(componentRoot.value.querySelector(`#${uniqueId}`));
+
         window.globalchart = chart.value;
     });
 
-    onBeforeUnmount(() => {
-        if (chart.value) {
-            chart.value.dispose();
-            chart.value = null;
-        }
-        if (resObserver.value) {
-            resObserver.value.disconnect();
-            resObserver.value = null;
-        }
-    });
-
-    const redrawChart = () => {
-        chart.value.setOption(chartOptions.value);
-    };
-
     watch([preferredGranularity, preferredTimeframe, preferredMetric], () => {
-        redrawChart();
+        chart.value.setOption(chartOptions.value);
     });
 
-    watch([shouldIncludeCombinedData, shouldSplitByTenure], () => {
-        // For some reason, echart can't redraw properly after a dataset change
-        // see https://github.com/apache/echarts/issues/6202
-        chart.value.setOption(chartOptions.value, {
-            replaceMerge: ["series"],
-        });
+    watch(shouldSplitByTenure, (value) => {
+        if (!value) {
+            selectedTenures.value = [...allTenures];
+        }
     });
+
+    watch(
+        [selectedTenures, shouldIncludeCombinedData, shouldSplitByTenure],
+        () => {
+            // For some reason, echart can't redraw properly after a dataset change
+            // see https://github.com/apache/echarts/issues/6202
+            chart.value.setOption(chartOptions.value, {
+                replaceMerge: ["series"],
+            });
+        },
+    );
 </script>

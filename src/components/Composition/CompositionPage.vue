@@ -5,7 +5,6 @@
                 <PageHeader
                     :heading="strings.composition_heading"
                     :description="strings.composition_description" />
-
                 <CompositionChart />
             </div>
         </template>
