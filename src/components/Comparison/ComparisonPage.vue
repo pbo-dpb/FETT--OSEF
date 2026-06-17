@@ -101,13 +101,13 @@
                         >
                         <select
                             id="year"
-                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white px-1 py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
                             v-model="selectedYear">
                             <option
                                 v-for="year in availableYears"
                                 :key="year"
                                 :value="year">
-                                {{ year }}
+                                {{ year }}-{{ year + 1 }}
                             </option>
                         </select>
                         <label
@@ -119,7 +119,7 @@
                         <select
                             v-if="isQuarterlyGranularity"
                             id="quarter"
-                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
+                            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white px-1 py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
                             v-model="selectedQuarter">
                             <option
                                 v-for="quarter in quarterOptions"
@@ -352,9 +352,11 @@
 
     const availableYears = computed(() => {
         const years = [];
+
         for (let year = end_year.value; year >= start_year.value; year--) {
             years.push(year);
         }
+
         return years;
     });
 

@@ -7,7 +7,7 @@
         >
         <select
             id="preferred-tenure"
-            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
+            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white px-2 py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
             v-model="preferredTenure">
             <option value="indeterminate">
                 {{ strings.dep_indeterminate }}
