@@ -170,12 +170,12 @@
                         <th
                             scope="col"
                             class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                            {{ strings.dep_student }}
+                            {{ strings.dep_casual }}
                         </th>
                         <th
                             scope="col"
                             class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                            {{ strings.dep_casual }}
+                            {{ strings.dep_student }}
                         </th>
                         <th
                             scope="col"

@@ -52,22 +52,22 @@
         </td>
         <td
             class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.dep_student }}</span>
+            <span class="md:hidden">{{ strings.dep_casual }}</span>
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(selectedValues?.student || 0)
+                        ? numberFormatter(selectedValues?.casual || 0)
                         : "N/A"
                 }}
             </span>
         </td>
         <td
             class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.dep_casual }}</span>
+            <span class="md:hidden">{{ strings.dep_student }}</span>
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(selectedValues?.casual || 0)
+                        ? numberFormatter(selectedValues?.student || 0)
                         : "N/A"
                 }}
             </span>
