@@ -206,7 +206,7 @@
                 source: baseData.value.map((item) => ({
                     timestamp:
                         preferredGranularity.value === "fiscal_year"
-                            ? `${item.year}-${item.year + 1}`
+                            ? `${item.year - 1}-${item.year}`
                             : `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`,
                     value: shouldIncludeCombinedData.value
                         ? Math.round(item.combined)
@@ -225,7 +225,7 @@
             source: baseData.value.map((item) => ({
                 timestamp:
                     preferredGranularity.value === "fiscal_year"
-                        ? `${item.year}-${item.year + 1}`
+                        ? `${item.year - 1}-${item.year}`
                         : `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`,
                 indeterminate: Math.round(item.indeterminate),
                 term: Math.round(item.term),

@@ -89,14 +89,11 @@
         <div class="flex flex-col gap-4">
             <div
                 class="flex flex-col gap-4 rounded-sm bg-gray-100 p-4 md:flex-row md:items-end md:justify-between dark:bg-gray-900">
-                <fieldset class="flex flex-col">
-                    <legend class="mb-1 font-semibold">
-                        {{ strings.department_fiscal_period_label }}
-                    </legend>
-                    <div class="flex gap-2">
+                <div class="flex gap-2">
+                    <div class="flex flex-col">
                         <label
                             for="year"
-                            class="sr-only"
+                            class="mb-1 font-semibold"
                             >{{ strings.department_year }}</label
                         >
                         <select
@@ -107,13 +104,15 @@
                                 v-for="year in availableYears"
                                 :key="year"
                                 :value="year">
-                                {{ year }}-{{ year + 1 }}
+                                {{ year }}
                             </option>
                         </select>
+                    </div>
+                    <div class="flex flex-col">
                         <label
                             v-if="isQuarterlyGranularity"
                             for="quarter"
-                            class="sr-only"
+                            class="mb-1 font-semibold"
                             >{{ strings.department_quarter }}</label
                         >
                         <select
@@ -130,7 +129,7 @@
                             </option>
                         </select>
                     </div>
-                </fieldset>
+                </div>
                 <label class="flex w-fit cursor-pointer">
                     <div class="pr-2 leading-none font-semibold">
                         {{ strings.comparison_show_all_departments_label }}
@@ -344,7 +343,7 @@
 
     const selectedDepartment = ref(null);
     const numberFormatter = numberFormatterMixin.methods.numberFormatter;
-    const selectedDepartmentMeta = ref([]); // [{ id, color }]
+    const selectedDepartmentMeta = ref([]);
     const highlightedDepartmentId = ref(null);
     const selectedQuarter = ref(end_quarter.value);
     const selectedYear = ref(end_year.value);
@@ -353,7 +352,7 @@
     const availableYears = computed(() => {
         const years = [];
 
-        for (let year = end_year.value; year >= start_year.value; year--) {
+        for (let year = start_year.value; year <= end_year.value; year++) {
             years.push(year);
         }
 
@@ -529,8 +528,6 @@
                 if (index >= colorPalette.length) {
                     index = 0;
                 }
-
-                console.log(colorPalette.length);
 
                 return {
                     id,

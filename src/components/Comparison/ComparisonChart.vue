@@ -136,7 +136,7 @@
         firstDept[dataKey].forEach((item) => {
             const ts = isQuarterly
                 ? `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`
-                : `${item.year}-${item.year + 1}`;
+                : `${item.year - 1}-${item.year}`;
             timestamps.push(ts);
         });
 
@@ -147,7 +147,7 @@
             dept[dataKey].forEach((item) => {
                 const ts = isQuarterly
                     ? `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`
-                    : `${item.year}-${item.year + 1}`;
+                    : `${item.year - 1}-${item.year}`;
 
                 const sumOfParts =
                     Math.round(item.indeterminate || 0) +
@@ -344,8 +344,6 @@
 
         // Sync departments
         syncDepartments();
-
-        console.log("Selected department(s):", toRaw(props.departments));
     });
 
     onBeforeUnmount(() => {
