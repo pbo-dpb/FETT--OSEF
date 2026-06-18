@@ -34,14 +34,14 @@ if (!inputFile) {
 
 const workbook = XLSX.readFile(inputFile);
 
-const stringsWorksheet = workbook.Sheets["strings"];
-if (!stringsWorksheet) {
-    console.error(
-        'The input .xlsx file is missing the required "strings" sheet.',
-    );
-    process.exit(1);
-}
-handleStringsIo(stringsWorksheet);
+// const stringsWorksheet = workbook.Sheets["strings"];
+// if (!stringsWorksheet) {
+//     console.error(
+//         'The input .xlsx file is missing the required "strings" sheet.',
+//     );
+//     process.exit(1);
+// }
+// handleStringsIo(stringsWorksheet);
 
 const settingsWorksheet = workbook.Sheets["settings"];
 if (!settingsWorksheet) {

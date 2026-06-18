@@ -400,36 +400,25 @@ module.exports = class Aggregator {
         }
         monthlyTotals = monthlyTotals || [];
 
-        let fiscalYearCursor = this.settings.start_year;
+        let startFY =
+            this.settings.start_quarter >= 2
+                ? this.settings.start_year + 1
+                : this.settings.start_year;
+        let endFY =
+            this.settings.end_quarter >= 2
+                ? this.settings.end_year + 1
+                : this.settings.end_year;
+
+        let fiscalYearCursor = startFY;
         let fiscalYears = [];
-        while (
-            fiscalYearCursor <=
-            this.settings.end_year - (this.settings.end_quarter == 1 ? 1 : 0)
-        ) {
-            let datapointsForYear = monthlyTotals
-                .filter((mt) => {
-                    let fiscalYearForMonth =
-                        mt.month < 4 ? mt.year + 1 : mt.year;
-                    return fiscalYearForMonth === fiscalYearCursor;
-                })
-                .filter((mt) => {
-                    // Eliminate dp that contain only 0s.
-                    let hasNonZero = false;
-                    Object.keys(mt).forEach((key) => {
-                        if (
-                            key !== "year" &&
-                            key !== "month" &&
-                            key !== "unreported" &&
-                            mt[key] > 0
-                        ) {
-                            hasNonZero = true;
-                        }
-                    });
-                    return hasNonZero;
-                });
+
+        while (fiscalYearCursor <= endFY) {
+            let datapointsForYear = monthlyTotals.filter((mt) => {
+                let fiscalYearForMonth = mt.month >= 4 ? mt.year + 1 : mt.year;
+                return fiscalYearForMonth === fiscalYearCursor;
+            });
 
             let totals = {};
-            // Some objects may not have tenure types; fall back to known keys when none are present.
             const sampleMonthlyRow = monthlyTotals.find((x) =>
                 Object.keys(x).some((key) => this.isMetricKey(key, metric)),
             );
@@ -443,7 +432,7 @@ module.exports = class Aggregator {
                 const outputKey = this.normalizeMetricKey(tenureType, metric);
 
                 if (datapointsForYear.length === 0) {
-                    totals[outputKey] = 0; // Avoid division by zero
+                    totals[outputKey] = 0;
                     return;
                 }
 
