@@ -1,5 +1,34 @@
-The information presented in this tool reflects data provided by the Treasury Board of Canada Secretariat (TBS) through Information Request <a href="https://www.pbo-dpb.ca/en/information-requests--demandes-information/IR0822" target="_blank">IR0822</a> for the Federal Public Service, that is the Core Public Administration and Separate Agencies. The Core Public Administration consists of the departments and agencies named in schedules I and IV of the Financial Administration Act (FAA). Separate agencies are named in Schedule V of the act. Data on Members of the Canadian Armed Forces and the Royal Canadian Mounted Police (RCMP) are provided respectively by the Department of National Defence (DND) and the RCMP through Information Requests <a href="https://www.pbo-dpb.ca/en/information-requests--demandes-information/IR0824" target="_blank">IR0824</a> and <a href="https://www.pbo-dpb.ca/en/information-requests--demandes-information/IR0826" target="_blank">IR0826</a>.
+The Federal Employment Tracking Tool draws on staffing data from three sources, each provided to PBO through an information request:
 
-Employees on leave without pay as well as employees locally engaged outside of Canada are not included.
+- Treasury Board of Canada Secretariat (TBS), through <a href="https://www.pbo-dpb.ca/fr/information-requests--demandes-information/IR0822" target="_blank">IR0822</a>, for the Federal Public Service (Core Public Administration and Separate Agencies);
+- Department of National Defence (DND), through <a href="https://www.pbo-dpb.ca/fr/information-requests--demandes-information/IR0824" target="_blank">IR0824</a>, for the Regular Force members of the Canadian Armed Forces (CAF); and
+- Royal Canadian Mounted Police (RCMP), through <a href="https://www.pbo-dpb.ca/fr/information-requests--demandes-information/IR0826" target="_blank">IR0826</a>, for the Regular Force and Civilian members of the RCMP.
 
-The composition of departments may vary over time due to the creation, merge or renaming of organizations.
+PBO uses two concepts to measure the size of these workforces:
+
+1. **Headcount**: number of individuals employed
+2. **Full-time equivalents (FTEs)**: number of full-time positions based on total hours worked by all employees
+
+## Federal Public Service
+
+The Core Public Administration consists of the departments and agencies named in Schedules I and IV of the Financial Administration Act (FAA). Separate agencies are named in Schedule V of the act. Employees on leave without pay, as well as employees locally engaged outside of Canada, are not included. The composition of departments may vary over time due to the creation, merge or renaming of organizations.
+Federal Public Service staffing data is broken down by employment tenure, which corresponds to the nature of the appointment to the public service. There are four types:
+
+1. Indeterminate: an employee appointed for an unspecified duration
+2. Term: an employee appointed for a specified duration
+3. Casual: an employee appointed for a period not exceeding 90 working days in one calendar year
+4. Student: an employee appointed under one of the federal government’s student employment programs
+
+## Canadian Armed Forces and RCMP
+
+For 2015-16 to 2024-25, staffing data for both organizations is limited to one observation per fiscal year — at the end of the fiscal year (March 31) for the CAF and the beginning of the fiscal year (April 1) for the RCMP. Quarterly data for both organizations is available in the tool from 2025-26. The federal public service employment tenures are not applicable to positions held by members of the CAF and the RCMP. PBO could not calculate the number of FTEs for those organizations using the data provided; therefore, it is assumed that all members of the CAF and RCMP hold full-time positions in the tool.
+
+Staffing data related to the CAF displayed in the tool excludes the CAF Reserve Force due to the part-time nature of their service and the significant fluctuation in hours worked by reservists throughout the year.
+
+## Comparisons
+
+**Departmental Results Reports**: The total number of FTEs reported in the Federal Employment Tracking Tool for a given fiscal year may differ from those reported on <a href="https://www.tbs-sct.canada.ca/ems-sgd/edb-bdd/index-eng.html#rpb/.-.-(table.-.-'programFtes.-.-subject.-.-'gov_gov.-.-columns.-.-(.-.-'*7b*7bpa_last_year_5*7d*7d.-.-'*7b*7bpa_last_year_4*7d*7d.-.-'*7b*7bpa_last_year_3*7d*7d.-.-'*7b*7bpa_last_year_2*7d*7d.-.-'*7b*7bpa_last_year*7d*7d.-.-'*7b*7bplanning_year_1*7d*7d.-.-'*7b*7bplanning_year_2*7d*7d.-.-'*7b*7bplanning_year_3*7d*7d)))" target="_blank">GC Infobase</a> from the Departmental Results Reports due to differences in the list of departments included. There may also be minor discrepancies between departmental totals in each database due to methodological differences in the calculation of annual FTE totals.
+
+**Population of the Federal Public Service**: The summary table on the <a href="https://www.canada.ca/en/treasury-board-secretariat/services/innovation/human-resources-statistics/population-federal-public-service.html" target="_blank">Population of the Federal Public Service</a> published annually by TBS is based on the same underlying data source as the Federal Employment Tracking Tool. The table published by TBS shows the population of the federal public service on **March 31** of each given year. Annual headcount figures displayed in the tool represent the **average** monthly population of the federal public service over the given fiscal year.
+
+**Public Service Commission's Staffing Dashboard**: Additional insights on recent indeterminate position appointments, separations from the federal public service as well as on internal mobility within the federal government’s workforce can be found on the <a href="https://www5.psc-cfp.gc.ca/dsad-dsda/staffing-dashboard/index-en.html" target="_blank">Public Service Commission’s Staffing Dashboard</a>.

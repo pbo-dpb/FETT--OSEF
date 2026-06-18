@@ -184,6 +184,10 @@
             </div>
         </div>
 
+        <div class="col-span-full">
+            <p class="text-sm">{{ strings.overview_end_note }}</p>
+        </div>
+
         <!-- Download Button -->
         <div class="col-span-full">
             <a

@@ -68,6 +68,7 @@
     "overview_all_headcount_label": "All employees",
     "overview_largest_increase_by_department": "Largest increase by department",
     "overview_largest_decrease_by_department": "Largest decrease by department",
+    "overview_end_note": "The figures above exclude the Canadian Armed Forces and Royal Canadian Mounted Police members.",
     "overview_download_button": "Download the data (.xlsx)",
     "composition_heading": "Size of the federal public service, by job tenure",
     "composition_description": "This chart displays the total number of positions and full-time equivalents (FTEs) in the federal public service broken down by job tenure, from 2015-16 to the latest quarter available.",
