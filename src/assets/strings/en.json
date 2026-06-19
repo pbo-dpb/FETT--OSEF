@@ -59,7 +59,7 @@
     "overview_description": "This section provides an overview of recent changes in the size of the federal public service, including a breakdown by job tenure as well as details on departments with the largest variations over the reference period.",
     "overview_current_numbers": "Size of the federal public service",
     "overview_delta": "Latest changes",
-    "overview_all_positions_label": "All positions",
+    "overview_all_positions_label": "All FTEs",
     "overview_all_headcount_label": "All employees",
     "overview_largest_increase_by_department": "Largest increase by department",
     "overview_largest_decrease_by_department": "Largest decrease by department",
