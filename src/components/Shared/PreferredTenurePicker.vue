@@ -10,12 +10,12 @@
             class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white px-2 py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
             v-model="preferredTenure">
             <option value="indeterminate">
-                {{ strings.dep_indeterminate }}
+                {{ strings.indeterminate_label }}
             </option>
-            <option value="term">{{ strings.dep_term }}</option>
-            <option value="casual">{{ strings.dep_casual }}</option>
-            <option value="student">{{ strings.dep_student }}</option>
-            <option value="combined">{{ strings.dep_combined }}</option>
+            <option value="term">{{ strings.term_label }}</option>
+            <option value="casual">{{ strings.casual_label }}</option>
+            <option value="student">{{ strings.student_label }}</option>
+            <option value="combined">{{ strings.total_label }}</option>
         </select>
     </div>
 </template>

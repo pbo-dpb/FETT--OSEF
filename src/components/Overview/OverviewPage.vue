@@ -42,15 +42,15 @@
                 </p>
             </div>
             <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.student_label }}</h4>
-                <p class="text-xl">
-                    {{ numberFormatter(studentLatestNumber) }}
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">{{ strings.casual_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(casualLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.student_label }}</h4>
+                <p class="text-xl">
+                    {{ numberFormatter(studentLatestNumber) }}
                 </p>
             </div>
             <div class="col-span-full text-right text-xs font-semibold">
@@ -94,21 +94,21 @@
                 </p>
             </div>
             <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.student_label }}</h4>
-                <p class="text-xl">
-                    {{ numberFormatter(studentAbsoluteDiff) }} ({{
-                        numberFormatter(studentRelativeDiff, true)
-                    }}%)
-                    <TrendIndicator :datapoint="studentAbsoluteDiff" />
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">{{ strings.casual_label }}</h4>
                 <p class="text-xl">
                     {{ numberFormatter(casualAbsoluteDiff) }} ({{
                         numberFormatter(casualRelativeDiff, true)
                     }}%)
                     <TrendIndicator :datapoint="casualAbsoluteDiff" />
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.student_label }}</h4>
+                <p class="text-xl">
+                    {{ numberFormatter(studentAbsoluteDiff) }} ({{
+                        numberFormatter(studentRelativeDiff, true)
+                    }}%)
+                    <TrendIndicator :datapoint="studentAbsoluteDiff" />
                 </p>
             </div>
             <div class="col-span-full text-right text-xs font-semibold">
@@ -402,8 +402,6 @@
 
             this.data = overview.value;
             this.isLoading = false;
-
-            console.log(toRaw(overview.value));
         },
     };
 </script>

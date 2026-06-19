@@ -112,7 +112,7 @@
         storeToRefs(settingsStore);
 
     const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
-    const allTenures = ["indeterminate", "term", "student", "casual"];
+    const allTenures = ["indeterminate", "term", "casual", "student"];
 
     const componentRoot = useTemplateRef("componentRoot");
     const chart = shallowRef(null);
@@ -466,7 +466,12 @@
     });
 
     watch(
-        [selectedTenures, shouldIncludeCombinedData, shouldSplitByTenure],
+        [
+            selectedTenures,
+            shouldIncludeCombinedData,
+            shouldSplitByTenure,
+            language,
+        ],
         () => {
             chart.value.setOption(chartOptions.value, {
                 replaceMerge: ["series"],

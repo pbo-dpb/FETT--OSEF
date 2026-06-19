@@ -30,7 +30,7 @@
         </th>
         <td
             class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.dep_indeterminate }}</span>
+            <span class="md:hidden">{{ strings.indeterminate_label }}</span>
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
@@ -41,7 +41,7 @@
         </td>
         <td
             class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.dep_term }}</span>
+            <span class="md:hidden">{{ strings.term_label }}</span>
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
@@ -52,7 +52,7 @@
         </td>
         <td
             class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.dep_casual }}</span>
+            <span class="md:hidden">{{ strings.casual_label }}</span>
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
@@ -63,7 +63,7 @@
         </td>
         <td
             class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.dep_student }}</span>
+            <span class="md:hidden">{{ strings.student_label }}</span>
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown

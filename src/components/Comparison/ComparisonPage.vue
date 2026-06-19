@@ -159,22 +159,22 @@
                         <th
                             scope="col"
                             class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                            {{ strings.dep_indeterminate }}
+                            {{ strings.indeterminate_label }}
                         </th>
                         <th
                             scope="col"
                             class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                            {{ strings.dep_term }}
+                            {{ strings.term_label }}
                         </th>
                         <th
                             scope="col"
                             class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                            {{ strings.dep_student }}
+                            {{ strings.casual_label }}
                         </th>
                         <th
                             scope="col"
                             class="border-b-1 border-solid border-gray-300 p-2 font-semibold">
-                            {{ strings.dep_casual }}
+                            {{ strings.student_label }}
                         </th>
                         <th
                             scope="col"
@@ -211,7 +211,7 @@
                         <td
                             class="block flex items-center justify-between p-2 text-center md:table-cell">
                             <span class="md:hidden">{{
-                                strings.dep_indeterminate
+                                strings.indeterminate_label
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
@@ -225,7 +225,7 @@
                         <td
                             class="block flex items-center justify-between p-2 text-center md:table-cell">
                             <span class="md:hidden">{{
-                                strings.dep_term
+                                strings.term_label
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
@@ -238,12 +238,12 @@
                         <td
                             class="block flex items-center justify-between p-2 text-center md:table-cell">
                             <span class="md:hidden">{{
-                                strings.dep_student
+                                strings.casual_label
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
                                     numberFormatter(
-                                        allDepartmentsValues?.student || 0,
+                                        allDepartmentsValues?.casual || 0,
                                     )
                                 }}
                             </span>
@@ -251,12 +251,12 @@
                         <td
                             class="block flex items-center justify-between p-2 text-center md:table-cell">
                             <span class="md:hidden">{{
-                                strings.dep_casual
+                                strings.student_label
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
                                     numberFormatter(
-                                        allDepartmentsValues?.casual || 0,
+                                        allDepartmentsValues?.student || 0,
                                     )
                                 }}
                             </span>
@@ -360,9 +360,11 @@
     });
 
     const quarterOptions = computed(() => {
+        const quarterLabel = language.value === "en" ? "Q" : "T";
+
         return [4, 3, 2, 1].map((quarter) => ({
             value: quarter,
-            label: `Q${quarter}`,
+            label: `${quarterLabel}${quarter}`,
             disabled:
                 (selectedYear.value === start_year.value &&
                     quarter < start_quarter.value) ||
