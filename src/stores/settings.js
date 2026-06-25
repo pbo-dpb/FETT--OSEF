@@ -1,26 +1,48 @@
-import { defineStore } from 'pinia'
-import settings from '../assets/settings.json'
-import { colors } from '../assets/colors.json?json'
+import { defineStore } from "pinia";
+import settings from "../assets/payloads/settings.json";
+import { colors } from "../assets/echarts/colors.json?json";
 
-const previouslySelectedDepartmentIds = sessionStorage.getItem('selectedDepartmentIds')
+const previouslySelectedDepartmentIds = sessionStorage.getItem(
+    "selectedDepartmentIds",
+);
 
-export default defineStore('settings', {
+export default defineStore("settings", {
     state: () => ({
-        preferredTimeframe: "3Y",
+        preferredMetric: "fte",
+        preferredTimeframe: "MAX",
         preferredGranularity: "quarter",
+        selectedComparisonPeriod: "sameQuarterLastYear",
+        preferredTenure: "combined",
+        showAllDepartments: false,
         colors: colors,
-        previouslySelectedDepartmentIds: previouslySelectedDepartmentIds ? JSON.parse(previouslySelectedDepartmentIds).map(id => id.replace(/[^a-z0-9]/gi, "")) : [],
+        previouslySelectedDepartmentIds: previouslySelectedDepartmentIds
+            ? JSON.parse(previouslySelectedDepartmentIds).map((id) =>
+                  id.replace(/[^a-z0-9]/gi, ""),
+              )
+            : [],
         ...settings,
-
     }),
 
     actions: {
-        // since we rely on `this`, we cannot use an arrow function
-        setPreviouslySelectedDepartmentIds(departmentIds) {
-            sessionStorage.setItem('selectedDepartmentIds', JSON.stringify(departmentIds))
-            this.previouslySelectedDepartmentIds = departmentIds;
+        setPreferredMetric(metric) {
+            this.preferredMetric = metric;
         },
 
-    },
+        setSelectedComparisonPeriod(comparisonPeriod) {
+            this.selectedComparisonPeriod = comparisonPeriod;
+        },
 
-})
+        setShowAllDepartments(value) {
+            this.showAllDepartments = value;
+        },
+
+        // since we rely on `this`, we cannot use an arrow function
+        setPreviouslySelectedDepartmentIds(departmentIds) {
+            sessionStorage.setItem(
+                "selectedDepartmentIds",
+                JSON.stringify(departmentIds),
+            );
+            this.previouslySelectedDepartmentIds = departmentIds;
+        },
+    },
+});

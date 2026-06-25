@@ -1,0 +1,33 @@
+<template>
+    <div class="flex flex-col gap-1">
+        <label
+            for="preferred-tenure"
+            class="cursor-pointer font-semibold"
+            >{{ strings.preferred_tenure_label }}</label
+        >
+        <select
+            id="preferred-tenure"
+            class="cursor-pointer rounded-sm border border-solid border-gray-300 bg-white px-2 py-0.5 text-gray-700 focus-visible:outline-offset-4 dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100"
+            v-model="preferredTenure">
+            <option value="indeterminate">
+                {{ strings.indeterminate_label }}
+            </option>
+            <option value="term">{{ strings.term_label }}</option>
+            <option value="casual">{{ strings.casual_label }}</option>
+            <option value="student">{{ strings.student_label }}</option>
+            <option value="combined">{{ strings.total_label }}</option>
+        </select>
+    </div>
+</template>
+
+<script setup>
+    import { storeToRefs } from "pinia";
+
+    import useSettingsStore from "@/stores/settings.js";
+    const settingsStore = useSettingsStore();
+    const { preferredTenure } = storeToRefs(settingsStore);
+
+    import useLocalizationStore from "@/stores/localizations.js";
+    const localizationsStore = useLocalizationStore();
+    const { strings } = storeToRefs(localizationsStore);
+</script>

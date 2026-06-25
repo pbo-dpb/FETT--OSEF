@@ -1,28 +1,39 @@
 {
-  "name": "pbotool-workforce360",
-  "private": true,
-  "version": "0.1.0",
-  "scripts": {
-    "dev": "vite --host --port 8080",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "echarts": "^6.0.0",
-    "fuse.js": "^7.1.0",
-    "lucide-vue-next": "^0.562.0",
-    "marked": "^17.0.1",
-    "pinia": "^3.0.4",
-    "reka-ui": "^2.6.1",
-    "vue": "^3.5.26",
-    "vue-router": "^4.6.4"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.18",
-    "@vitejs/plugin-vue": "^6.0.3",
-    "tailwindcss": "^4.1.18",
-    "vite": "^7.3.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
-  }
+    "name": "pbotool-federal-employment-tracking-tool",
+    "private": true,
+    "version": "0.1.0",
+    "scripts": {
+        "dev": "vite --host --port 8080",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@headlessui/tailwindcss": "^0.2.2",
+        "@headlessui/vue": "^1.7.23",
+        "echarts": "^6.0.0",
+        "fuse.js": "^7.1.0",
+        "lucide-vue-next": "^0.562.0",
+        "marked": "^17.0.1",
+        "pinia": "^3.0.4",
+        "reka-ui": "^2.6.1",
+        "vue": "^3.5.26",
+        "vue-router": "^4.6.4"
+    },
+    "devDependencies": {
+        "@eslint/css": "^1.0.0",
+        "@eslint/js": "^10.0.1",
+        "@eslint/json": "^1.1.0",
+        "@eslint/markdown": "^7.5.1",
+        "@tailwindcss/typography": "^0.5.19",
+        "@tailwindcss/vite": "^4.1.18",
+        "@vitejs/plugin-vue": "^6.0.3",
+        "eslint": "^10.0.3",
+        "eslint-plugin-vue": "^10.8.0",
+        "globals": "^17.4.0",
+        "prettier": "^3.8.1",
+        "prettier-plugin-tailwindcss": "^0.7.2",
+        "tailwindcss": "^4.1.18",
+        "vite": "^7.3.0",
+        "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+    }
 }

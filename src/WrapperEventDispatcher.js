@@ -1,5 +1,4 @@
 export default class WrapperEventDispatcher {
-
     /**
      * Class to standardize communications with the web component's parent page.
      * ABCMS will listen for the event dispatched in the dispatch() method and update
@@ -21,14 +20,17 @@ export default class WrapperEventDispatcher {
             detail: {
                 pageTitle,
                 breadcrumbStack,
-                userInfo
-            }
+                userInfo,
+            },
         });
         document.dispatchEvent(event);
     }
 
     dispatch() {
-        WrapperEventDispatcher.dispatch(this.pageTitle, this.breadcrumbStack, this.userInfo)
+        WrapperEventDispatcher.dispatch(
+            this.pageTitle,
+            this.breadcrumbStack,
+            this.userInfo,
+        );
     }
-
 }

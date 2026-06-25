@@ -1,77 +1,138 @@
-module.exports = class Overviewer {
-
+export default class Overviewer {
     constructor(aggregator, departments, departmentsDetails) {
         this.aggregator = aggregator;
         this.departments = departments;
         this.departmentsDetails = departmentsDetails;
     }
 
-
-    sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(row, includeCombined = true) {
+    sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+        row,
+        includeCombined = true,
+    ) {
         let total = 0;
 
-        total += (row.indeterminate || 0)
-            + (row.term || 0)
-            + (row.casual || 0)
-            + (row.student || 0);
+        total +=
+            (row.indeterminate || 0) +
+            (row.term || 0) +
+            (row.casual || 0) +
+            (row.student || 0);
         if (includeCombined) {
-            total += (row.combined || 0);
+            total += row.combined || 0;
         }
         return total;
     }
 
-    diffDepartmentForQuarter(deptId, firstYear, firstQuarter, secondYear, secondQuarter) {
-
+    diffDepartmentForQuarter(
+        deptId,
+        firstYear,
+        firstQuarter,
+        secondYear,
+        secondQuarter,
+        metric = "fte",
+    ) {
+        let departmentMeta = this.departments[deptId];
         let department = this.departmentsDetails[deptId];
+        const quarterField =
+            metric === "pop"
+                ? "total_pops_per_quarter"
+                : "total_ftes_per_quarter";
 
-        let firstFtesRow = department.total_ftes_per_quarter.find(row => row.year === firstYear && row.quarter === firstQuarter);
-        let firstFtesCount = this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(firstFtesRow);
+        let firstFtesRow = department[quarterField].find(
+            (row) => row.year === firstYear && row.quarter === firstQuarter,
+        );
+        let firstFtesCount =
+            this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(firstFtesRow);
 
-        let secondFtesRow = department.total_ftes_per_quarter.find(row => row.year === secondYear && row.quarter === secondQuarter);
+        let secondFtesRow = department[quarterField].find(
+            (row) => row.year === secondYear && row.quarter === secondQuarter,
+        );
 
-        let secondFtesCount = this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(secondFtesRow);
+        let secondFtesCount =
+            this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(secondFtesRow);
         let diff = secondFtesCount - firstFtesCount;
         return {
             department_id: deptId,
-            relativeDiff: Number(firstFtesCount === 0 ? null : (diff / firstFtesCount) * 100).toFixed(2),
-            first: Number(firstFtesCount).toFixed(2),
-            absoluteDiff: Number(diff).toFixed(2),
-            from: Number(firstFtesCount).toFixed(2),
-            to: Number(secondFtesCount).toFixed(2)
+            department_name_en: departmentMeta.name_en,
+            department_name_fr: departmentMeta.name_fr,
+            department_acronym_en: departmentMeta.acronym_en,
+            department_acronym_fr: departmentMeta.acronym_fr,
+            relativeDiff:
+                firstFtesCount === 0
+                    ? null
+                    : ((diff / firstFtesCount) * 100).toFixed(2),
+            first: firstFtesCount.toFixed(2),
+            absoluteDiff: diff.toFixed(2),
+            from: firstFtesCount.toFixed(2),
+            to: secondFtesCount.toFixed(2),
         };
     }
 
-    diffDepartmentsForQuarters(firstYear, firstQuarter, secondYear, secondQuarter) {
+    diffDepartmentsForQuarters(
+        firstYear,
+        firstQuarter,
+        secondYear,
+        secondQuarter,
+        metric = "fte",
+    ) {
+        let diffs = [];
 
-        let diffs = []
-
-        Object.keys(this.departments).forEach(deptId => {
-            diffs.push(this.diffDepartmentForQuarter(deptId, firstYear, firstQuarter, secondYear, secondQuarter));
+        Object.keys(this.departments).forEach((deptId) => {
+            diffs.push(
+                this.diffDepartmentForQuarter(
+                    deptId,
+                    firstYear,
+                    firstQuarter,
+                    secondYear,
+                    secondQuarter,
+                    metric,
+                ),
+            );
         });
-
 
         return diffs;
     }
 
+    compareTwoQuartersDepartments(
+        firstYear,
+        firstQuarter,
+        secondYear,
+        secondQuarter,
+        metric = "fte",
+    ) {
+        let deptDiffs = this.diffDepartmentsForQuarters(
+            firstYear,
+            firstQuarter,
+            secondYear,
+            secondQuarter,
+            metric,
+        );
+        const excludedDepartmentNames = new Set([
+            "Royal Canadian Mounted Police - Members",
+            "Royal Canadian Mounted Police",
+            "Canadian Armed Forces",
+        ]);
+        const includeInRanking = (dept) =>
+            !excludedDepartmentNames.has(dept.department_name_en);
 
-    compareTwoQuartersDepartments(firstYear, firstQuarter, secondYear, secondQuarter) {
-
-        let deptDiffs = this.diffDepartmentsForQuarters(firstYear, firstQuarter, secondYear, secondQuarter);
         let topAbsoluteGains = deptDiffs
+            .filter(includeInRanking)
             .sort((a, b) => b.absoluteDiff - a.absoluteDiff)
             .slice(0, 3);
 
         let topAbsoluteDeclines = deptDiffs
+            .filter(includeInRanking)
             .sort((a, b) => a.absoluteDiff - b.absoluteDiff)
             .slice(0, 3);
 
         let topRelativeGains = deptDiffs
-            .filter(diff => diff.relativeDiff !== null)
+            .filter(includeInRanking)
+            .filter((diff) => diff.relativeDiff !== null)
             .sort((a, b) => b.relativeDiff - a.relativeDiff)
             .slice(0, 3);
 
         let topRelativeDeclines = deptDiffs
-            .filter(diff => diff.relativeDiff !== null)
+            .filter(includeInRanking)
+            .filter((diff) => diff.relativeDiff !== null)
             .sort((a, b) => a.relativeDiff - b.relativeDiff)
             .slice(0, 3);
 
@@ -79,47 +140,121 @@ module.exports = class Overviewer {
             top_absolute_gains: topAbsoluteGains,
             top_absolute_declines: topAbsoluteDeclines,
             top_relative_gains: topRelativeGains,
-            top_relative_declines: topRelativeDeclines
+            top_relative_declines: topRelativeDeclines,
         };
     }
 
-    compareTwoQuartersGeneral(firstYear, firstQuarter, secondYear, secondQuarter, includeCombined = true) {
+    diffCategory(firstValue, secondValue) {
+        const absoluteDiff = secondValue - firstValue;
+        const relativeDiff =
+            firstValue === 0 ? null : (absoluteDiff / firstValue) * 100;
+        return {
+            from: firstValue.toFixed(2),
+            to: secondValue.toFixed(2),
+            absoluteDiff: absoluteDiff.toFixed(2),
+            relativeDiff:
+                relativeDiff === null ? null : relativeDiff.toFixed(2),
+        };
+    }
 
-        const total_ftes_per_quarters = this.aggregator.totalFtesPerQuarter();
-        let firstQuarterRow = total_ftes_per_quarters.find(row => row.year === firstYear && row.quarter === firstQuarter);
-        let secondQuarterRow = total_ftes_per_quarters.find(row => row.year === secondYear && row.quarter === secondQuarter);
+    compareTwoQuartersGeneral(
+        firstYear,
+        firstQuarter,
+        secondYear,
+        secondQuarter,
+        includeCombined = true,
+        metric = "fte",
+    ) {
+        const total_ftes_per_quarters =
+            metric === "pop"
+                ? this.aggregator.totalPopsPerQuarter()
+                : this.aggregator.totalFtesPerQuarter();
+        let firstQuarterRow = total_ftes_per_quarters.find(
+            (row) => row.year === firstYear && row.quarter === firstQuarter,
+        );
+        let secondQuarterRow = total_ftes_per_quarters.find(
+            (row) => row.year === secondYear && row.quarter === secondQuarter,
+        );
 
-        let absoluteDiff = this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(secondQuarterRow, includeCombined) - this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(firstQuarterRow, includeCombined);
-        let relativeDiff = firstQuarterRow.total_ftes === 0 ? null : (absoluteDiff / this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(firstQuarterRow, includeCombined)) * 100;
-
+        let absoluteDiff =
+            this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                secondQuarterRow,
+                includeCombined,
+            ) -
+            this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                firstQuarterRow,
+                includeCombined,
+            );
+        let relativeDiff =
+            firstQuarterRow.total_ftes === 0
+                ? null
+                : (absoluteDiff /
+                      this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                          firstQuarterRow,
+                          includeCombined,
+                      )) *
+                  100;
 
         return {
-            from: Number(this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(firstQuarterRow, includeCombined)).toFixed(2),
-            to: Number(this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(secondQuarterRow, includeCombined)).toFixed(2),
-            absoluteDiff: Number(absoluteDiff).toFixed(2),
-            relativeDiff: relativeDiff === null ? null : Number(relativeDiff).toFixed(2)
+            from: this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                firstQuarterRow,
+                includeCombined,
+            ).toFixed(2),
+            to: this.sumRowsForDepartmentOrGlobalQuarterOrFiscalYear(
+                secondQuarterRow,
+                includeCombined,
+            ).toFixed(2),
+            absoluteDiff: absoluteDiff.toFixed(2),
+            relativeDiff:
+                relativeDiff === null ? null : relativeDiff.toFixed(2),
+            tenures: {
+                indeterminate: this.diffCategory(
+                    firstQuarterRow.indeterminate || 0,
+                    secondQuarterRow.indeterminate || 0,
+                ),
+                term: this.diffCategory(
+                    firstQuarterRow.term || 0,
+                    secondQuarterRow.term || 0,
+                ),
+                student: this.diffCategory(
+                    firstQuarterRow.student || 0,
+                    secondQuarterRow.student || 0,
+                ),
+                casual: this.diffCategory(
+                    firstQuarterRow.casual || 0,
+                    secondQuarterRow.casual || 0,
+                ),
+            },
         };
-
     }
 
-
     buildQuarterlyComparison() {
-
-
         // We will build an overview that includes:
         // - Comparison of tenures between latest quarter and previous quarter
         // - Comparison of tenures between latest quarter and same quarter last year
-        // - Top 3 departments with highest FTEs growth betwen latest quarter and previous quarter
-        // - Top 3 departments with highest FTEs growth betwen latest quarter and same quarter last year
-        // - Top 3 departments with highest FTEs decline betwen latest quarter and previous quarter
-        // - Top 3 departments with highest FTEs decline betwen latest quarter and same quarter last year
+        // - Top 3 departments with highest FTEs growth between latest quarter and previous quarter
+        // - Top 3 departments with highest FTEs growth between latest quarter and same quarter last year
+        // - Top 3 departments with highest FTEs decline between latest quarter and previous quarter
+        // - Top 3 departments with highest FTEs decline between latest quarter and same quarter last year
 
         const total_ftes_per_quarter = this.aggregator.totalFtesPerQuarter();
-        const latestYear = Math.max(...Object.values(total_ftes_per_quarter).map(yrq => yrq.year));
-        const latestQuarter = Math.max(...Object.values(total_ftes_per_quarter).filter(yrq => yrq.year === latestYear).map(yrq => yrq.quarter));
+        const latestYear = Math.max(
+            ...Object.values(total_ftes_per_quarter).map((yrq) => yrq.year),
+        );
+        const latestQuarter = Math.max(
+            ...Object.values(total_ftes_per_quarter)
+                .filter((yrq) => yrq.year === latestYear)
+                .map((yrq) => yrq.quarter),
+        );
 
-        const previousQuarter = latestQuarter === 1 ? { year: latestYear - 1, quarter: 4 } : { year: latestYear, quarter: latestQuarter - 1 };
-        const sameQuarterLastYear = { year: latestYear - 1, quarter: latestQuarter };
+        const previousQuarter =
+            latestQuarter === 1
+                ? { year: latestYear - 1, quarter: 4 }
+                : { year: latestYear, quarter: latestQuarter - 1 };
+        const sameQuarterLastYear = {
+            year: latestYear - 1,
+            quarter: latestQuarter,
+        };
 
         return {
             latestYear: latestYear,
@@ -128,22 +263,96 @@ module.exports = class Overviewer {
                 previousQuarter: {
                     year: previousQuarter.year,
                     quarter: previousQuarter.quarter,
-                    general: this.compareTwoQuartersGeneral(previousQuarter.year, previousQuarter.quarter, latestYear, latestQuarter),
-                    generalExcludingCombined: this.compareTwoQuartersGeneral(previousQuarter.year, previousQuarter.quarter, latestYear, latestQuarter, false),
-                    departments: this.compareTwoQuartersDepartments(previousQuarter.year, previousQuarter.quarter, latestYear, latestQuarter)
+                    general: this.compareTwoQuartersGeneral(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                    ),
+                    generalPop: this.compareTwoQuartersGeneral(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                        true,
+                        "pop",
+                    ),
+                    generalExcludingCombined: this.compareTwoQuartersGeneral(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                    ),
+                    generalExcludingCombinedPop: this.compareTwoQuartersGeneral(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                        "pop",
+                    ),
+                    departments: this.compareTwoQuartersDepartments(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                    ),
+                    departmentsPop: this.compareTwoQuartersDepartments(
+                        previousQuarter.year,
+                        previousQuarter.quarter,
+                        latestYear,
+                        latestQuarter,
+                        "pop",
+                    ),
                 },
                 sameQuarterLastYear: {
                     year: sameQuarterLastYear.year,
                     quarter: sameQuarterLastYear.quarter,
-                    general: this.compareTwoQuartersGeneral(sameQuarterLastYear.year, sameQuarterLastYear.quarter, latestYear, latestQuarter),
-                    generalExcludingCombined: this.compareTwoQuartersGeneral(sameQuarterLastYear.year, sameQuarterLastYear.quarter, latestYear, latestQuarter, false),
-                    departments: this.compareTwoQuartersDepartments(sameQuarterLastYear.year, sameQuarterLastYear.quarter, latestYear, latestQuarter)
-                }
-            }
-        }
-
-
-
+                    general: this.compareTwoQuartersGeneral(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                    ),
+                    generalPop: this.compareTwoQuartersGeneral(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                        true,
+                        "pop",
+                    ),
+                    generalExcludingCombined: this.compareTwoQuartersGeneral(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                    ),
+                    generalExcludingCombinedPop: this.compareTwoQuartersGeneral(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                        "pop",
+                    ),
+                    departments: this.compareTwoQuartersDepartments(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                    ),
+                    departmentsPop: this.compareTwoQuartersDepartments(
+                        sameQuarterLastYear.year,
+                        sameQuarterLastYear.quarter,
+                        latestYear,
+                        latestQuarter,
+                        "pop",
+                    ),
+                },
+            },
+        };
     }
-
 }
