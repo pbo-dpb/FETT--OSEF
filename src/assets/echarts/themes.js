@@ -1,7 +1,7 @@
-import { colors } from "@/assets/echarts/colors.json?json";
-import baseTheme from "@/assets/echarts/base.json?json";
-import lightThemeOverrides from "@/assets/echarts/light.json?json";
-import darkThemeOverrides from "@/assets/echarts/dark.json?json";
+import { colors } from "@/assets/echarts/colors.json";
+import baseTheme from "@/assets/echarts/base.json";
+import lightThemeOverrides from "@/assets/echarts/light.json";
+import darkThemeOverrides from "@/assets/echarts/dark.json";
 
 const isPlainObject = (value) =>
     value !== null && typeof value === "object" && !Array.isArray(value);

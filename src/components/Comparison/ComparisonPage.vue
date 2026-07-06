@@ -306,7 +306,7 @@
     import ComparisonChart from "./ComparisonChart.vue";
     import numberFormatterMixin from "@/mixins/numberFormatter.js";
     import { ChevronsUpDown, Plus } from "lucide-vue-next";
-    import { colors } from "@/assets/echarts/colors.json?json";
+    import { colors } from "@/assets/echarts/colors.json";
     import {
         Combobox,
         ComboboxButton,
