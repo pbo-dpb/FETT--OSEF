@@ -3,6 +3,7 @@ export { default as DebugBar } from "./DebugBar.vue";
 export { default as GeneralChartSettings } from "./GeneralChartSettings.vue";
 export { default as LoadingIndicator } from "./LoadingIndicator.vue";
 export { default as PageHeader } from "./PageHeader.vue";
+export { default as OverviewPanel } from "./OverviewPanel.vue";
 export { default as PreferredComparisonPeriodPicker } from "./PreferredComparisonPeriodPicker.vue";
 export { default as PreferredGranularityPicker } from "./PreferredGranularityPicker.vue";
 export { default as PreferredMetricPicker } from "./PreferredMetricPicker.vue";

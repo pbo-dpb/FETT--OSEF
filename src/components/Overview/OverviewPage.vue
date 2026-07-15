@@ -116,73 +116,15 @@
             </div>
         </div>
 
-        <!-- Panel 3 -->
-        <div
-            class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
-            <h3 class="mb-8 text-center text-2xl text-balance">
-                {{ strings.overview_largest_increase_by_department }}
-            </h3>
-            <ol class="space-y-2">
-                <li
-                    v-for="department in topThreeDepartmentsIncrease"
-                    :key="department.department_id">
-                    <h4 class="font-semibold">
-                        {{ displayDepartmentName(department) }}
-                        <span
-                            v-if="
-                                department.department_acronym_en ||
-                                department.department_acronym_fr
-                            "
-                            >({{ displayDepartmentAcronym(department) }})</span
-                        >
-                    </h4>
-                    <p>
-                        <span
-                            >{{ numberFormatter(department.absoluteDiff) }}
-                        </span>
-                        ({{ numberFormatter(department.relativeDiff, true) }}%)
-                        <TrendIndicator :datapoint="department.absoluteDiff" />
-                    </p>
-                </li>
-            </ol>
-            <div class="col-span-full text-right text-xs font-semibold">
-                {{ deltaDataLabel }}
-            </div>
-        </div>
+        <OverviewPanel
+            :header="strings.overview_largest_increase_by_department"
+            :departmentsList="topThreeDepartmentsIncrease"
+            :deltaDataLabel="deltaDataLabel" />
 
-        <!-- Panel 4 -->
-        <div
-            class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
-            <h3 class="mb-8 text-center text-2xl text-balance">
-                {{ strings.overview_largest_decrease_by_department }}
-            </h3>
-            <ol class="space-y-2">
-                <li
-                    v-for="department in topThreeDepartmentsDecrease"
-                    :key="department.department_id">
-                    <h4 class="font-semibold">
-                        {{ displayDepartmentName(department) }}
-                        <span
-                            v-if="
-                                department.department_acronym_en ||
-                                department.department_acronym_fr
-                            "
-                            >({{ displayDepartmentAcronym(department) }})</span
-                        >
-                    </h4>
-                    <div>
-                        <span
-                            >{{ numberFormatter(department.absoluteDiff) }}
-                        </span>
-                        ({{ numberFormatter(department.relativeDiff, true) }}%)
-                        <TrendIndicator :datapoint="department.absoluteDiff" />
-                    </div>
-                </li>
-            </ol>
-            <div class="col-span-full text-right text-xs font-semibold">
-                {{ deltaDataLabel }}
-            </div>
-        </div>
+        <OverviewPanel
+            :header="strings.overview_largest_decrease_by_department"
+            :departmentsList="topThreeDepartmentsDecrease"
+            :deltaDataLabel="deltaDataLabel" />
 
         <div class="col-span-full">
             <p class="text-sm">{{ strings.overview_end_note }}</p>
@@ -204,7 +146,6 @@
 </template>
 
 <script>
-    import { toRaw } from "vue";
     import { storeToRefs } from "pinia";
 
     import numberFormatter from "@/mixins/numberFormatter.js";
@@ -219,6 +160,7 @@
         PreferredComparisonPeriodPicker,
         PreferredMetricPicker,
         TrendIndicator,
+        OverviewPanel,
     } from "@/components/Shared";
 
     export default {
@@ -228,6 +170,7 @@
             PreferredComparisonPeriodPicker,
             PreferredMetricPicker,
             TrendIndicator,
+            OverviewPanel,
         },
         data() {
             return {
@@ -375,18 +318,6 @@
             },
             topThreeDepartmentsDecrease() {
                 return this.departmentsComparison?.top_absolute_declines;
-            },
-        },
-        methods: {
-            displayDepartmentName(department) {
-                return this.language === "fr"
-                    ? department.department_name_fr
-                    : department.department_name_en;
-            },
-            displayDepartmentAcronym(department) {
-                return this.language === "fr"
-                    ? department.department_acronym_fr
-                    : department.department_acronym_en;
             },
         },
         mixins: [numberFormatter],
