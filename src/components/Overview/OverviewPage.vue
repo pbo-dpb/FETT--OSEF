@@ -34,8 +34,7 @@
         <!-- Download Button -->
         <div class="col-span-full">
             <a
-                href="./20260512.xlsx"
-                download="Federal-Employment-Tracking-Tool-Data--Outil-de-suivi-de-l-emploi-dans-la-fonction-publique-fédérale-Données"
+                href="./FETT_publicdata.xlsx"
                 class="bg-primary bg-primary-hover focus-outline-primary cursor-pointer rounded-sm px-4 py-2 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid"
                 >{{ strings.overview_download_button }}</a
             >
