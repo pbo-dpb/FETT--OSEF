@@ -117,24 +117,24 @@ export default class Overviewer {
         let topAbsoluteGains = deptDiffs
             .filter(includeInRanking)
             .sort((a, b) => b.absoluteDiff - a.absoluteDiff)
-            .slice(0, 3);
+            .slice(0, 5);
 
         let topAbsoluteDeclines = deptDiffs
             .filter(includeInRanking)
             .sort((a, b) => a.absoluteDiff - b.absoluteDiff)
-            .slice(0, 3);
+            .slice(0, 5);
 
         let topRelativeGains = deptDiffs
             .filter(includeInRanking)
             .filter((diff) => diff.relativeDiff !== null)
             .sort((a, b) => b.relativeDiff - a.relativeDiff)
-            .slice(0, 3);
+            .slice(0, 5);
 
         let topRelativeDeclines = deptDiffs
             .filter(includeInRanking)
             .filter((diff) => diff.relativeDiff !== null)
             .sort((a, b) => a.relativeDiff - b.relativeDiff)
-            .slice(0, 3);
+            .slice(0, 5);
 
         return {
             top_absolute_gains: topAbsoluteGains,
