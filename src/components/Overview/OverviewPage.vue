@@ -17,12 +17,12 @@
 
         <OverviewPanelLatestChanges :deltaDataLabel="deltaDataLabel" />
 
-        <OverviewPanel
+        <OverviewPanelDepartmentsList
             :header="strings.overview_largest_increase_by_department"
             :departmentsList="topThreeDepartmentsIncrease"
             :deltaDataLabel="deltaDataLabel" />
 
-        <OverviewPanel
+        <OverviewPanelDepartmentsList
             :header="strings.overview_largest_decrease_by_department"
             :departmentsList="topThreeDepartmentsDecrease"
             :deltaDataLabel="deltaDataLabel" />
@@ -60,7 +60,7 @@
         PreferredMetricPicker,
         OverviewPanelCurrentNumbers,
         OverviewPanelLatestChanges,
-        OverviewPanel,
+        OverviewPanelDepartmentsList,
     } from "@/components/Shared";
 
     export default {
@@ -71,7 +71,7 @@
             PreferredMetricPicker,
             OverviewPanelCurrentNumbers,
             OverviewPanelLatestChanges,
-            OverviewPanel,
+            OverviewPanelDepartmentsList,
         },
         data() {
             return {
