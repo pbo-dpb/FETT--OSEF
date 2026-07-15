@@ -1,0 +1,118 @@
+<template>
+    <OverviewPanelShell :header="strings.overview_current_numbers">
+        <div class="grid grid-cols-4 space-y-8">
+            <div class="col-span-full text-center">
+                <h4 class="font-semibold">
+                    {{ strings[overviewAllLabelKey] }}
+                </h4>
+                <p class="text-3xl font-bold">
+                    {{ useNumberFormatter(allDepartmentsLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">
+                    {{ strings.indeterminate_label }}
+                </h4>
+                <p class="text-xl">
+                    {{ useNumberFormatter(indeterminateLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.term_label }}</h4>
+                <p class="text-xl">
+                    {{ useNumberFormatter(termLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.casual_label }}</h4>
+                <p class="text-xl">
+                    {{ useNumberFormatter(casualLatestNumber) }}
+                </p>
+            </div>
+            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+                <h4 class="font-semibold">{{ strings.student_label }}</h4>
+                <p class="text-xl">
+                    {{ useNumberFormatter(studentLatestNumber) }}
+                </p>
+            </div>
+            <div class="col-span-full text-right text-xs font-semibold">
+                {{ currentDataLabel }}
+            </div>
+        </div>
+    </OverviewPanelShell>
+</template>
+
+<script setup>
+    import { computed } from "vue";
+    import { storeToRefs } from "pinia";
+
+    import usePayloadsStore from "@/stores/payloads.js";
+    import useSettingsStore from "@/stores/settings.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
+
+    import { useNumberFormatter } from "@/composables/useNumberFormatter.js";
+
+    import OverviewPanelShell from "./OverviewPanelShell.vue";
+
+    const usePayloadStore = usePayloadsStore();
+    const settingsStore = useSettingsStore();
+    const localizationsStore = useLocalizationsStore();
+
+    const { overview } = storeToRefs(usePayloadStore);
+    const { preferredMetric, end_quarter, end_year } =
+        storeToRefs(settingsStore);
+    const { strings } = storeToRefs(localizationsStore);
+
+    defineProps(["header"]);
+
+    const overviewAllLabelKey = computed(() => {
+        return preferredMetric.value === "pop"
+            ? "overview_all_headcount_label"
+            : "overview_all_positions_label";
+    });
+
+    const comparisonData = computed(() => {
+        return overview.value?.quarterly?.comparisons?.[
+            settingsStore.selectedComparisonPeriod
+        ];
+    });
+
+    const generalComparison = computed(() => {
+        if (preferredMetric.value === "pop") {
+            return comparisonData.value?.generalExcludingCombinedPop;
+        }
+
+        return comparisonData.value?.generalExcludingCombined;
+    });
+
+    const allDepartmentsLatestNumber = computed(
+        () => generalComparison.value?.to,
+    );
+
+    const indeterminateLatestNumber = computed(
+        () => generalComparison.value?.tenures?.indeterminate?.to,
+    );
+
+    const termLatestNumber = computed(
+        () => generalComparison.value?.tenures?.term?.to,
+    );
+
+    const studentLatestNumber = computed(
+        () => generalComparison.value?.tenures?.student?.to,
+    );
+
+    const casualLatestNumber = computed(
+        () => generalComparison.value?.tenures?.casual?.to,
+    );
+
+    const currentDataLabel = computed(() => {
+        const baseString =
+            preferredMetric.value === "fte"
+                ? strings.value.department_latest_ftes_as_of
+                : strings.value.department_latest_pops_as_of;
+
+        return baseString
+            .replace("{quarter}", end_quarter.value)
+            .replace("{year}", end_year.value);
+    });
+</script>
