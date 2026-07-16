@@ -1,6 +1,6 @@
 <template>
     <div
-        v-if="data"
+        v-if="readyToRender"
         class="grid grid-cols-4 gap-8">
         <div class="col-span-full">
             <PageHeader
@@ -49,7 +49,8 @@
     </div>
 </template>
 
-<script>
+<script setup>
+    import { computed, onMounted } from "vue";
     import { storeToRefs } from "pinia";
 
     import usePayloadsStore from "@/stores/payloads.js";
@@ -66,122 +67,78 @@
         OverviewPanelDepartmentsList,
     } from "@/components/Shared";
 
-    export default {
-        components: {
-            PageHeader,
-            LoadingIndicator,
-            PreferredComparisonPeriodPicker,
-            PreferredMetricPicker,
-            OverviewPanelCurrentNumbers,
-            OverviewPanelLatestChanges,
-            OverviewPanelDepartmentsList,
-        },
+    const payloadsStore = usePayloadsStore();
+    const settingsStore = useSettingsStore();
+    const localizationsStore = useLocalizationsStore();
 
-        data() {
-            return {
-                data: null,
-                isLoading: false,
-            };
-        },
+    const { overview } = storeToRefs(payloadsStore);
+    const { preferredMetric, selectedComparisonPeriod, end_quarter, end_year } =
+        storeToRefs(settingsStore);
+    const { strings } = storeToRefs(localizationsStore);
 
-        computed: {
-            strings() {
-                const localizationsStore = useLocalizationsStore();
+    const comparisonData = computed(() => {
+        return overview.value?.quarterly?.comparisons[
+            selectedComparisonPeriod.value
+        ];
+    });
 
-                return localizationsStore.strings;
-            },
+    const departmentsComparison = computed(() => {
+        if (preferredMetric.value === "pop") {
+            return comparisonData.value?.departmentsPop;
+        }
 
-            preferredMetric() {
-                const settingsStore = useSettingsStore();
+        return comparisonData.value?.departments;
+    });
 
-                return settingsStore.preferredMetric;
-            },
+    const currentMetric = computed(() => {
+        const baseString =
+            preferredMetric.value === "fte"
+                ? strings.value.department_latest_ftes_as_of
+                : strings.value.department_latest_pops_as_of;
 
-            selectedComparisonPeriod() {
-                const settingsStore = useSettingsStore();
+        return baseString
+            .replace("{quarter}", end_quarter.value)
+            .replace("{year}", end_year.value);
+    });
 
-                return settingsStore.selectedComparisonPeriod;
-            },
+    const deltaMetric = computed(() => {
+        const baseString =
+            preferredMetric.value === "fte"
+                ? strings.value.department_change_ftes_between
+                : strings.value.department_change_pops_between;
+        let start_quarter, start_year;
 
-            comparisonData() {
-                return this.data?.quarterly?.comparisons[
-                    this.selectedComparisonPeriod
-                ];
-            },
+        if (selectedComparisonPeriod.value === "sameQuarterLastYear") {
+            start_quarter = end_quarter.value;
+            start_year = end_year.value - 1;
+        } else {
+            start_quarter = end_quarter.value === 1 ? 4 : end_quarter.value - 1;
+            start_year =
+                end_quarter.value === 1 ? end_year.value - 1 : end_year.value;
+        }
 
-            departmentsComparison() {
-                if (this.preferredMetric === "pop") {
-                    return this.comparisonData?.departmentsPop;
-                }
+        return baseString
+            .replace("{start_quarter}", start_quarter)
+            .replace("{start_year}", start_year)
+            .replace("{end_quarter}", end_quarter.value)
+            .replace("{end_year}", end_year.value);
+    });
 
-                return this.comparisonData?.departments;
-            },
+    const departmentsWithLargestIncrease = computed(() => {
+        return departmentsComparison.value?.top_absolute_gains;
+    });
 
-            currentMetric() {
-                const { strings } = useLocalizationsStore();
-                const { preferredMetric, end_quarter, end_year } =
-                    useSettingsStore();
+    const departmentsWithLargestDecrease = computed(() => {
+        return departmentsComparison.value?.top_absolute_declines;
+    });
 
-                const baseString =
-                    preferredMetric === "fte"
-                        ? strings.department_latest_ftes_as_of
-                        : strings.department_latest_pops_as_of;
+    const readyToRender = computed(() => {
+        return overview.value !== false;
+    });
 
-                return baseString
-                    .replace("{quarter}", end_quarter)
-                    .replace("{year}", end_year);
-            },
-
-            deltaMetric() {
-                const { strings } = useLocalizationsStore();
-                const {
-                    preferredMetric,
-                    selectedComparisonPeriod,
-                    end_quarter,
-                    end_year,
-                } = useSettingsStore();
-                const baseString =
-                    preferredMetric === "fte"
-                        ? strings.department_change_ftes_between
-                        : strings.department_change_pops_between;
-                let start_quarter, start_year;
-
-                if (selectedComparisonPeriod === "sameQuarterLastYear") {
-                    start_quarter = end_quarter;
-                    start_year = end_year - 1;
-                } else {
-                    start_quarter = end_quarter === 1 ? 4 : end_quarter - 1;
-                    start_year = end_quarter === 1 ? end_year - 1 : end_year;
-                }
-
-                return baseString
-                    .replace("{start_quarter}", start_quarter)
-                    .replace("{start_year}", start_year)
-                    .replace("{end_quarter}", end_quarter)
-                    .replace("{end_year}", end_year);
-            },
-
-            departmentsWithLargestIncrease() {
-                return this.departmentsComparison?.top_absolute_gains;
-            },
-
-            departmentsWithLargestDecrease() {
-                return this.departmentsComparison?.top_absolute_declines;
-            },
-        },
-
-        async mounted() {
-            const payloadsStore = usePayloadsStore();
-            const { overview } = storeToRefs(payloadsStore);
-
-            this.isLoading = true;
-
-            if (overview.value === false) {
-                await payloadsStore.fetchOverview();
-            }
-
-            this.data = overview.value;
-            this.isLoading = false;
-        },
-    };
+    onMounted(() => {
+        if (overview.value === false) {
+            payloadsStore.fetchOverview();
+        }
+    });
 </script>
