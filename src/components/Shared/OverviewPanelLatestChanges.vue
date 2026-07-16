@@ -1,7 +1,7 @@
 <template>
     <OverviewPanelShell
         :header="header"
-        :metric="deltaMetric">
+        :metric="metric">
         <div class="grid grid-cols-4 space-y-8">
             <div class="col-span-full text-center">
                 <h4 class="font-semibold">
@@ -74,7 +74,7 @@
     const { preferredMetric } = storeToRefs(settingsStore);
     const { strings } = storeToRefs(localizationsStore);
 
-    defineProps(["header", "deltaMetric"]);
+    defineProps(["header", "metric"]);
 
     const overviewAllLabelKey = computed(() => {
         return preferredMetric.value === "pop"
