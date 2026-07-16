@@ -76,11 +76,9 @@
     });
 
     const generalComparison = computed(() => {
-        if (preferredMetric.value === "pop") {
-            return comparisonData.value?.generalExcludingCombinedPop;
-        }
-
-        return comparisonData.value?.generalExcludingCombined;
+        return preferredMetric.value === "pop"
+            ? comparisonData.value?.generalExcludingCombinedPop
+            : comparisonData.value?.generalExcludingCombined;
     });
 
     const allDepartmentsLatestNumber = computed(
