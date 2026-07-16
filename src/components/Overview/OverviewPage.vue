@@ -13,19 +13,23 @@
             <PreferredComparisonPeriodPicker />
         </div>
 
-        <OverviewPanelCurrentNumbers />
+        <OverviewPanelCurrentNumbers
+            :header="strings.overview_current_numbers"
+            :metric="currentMetric" />
 
-        <OverviewPanelLatestChanges :deltaDataLabel="deltaDataLabel" />
+        <OverviewPanelLatestChanges
+            :header="strings.overview_delta"
+            :metric="deltaMetric" />
 
         <OverviewPanelDepartmentsList
             :header="strings.overview_largest_increase_by_department"
-            :departmentsList="topThreeDepartmentsIncrease"
-            :deltaDataLabel="deltaDataLabel" />
+            :metric="deltaMetric"
+            :departments="departmentsWithLargestIncrease" />
 
         <OverviewPanelDepartmentsList
             :header="strings.overview_largest_decrease_by_department"
-            :departmentsList="topThreeDepartmentsDecrease"
-            :deltaDataLabel="deltaDataLabel" />
+            :metric="deltaMetric"
+            :departments="departmentsWithLargestDecrease" />
 
         <div class="col-span-full">
             <p class="text-sm">{{ strings.overview_end_note }}</p>
@@ -72,32 +76,31 @@
             OverviewPanelLatestChanges,
             OverviewPanelDepartmentsList,
         },
+
         data() {
             return {
                 data: null,
                 isLoading: false,
             };
         },
+
         computed: {
-            preferredMetric() {
-                const settingsStore = useSettingsStore();
-
-                return settingsStore.preferredMetric;
-            },
-            selectedComparisonPeriod() {
-                const settingsStore = useSettingsStore();
-
-                return settingsStore.selectedComparisonPeriod;
-            },
             strings() {
                 const localizationsStore = useLocalizationsStore();
 
                 return localizationsStore.strings;
             },
-            language() {
-                const localizationsStore = useLocalizationsStore();
 
-                return localizationsStore.language;
+            preferredMetric() {
+                const settingsStore = useSettingsStore();
+
+                return settingsStore.preferredMetric;
+            },
+
+            selectedComparisonPeriod() {
+                const settingsStore = useSettingsStore();
+
+                return settingsStore.selectedComparisonPeriod;
             },
 
             comparisonData() {
@@ -114,15 +117,22 @@
                 return this.comparisonData?.departments;
             },
 
-            topThreeDepartmentsIncrease() {
-                return this.departmentsComparison?.top_absolute_gains;
+            currentMetric() {
+                const { strings } = useLocalizationsStore();
+                const { preferredMetric, end_quarter, end_year } =
+                    useSettingsStore();
+
+                const baseString =
+                    preferredMetric === "fte"
+                        ? strings.department_latest_ftes_as_of
+                        : strings.department_latest_pops_as_of;
+
+                return baseString
+                    .replace("{quarter}", end_quarter)
+                    .replace("{year}", end_year);
             },
 
-            topThreeDepartmentsDecrease() {
-                return this.departmentsComparison?.top_absolute_declines;
-            },
-
-            deltaDataLabel() {
+            deltaMetric() {
                 const { strings } = useLocalizationsStore();
                 const {
                     preferredMetric,
@@ -150,7 +160,16 @@
                     .replace("{end_quarter}", end_quarter)
                     .replace("{end_year}", end_year);
             },
+
+            departmentsWithLargestIncrease() {
+                return this.departmentsComparison?.top_absolute_gains;
+            },
+
+            departmentsWithLargestDecrease() {
+                return this.departmentsComparison?.top_absolute_declines;
+            },
         },
+
         async mounted() {
             const payloadsStore = usePayloadsStore();
             const { overview } = storeToRefs(payloadsStore);

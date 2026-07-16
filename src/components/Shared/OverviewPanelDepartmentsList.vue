@@ -1,12 +1,15 @@
 <template>
     <div
         class="col-span-full flex flex-col space-y-4 rounded-sm border border-solid border-gray-300 p-4 md:col-span-2">
-        <h3 class="mb-8 text-center text-2xl text-balance">
+        <h3 class="mb-2 text-center text-2xl text-balance">
             {{ header }}
         </h3>
+        <div class="col-span-full mb-8 text-center text-balance">
+            {{ metric }}
+        </div>
         <ol class="space-y-2">
             <li
-                v-for="department in departmentsList"
+                v-for="department in departments"
                 :key="department.department_id">
                 <h4 class="font-semibold">
                     {{ displayDepartmentName(department) }}
@@ -27,9 +30,6 @@
                 </div>
             </li>
         </ol>
-        <div class="col-span-full text-right text-xs font-semibold">
-            {{ deltaDataLabel }}
-        </div>
     </div>
 </template>
 
@@ -42,7 +42,7 @@
     const localizationsStore = useLocalizationsStore();
     const { language } = storeToRefs(localizationsStore);
 
-    defineProps(["header", "departmentsList", "deltaDataLabel"]);
+    defineProps(["header", "metric", "departments"]);
 
     const displayDepartmentName = (department) => {
         return language.value === "fr"

@@ -1,5 +1,7 @@
 <template>
-    <OverviewPanelShell :header="strings.overview_current_numbers">
+    <OverviewPanelShell
+        :header="header"
+        :metric="currentMetric">
         <div class="grid grid-cols-4 space-y-8">
             <div class="col-span-full text-center">
                 <h4 class="font-semibold">
@@ -35,9 +37,6 @@
                     {{ useNumberFormatter(studentLatestNumber) }}
                 </p>
             </div>
-            <div class="col-span-full text-right text-xs font-semibold">
-                {{ currentDataLabel }}
-            </div>
         </div>
     </OverviewPanelShell>
 </template>
@@ -59,8 +58,7 @@
     const localizationsStore = useLocalizationsStore();
 
     const { overview } = storeToRefs(usePayloadStore);
-    const { preferredMetric, end_quarter, end_year } =
-        storeToRefs(settingsStore);
+    const { preferredMetric } = storeToRefs(settingsStore);
     const { strings } = storeToRefs(localizationsStore);
 
     defineProps(["header"]);
@@ -104,15 +102,4 @@
     const casualLatestNumber = computed(
         () => generalComparison.value?.tenures?.casual?.to,
     );
-
-    const currentDataLabel = computed(() => {
-        const baseString =
-            preferredMetric.value === "fte"
-                ? strings.value.department_latest_ftes_as_of
-                : strings.value.department_latest_pops_as_of;
-
-        return baseString
-            .replace("{quarter}", end_quarter.value)
-            .replace("{year}", end_year.value);
-    });
 </script>

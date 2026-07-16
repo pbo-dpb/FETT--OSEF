@@ -1,5 +1,7 @@
 <template>
-    <OverviewPanelShell :header="strings.overview_delta">
+    <OverviewPanelShell
+        :header="header"
+        :metric="deltaMetric">
         <div class="grid grid-cols-4 space-y-8">
             <div class="col-span-full text-center">
                 <h4 class="font-semibold">
@@ -47,9 +49,6 @@
                     <TrendIndicator :datapoint="studentAbsoluteDiff" />
                 </p>
             </div>
-            <div class="col-span-full text-right text-xs font-semibold">
-                {{ deltaDataLabel }}
-            </div>
         </div>
     </OverviewPanelShell>
 </template>
@@ -75,7 +74,7 @@
     const { preferredMetric } = storeToRefs(settingsStore);
     const { strings } = storeToRefs(localizationsStore);
 
-    defineProps(["header", "deltaDataLabel"]);
+    defineProps(["header", "deltaMetric"]);
 
     const overviewAllLabelKey = computed(() => {
         return preferredMetric.value === "pop"
