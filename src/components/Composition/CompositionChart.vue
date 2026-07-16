@@ -25,7 +25,7 @@
                             {{ strings.composition_selected_tenures }}
                         </legend>
                         <label
-                            v-for="tenure in allTenures"
+                            v-for="tenure in tenuresToBeDisplayed"
                             :key="tenure"
                             class="cols-span-1 cursor-pointer items-center gap-2">
                             <input
@@ -61,9 +61,6 @@
 </template>
 
 <script setup>
-    /* =========================
-     * Imports
-     * ========================= */
     import {
         ref,
         shallowRef,
@@ -112,7 +109,16 @@
         storeToRefs(settingsStore);
 
     const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
-    const allTenures = ["indeterminate", "term", "casual", "student"];
+    const allTenures = [
+        "indeterminate",
+        "term",
+        "casual",
+        "student",
+        "unknown",
+    ];
+    const tenuresToBeDisplayed = allTenures.filter(
+        (tenure) => tenure !== "unknown",
+    );
 
     const componentRoot = useTemplateRef("componentRoot");
     const chart = shallowRef(null);
@@ -231,6 +237,7 @@
                 term: Math.round(item.term),
                 casual: Math.round(item.casual),
                 student: Math.round(item.student),
+                unknown: Math.round(item.unknown),
                 combined: Math.round(item.combined),
             })),
         };
@@ -256,7 +263,7 @@
             ];
         }
 
-        const result = allTenures
+        const result = tenuresToBeDisplayed
             .filter((tenure) => activeTenures.value.includes(tenure))
             .map((tenure) => ({
                 ...baseSerie,
@@ -355,10 +362,21 @@
 
         const timestamp = firstParam.axisValueLabel || firstParam.name || "";
 
-        const total = params.reduce(
-            (sum, p) => sum + getTooltipNumericValue(p),
-            0,
-        );
+        const getTotalForTooltip = (param) => {
+            const data = param?.data;
+
+            if (!data || typeof data !== "object") return 0;
+
+            return (
+                Number(data.indeterminate || 0) +
+                Number(data.term || 0) +
+                Number(data.casual || 0) +
+                Number(data.student || 0) +
+                Number(data.unknown || 0)
+            );
+        };
+
+        const total = getTotalForTooltip(firstParam);
 
         const rows = params.map((param) => {
             return buildTooltipRow({
