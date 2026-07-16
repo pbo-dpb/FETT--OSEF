@@ -15,10 +15,13 @@ export default class Overviewer {
             (row.indeterminate || 0) +
             (row.term || 0) +
             (row.casual || 0) +
-            (row.student || 0);
+            (row.student || 0) +
+            (row.unknown || 0);
+
         if (includeCombined) {
             total += row.combined || 0;
         }
+
         return total;
     }
 
