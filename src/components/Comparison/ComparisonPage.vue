@@ -446,7 +446,8 @@
             (allDepartmentsValues.value.indeterminate || 0) +
             (allDepartmentsValues.value.term || 0) +
             (allDepartmentsValues.value.student || 0) +
-            (allDepartmentsValues.value.casual || 0)
+            (allDepartmentsValues.value.casual || 0) +
+            (allDepartmentsValues.value.unknown || 0)
         );
     });
 

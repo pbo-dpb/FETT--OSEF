@@ -208,10 +208,14 @@
 
     const total = computed(() => {
         if (!selectedValues.value) return 0;
-        const { indeterminate, term, casual, student, combined } =
+        const { indeterminate, term, casual, student, unknown, combined } =
             selectedValues.value;
         const sum =
-            (indeterminate || 0) + (term || 0) + (casual || 0) + (student || 0);
+            (indeterminate || 0) +
+            (term || 0) +
+            (casual || 0) +
+            (student || 0) +
+            (unknown || 0);
         if (props.excludeCombinedFallback) return sum;
         if (sum === 0 && combined > 0) return combined;
         return sum;
