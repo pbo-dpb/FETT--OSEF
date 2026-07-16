@@ -68,6 +68,8 @@
     "composition_heading": "Taille de la fonction publique fédérale, par durée d'emploi",
     "composition_description": "Ce graphique présente le nombre total de postes et d'équivalents temps plein (ETPs) dans la fonction publique fédérale pour chaque durée d'emploi, de 2015-2016 au dernier trimestre disponible.",
     "composition_selected_tenures": "Statuts sélectionnés",
+    "composition_end_note": "#####",
     "comparison_heading": "Comparaison des effectifs de la fonction publique fédérale par ministère",
-    "comparison_description": "Ce graphique permet de comparer l'évolution des effectifs et des équivalents temps plein (ETPs) entre les ministères sélectionnés. Veuillez sélectionner les ministères ci-dessous pour comparer les tendances en matière de personnel. Vous pouvez également sélectionner la période ainsi que les durées d'emploi affichées pour obtenir des informations plus détaillées."
+    "comparison_description": "Ce graphique permet de comparer l'évolution des effectifs et des équivalents temps plein (ETPs) entre les ministères sélectionnés. Veuillez sélectionner les ministères ci-dessous pour comparer les tendances en matière de personnel. Vous pouvez également sélectionner la période ainsi que les durées d'emploi affichées pour obtenir des informations plus détaillées.",
+    "comparison_end_note": "#####"
 }

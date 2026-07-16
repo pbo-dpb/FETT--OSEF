@@ -56,7 +56,7 @@
     "overview_compare_same_quarter_last_year": "Same quarter last year",
     "overview_compare_previous_quarter": "Previous quarter",
     "overview_heading": "Federal employment dashboard",
-    "overview_description": "This section provides an overview of recent changes in the size of the federal public service, including a breakdown by job tenure as well as details on departments with the largest variations over the reference period.",
+    "overview_description": "This section provides an overview of recent changes in the size of the federal public service, including a breakdown by employment tenure as well as details on departments with the largest variations over the reference period.",
     "overview_current_numbers": "Size of the federal public service",
     "overview_delta": "Latest changes",
     "overview_all_positions_label": "All FTEs",
@@ -65,9 +65,11 @@
     "overview_largest_decrease_by_department": "Largest decrease by department",
     "overview_end_note": "The figures above exclude the Canadian Armed Forces and Royal Canadian Mounted Police members.",
     "overview_download_button": "Download the data (.xlsx)",
-    "composition_heading": "Size of the federal public service, by job tenure",
-    "composition_description": "This chart displays the total number of positions and full-time equivalents (FTEs) in the federal public service broken down by job tenure, from 2015-16 to the latest quarter available.",
+    "composition_heading": "Size of the federal public service, by employment tenure",
+    "composition_description": "This chart displays the total number of positions and full-time equivalents (FTEs) in the federal public service broken down by employment tenure, from 2015-16 to the latest quarter available.",
     "composition_selected_tenures": "Selected tenures",
+    "composition_end_note": "For 2015-16 to 2024-25, staffing data for the Canadian Armed Forces (CAF) and Royal Canadian Mounted Police (RCMP) members is limited to one observation per fiscal year — at the end of the fiscal year (March 31) for the CAF and the beginning of the fiscal year (April 1) for the RCMP. Quarterly data for both organizations is shown in the chart from 2025-26 onward.",
     "comparison_heading": "Comparison of staffing trends within the federal public service by department",
-    "comparison_description": "This chart allows a comparison of trends in headcount and full-time equivalents (FTEs) between selected departments. Please select departments below to compare staffing trends. Users may also select the displayed timeframe as well as specific job tenures for additional insights."
+    "comparison_description": "This chart allows a comparison of trends in headcount and full-time equivalents (FTEs) between selected departments. Please select departments below to compare staffing trends. Users may also select the displayed timeframe as well as specific employment tenures for additional insights.",
+    "comparison_end_note": "Canadian Armed Forces and Royal Canadian Mounted Police members are presented separately from public service employees of the Department of National Defence and the Royal Canadian Mounted Police."
 }

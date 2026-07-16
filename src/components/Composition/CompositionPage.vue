@@ -7,6 +7,9 @@
                     :description="strings.composition_description" />
                 <CompositionChart />
             </div>
+            <div class="col-span-full">
+                <p class="text-sm">{{ strings.composition_end_note }}</p>
+            </div>
         </template>
         <LoadingIndicator
             v-else

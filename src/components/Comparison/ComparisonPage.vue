@@ -293,6 +293,9 @@
                         " />
                 </tbody>
             </table>
+            <div class="col-span-full">
+                <p class="text-sm">{{ strings.comparison_end_note }}</p>
+            </div>
         </div>
     </div>
 </template>
