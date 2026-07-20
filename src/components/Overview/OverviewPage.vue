@@ -54,12 +54,13 @@
     import useSettingsStore from "@/stores/settings.js";
     import useLocalizationsStore from "@/stores/localizations.js";
 
+    import OverviewPanelCurrentNumbers from "./OverviewPanelCurrentNumbers.vue";
+    import OverviewPanelDepartmentsList from "./OverviewPanelDepartmentsList.vue";
+    import OverviewPanelLatestChanges from "./OverviewPanelLatestChanges.vue";
+
     import {
         Footnote,
         LoadingIndicator,
-        OverviewPanelCurrentNumbers,
-        OverviewPanelDepartmentsList,
-        OverviewPanelLatestChanges,
         PageHeader,
         PreferredComparisonPeriodPicker,
         PreferredMetricPicker,

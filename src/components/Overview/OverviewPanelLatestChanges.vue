@@ -57,7 +57,7 @@
     import { useNumberFormatter } from "@/composables/useNumberFormatter.js";
 
     import OverviewPanelShell from "./OverviewPanelShell.vue";
-    import TrendIndicator from "./TrendIndicator.vue";
+    import { TrendIndicator } from "@/components/Shared";
 
     const payloadStore = usePayloadsStore();
     const settingsStore = useSettingsStore();
