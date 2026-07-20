@@ -293,9 +293,7 @@
                         " />
                 </tbody>
             </table>
-            <div class="col-span-full">
-                <p class="text-sm">{{ strings.comparison_end_note }}</p>
-            </div>
+            <Footnote :content="strings.comparison_footnote" />
         </div>
     </div>
 </template>
@@ -304,7 +302,7 @@
     import { SwitchRoot, SwitchThumb } from "reka-ui";
     import { computed, onMounted, ref, watch } from "vue";
     import { storeToRefs } from "pinia";
-    import { PageHeader } from "@/components/Shared";
+    import { Footnote, PageHeader } from "@/components/Shared";
     import SelectedDepartment from "./SelectedDepartment.vue";
     import ComparisonChart from "./ComparisonChart.vue";
     import numberFormatterMixin from "@/mixins/numberFormatter.js";

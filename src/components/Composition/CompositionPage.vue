@@ -7,9 +7,7 @@
                     :description="strings.composition_description" />
                 <CompositionChart />
             </div>
-            <div class="col-span-full">
-                <p class="text-sm">{{ strings.composition_end_note }}</p>
-            </div>
+            <Footnote :content="strings.composition_footnote" />
         </template>
         <LoadingIndicator
             v-else
@@ -23,7 +21,11 @@
     import usePayloadsStore from "@/stores/payloads.js";
     import useLocalizationStore from "@/stores/localizations.js";
 
-    import { LoadingIndicator, PageHeader } from "@/components/Shared";
+    import {
+        Footnote,
+        LoadingIndicator,
+        PageHeader,
+    } from "@/components/Shared";
     import CompositionChart from "./CompositionChart.vue";
 
     const payloadsStore = usePayloadsStore();

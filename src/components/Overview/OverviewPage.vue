@@ -32,17 +32,14 @@
             :departments="departmentsWithLargestDecrease" />
 
         <div class="col-span-full">
-            <p class="text-sm">{{ strings.overview_end_note }}</p>
-        </div>
-
-        <!-- Download Button -->
-        <div class="col-span-full">
             <a
                 href="./FETT_publicdata.xlsx"
                 class="bg-primary bg-primary-hover focus-outline-primary cursor-pointer rounded-sm px-4 py-2 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid"
                 >{{ strings.overview_download_button }}</a
             >
         </div>
+
+        <Footnote :content="strings.overview_footnote" />
     </div>
     <div v-else>
         <LoadingIndicator class="size-6" />
@@ -58,13 +55,14 @@
     import useLocalizationsStore from "@/stores/localizations.js";
 
     import {
+        Footnote,
         LoadingIndicator,
+        OverviewPanelCurrentNumbers,
+        OverviewPanelDepartmentsList,
+        OverviewPanelLatestChanges,
         PageHeader,
         PreferredComparisonPeriodPicker,
         PreferredMetricPicker,
-        OverviewPanelCurrentNumbers,
-        OverviewPanelLatestChanges,
-        OverviewPanelDepartmentsList,
     } from "@/components/Shared";
 
     const payloadsStore = usePayloadsStore();
