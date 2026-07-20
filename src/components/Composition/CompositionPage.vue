@@ -7,7 +7,11 @@
                     :description="strings.composition_description" />
                 <CompositionChart />
             </div>
-            <Footnote :content="strings.composition_footnote" />
+            <Footnotes
+                :footnotes="[
+                    strings.composition_footnote_1,
+                    strings.composition_footnote_2,
+                ]" />
         </template>
         <LoadingIndicator
             v-else
@@ -22,7 +26,7 @@
     import useLocalizationStore from "@/stores/localizations.js";
 
     import {
-        Footnote,
+        Footnotes,
         LoadingIndicator,
         PageHeader,
     } from "@/components/Shared";

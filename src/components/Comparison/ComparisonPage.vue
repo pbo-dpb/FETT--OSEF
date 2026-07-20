@@ -293,7 +293,11 @@
                         " />
                 </tbody>
             </table>
-            <Footnote :content="strings.comparison_footnote" />
+            <Footnotes
+                :footnotes="[
+                    strings.comparison_footnote_1,
+                    strings.comparison_footnote_2,
+                ]" />
         </div>
     </div>
 </template>
@@ -312,7 +316,7 @@
     } from "@headlessui/vue";
     import { ChevronsUpDown, Plus } from "lucide-vue-next";
 
-    import { Footnote, PageHeader } from "@/components/Shared";
+    import { Footnotes, PageHeader } from "@/components/Shared";
     import SelectedDepartment from "./SelectedDepartment.vue";
     import ComparisonChart from "./ComparisonChart.vue";
 

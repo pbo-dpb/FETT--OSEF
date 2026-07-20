@@ -1,6 +1,6 @@
 export { default as BaseButton } from "./BaseButton.vue";
 export { default as DebugBar } from "./DebugBar.vue";
-export { default as Footnote } from "./Footnote.vue";
+export { default as Footnotes } from "./Footnotes.vue";
 export { default as GeneralChartSettings } from "./GeneralChartSettings.vue";
 export { default as LoadingIndicator } from "./LoadingIndicator.vue";
 export { default as PageHeader } from "./PageHeader.vue";
