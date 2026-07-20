@@ -1,10 +1,14 @@
 <template>
     <div
         v-if="about"
-        class="flex flex-col">
+        class="flex flex-col gap-5">
         <div
             v-html="about"
             class="prose dark:prose-invert prose-headings:mt-0 prose-headings:font-normal max-w-none"></div>
+        <div class="border-t border-solid py-5 text-sm">
+            <span class="font-semibold">{{ strings.last_updated }}</span
+            >{{ displayableLastUpdated }}
+        </div>
     </div>
 </template>
 
@@ -13,12 +17,17 @@
     import { storeToRefs } from "pinia";
     import { marked } from "marked";
 
+    import useSettingStore from "@/stores/settings.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
+
     import aboutEn from "@/assets/markdown/about.en.md?url";
     import aboutFr from "@/assets/markdown/about.fr.md?url";
 
-    import useLocalizationsStore from "@/stores/localizations.js";
+    const settingsStore = useSettingStore();
     const localizationsStore = useLocalizationsStore();
-    const { language } = storeToRefs(localizationsStore);
+
+    const { language, strings } = storeToRefs(localizationsStore);
+    const { last_updated } = storeToRefs(settingsStore);
 
     const fetching = ref(false);
     const content = ref({
@@ -43,5 +52,17 @@
             fetchContent(language.value);
         }
         return null;
+    });
+
+    const displayableLastUpdated = computed(() => {
+        return new Date(last_updated.value).toLocaleDateString(
+            `${language.value}-CA`,
+            {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                timeZone: "UTC",
+            },
+        );
     });
 </script>

@@ -5,10 +5,6 @@
         <div
             v-html="intro"
             class="prose prose-headings:text-gray-700 dark:prose-invert prose-headings:mt-0 prose-headings:font-light max-w-none"></div>
-        <div class="mt-4 border-t border-solid py-4 text-sm">
-            <span class="font-semibold">{{ strings.last_updated }}</span
-            >{{ displayableLastUpdated }}
-        </div>
     </div>
 </template>
 
@@ -17,16 +13,13 @@
     import { storeToRefs } from "pinia";
     import { marked } from "marked";
 
+    import useLocalizationsStore from "@/stores/localizations.js";
+
     import notesEn from "@/assets/markdown/notes.en.md?url";
     import notesFr from "@/assets/markdown/notes.fr.md?url";
 
-    import useLocalizationsStore from "@/stores/localizations.js";
     const localizationsStore = useLocalizationsStore();
-    const { language, strings } = storeToRefs(localizationsStore);
-
-    import useSettingStore from "@/stores/settings.js";
-    const settingsStore = useSettingStore();
-    const { last_updated } = storeToRefs(settingsStore);
+    const { language } = storeToRefs(localizationsStore);
 
     const fetching = ref(false);
     const content = ref({
@@ -51,17 +44,5 @@
             fetchContent(language.value);
         }
         return null;
-    });
-
-    const displayableLastUpdated = computed(() => {
-        return new Date(last_updated.value).toLocaleDateString(
-            `${language.value}-CA`,
-            {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                timeZone: "UTC",
-            },
-        );
     });
 </script>
