@@ -23,7 +23,6 @@
         computed,
         watch,
         ref,
-        toRaw,
     } from "vue";
     import { storeToRefs } from "pinia";
 
@@ -150,11 +149,11 @@
                     : `${item.year - 1}-${item.year}`;
 
                 const sumOfParts =
-                    (item.indeterminate || 0) +
-                    (item.term || 0) +
-                    (item.casual || 0) +
-                    (item.student || 0) +
-                    (item.unknown || 0);
+                    Math.round(item.indeterminate || 0) +
+                    Math.round(item.term || 0) +
+                    Math.round(item.casual || 0) +
+                    Math.round(item.student || 0) +
+                    Math.round(item.unknown || 0);
 
                 let rawValue;
 
@@ -292,10 +291,6 @@
             series: series.value,
             dataset: dataset.value,
         };
-
-        // options['legend'] = {
-        //     data: options.series.map(serie => serie.name),
-        // }
 
         return options;
     });

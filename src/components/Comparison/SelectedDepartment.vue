@@ -107,24 +107,18 @@
     import { computed } from "vue";
     import { storeToRefs } from "pinia";
     import { CircleX } from "lucide-vue-next";
-    import useLocalizationsStore from "@/stores/localizations.js";
-    import numberFormatterMixin from "@/mixins/numberFormatter.js";
-
-    const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 
     import useSettingsStore from "@/stores/settings.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
+
+    import numberFormatterMixin from "@/mixins/numberFormatter.js";
+
     const settingsStore = useSettingsStore();
     const { preferredMetric, preferredGranularity } =
         storeToRefs(settingsStore);
 
     const localizationsStore = useLocalizationsStore();
     const { language, strings } = storeToRefs(localizationsStore);
-
-    const emit = defineEmits([
-        "remove-department",
-        "highlight-department",
-        "unhighlight-department",
-    ]);
 
     const props = defineProps({
         department: {
@@ -156,6 +150,12 @@
             default: true,
         },
     });
+
+    const emit = defineEmits([
+        "remove-department",
+        "highlight-department",
+        "unhighlight-department",
+    ]);
 
     const handleMouseEnter = () => {
         if (props.enableHighlight) {
@@ -201,23 +201,31 @@
 
     const hasBreakdown = computed(() => {
         if (!selectedValues.value) return false;
+
         if (props.excludeCombinedFallback) return true;
+
         const { indeterminate, combined } = selectedValues.value;
+
         return !(indeterminate === 0 && combined > 0);
     });
 
     const total = computed(() => {
         if (!selectedValues.value) return 0;
+
         const { indeterminate, term, casual, student, unknown, combined } =
             selectedValues.value;
+
         const sum =
-            (indeterminate || 0) +
-            (term || 0) +
-            (casual || 0) +
-            (student || 0) +
-            (unknown || 0);
+            Math.round(indeterminate || 0) +
+            Math.round(term || 0) +
+            Math.round(casual || 0) +
+            Math.round(student || 0) +
+            Math.round(unknown || 0);
+
         if (props.excludeCombinedFallback) return sum;
+
         if (sum === 0 && combined > 0) return combined;
+
         return sum;
     });
 
@@ -231,4 +239,6 @@
 
         return "10";
     });
+
+    const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 </script>
