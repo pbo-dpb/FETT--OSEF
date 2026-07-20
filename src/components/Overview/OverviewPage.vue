@@ -39,7 +39,7 @@
             >
         </div>
 
-        <Footnote :content="strings.overview_footnote" />
+        <Footnotes :footnotes="[strings.overview_footnote]" />
     </div>
     <div v-else>
         <LoadingIndicator class="size-6" />
@@ -59,7 +59,7 @@
     import OverviewPanelLatestChanges from "./OverviewPanelLatestChanges.vue";
 
     import {
-        Footnote,
+        Footnotes,
         LoadingIndicator,
         PageHeader,
         PreferredComparisonPeriodPicker,
