@@ -70,7 +70,6 @@
         onBeforeUnmount,
         useTemplateRef,
     } from "vue";
-
     import { storeToRefs } from "pinia";
     import { SwitchRoot, SwitchThumb } from "reka-ui";
 
@@ -99,12 +98,11 @@
     import { GeneralChartSettings } from "@/components/Shared";
 
     const payloadsStore = usePayloadsStore();
-    const { composition } = storeToRefs(payloadsStore);
-
     const localizationsStore = useLocalizationsStore();
-    const { language, strings } = storeToRefs(localizationsStore);
-
     const settingsStore = useSettingsStore();
+
+    const { composition } = storeToRefs(payloadsStore);
+    const { language, strings } = storeToRefs(localizationsStore);
     const { preferredTimeframe, preferredGranularity, preferredMetric } =
         storeToRefs(settingsStore);
 
@@ -122,7 +120,6 @@
 
     const componentRoot = useTemplateRef("componentRoot");
     const chart = shallowRef(null);
-    const resObserver = shallowRef(null);
 
     const shouldIncludeCombinedData = ref(true);
     const shouldSplitByTenure = ref(true);
@@ -247,7 +244,7 @@
         const baseSerie = {
             type: "line",
             stack: "Total",
-            areaStyle: {},
+            areaStyle: { opacity: 1 },
             smooth: true,
             lineStyle: { width: 0 },
             showSymbol: false,
@@ -367,13 +364,18 @@
 
             if (!data || typeof data !== "object") return 0;
 
-            return (
+            const tenureTotal =
                 Number(data.indeterminate || 0) +
                 Number(data.term || 0) +
                 Number(data.casual || 0) +
                 Number(data.student || 0) +
-                Number(data.unknown || 0)
-            );
+                Number(data.unknown || 0);
+
+            if (shouldIncludeCombinedData.value) {
+                return tenureTotal + data.combined || 0;
+            }
+
+            return tenureTotal;
         };
 
         const total = getTotalForTooltip(firstParam);
@@ -405,7 +407,7 @@
 
     // ECharts
     const chartOptions = computed(() => ({
-        aria: { enabled: true, decal: { show: true } },
+        aria: { enabled: true },
         grid: {
             top: 0,
             left: 0,
@@ -418,13 +420,14 @@
             formatter: tooltipFormatter,
         },
         legend: {
-            type: "scroll",
-            selectedMode: false,
             orient: "horizontal",
+            type: "scroll",
+            icon: "circle",
+            itemHeight: 20,
+            itemGap: 20,
             left: "center",
-            itemHeight: 24,
-            itemGap: 24,
             bottom: 8,
+            selectedMode: false,
         },
         xAxis: { type: "category" },
         yAxis: {},
