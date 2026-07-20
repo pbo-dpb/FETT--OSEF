@@ -34,7 +34,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(selectedValues?.indeterminate || 0)
+                        ? useNumberFormatter(selectedValues?.indeterminate || 0)
                         : "N/A"
                 }}
             </span>
@@ -45,7 +45,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(selectedValues?.term || 0)
+                        ? useNumberFormatter(selectedValues?.term || 0)
                         : "N/A"
                 }}
             </span>
@@ -56,7 +56,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(selectedValues?.casual || 0)
+                        ? useNumberFormatter(selectedValues?.casual || 0)
                         : "N/A"
                 }}
             </span>
@@ -67,7 +67,7 @@
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? numberFormatter(selectedValues?.student || 0)
+                        ? useNumberFormatter(selectedValues?.student || 0)
                         : "N/A"
                 }}
             </span>
@@ -76,7 +76,7 @@
             class="block flex items-center justify-between p-2 text-center font-semibold md:table-cell">
             <span class="md:hidden">{{ strings.total_label }}</span>
             <span class="text-right md:text-center">
-                {{ numberFormatter(total) }}
+                {{ useNumberFormatter(total) }}
             </span>
         </td>
         <td
@@ -111,7 +111,7 @@
     import useSettingsStore from "@/stores/settings.js";
     import useLocalizationsStore from "@/stores/localizations.js";
 
-    import numberFormatterMixin from "@/mixins/numberFormatter.js";
+    import { useNumberFormatter } from "@/composables/useNumberFormatter";
 
     const settingsStore = useSettingsStore();
     const { preferredMetric, preferredGranularity } =
@@ -239,6 +239,4 @@
 
         return "10";
     });
-
-    const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 </script>

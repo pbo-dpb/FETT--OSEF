@@ -215,7 +215,7 @@
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
-                                    numberFormatter(
+                                    useNumberFormatter(
                                         allDepartmentsValues?.indeterminate ||
                                             0,
                                     )
@@ -229,7 +229,7 @@
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
-                                    numberFormatter(
+                                    useNumberFormatter(
                                         allDepartmentsValues?.term || 0,
                                     )
                                 }}
@@ -242,7 +242,7 @@
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
-                                    numberFormatter(
+                                    useNumberFormatter(
                                         allDepartmentsValues?.casual || 0,
                                     )
                                 }}
@@ -255,7 +255,7 @@
                             }}</span>
                             <span class="text-right md:text-center">
                                 {{
-                                    numberFormatter(
+                                    useNumberFormatter(
                                         allDepartmentsValues?.student || 0,
                                     )
                                 }}
@@ -267,7 +267,7 @@
                                 strings.total_label
                             }}</span>
                             <span class="text-right md:text-center">
-                                {{ numberFormatter(allDepartmentsTotal) }}
+                                {{ useNumberFormatter(allDepartmentsTotal) }}
                             </span>
                         </td>
                         <td class="hidden md:table-cell"></td>
@@ -299,15 +299,10 @@
 </template>
 
 <script setup>
-    import { SwitchRoot, SwitchThumb } from "reka-ui";
     import { computed, onMounted, ref, watch } from "vue";
+    import { useRoute, useRouter } from "vue-router";
     import { storeToRefs } from "pinia";
-    import { Footnote, PageHeader } from "@/components/Shared";
-    import SelectedDepartment from "./SelectedDepartment.vue";
-    import ComparisonChart from "./ComparisonChart.vue";
-    import numberFormatterMixin from "@/mixins/numberFormatter.js";
-    import { ChevronsUpDown, Plus } from "lucide-vue-next";
-    import { colors } from "@/assets/echarts/colors.json";
+    import { SwitchRoot, SwitchThumb } from "reka-ui";
     import {
         Combobox,
         ComboboxButton,
@@ -315,18 +310,26 @@
         ComboboxOptions,
         ComboboxOption,
     } from "@headlessui/vue";
-    import { useRoute, useRouter } from "vue-router";
+    import { ChevronsUpDown, Plus } from "lucide-vue-next";
 
-    import useLocalizationsStore from "@/stores/localizations.js";
-    const localizationsStore = useLocalizationsStore();
-    const { language, strings } = storeToRefs(localizationsStore);
+    import { Footnote, PageHeader } from "@/components/Shared";
+    import SelectedDepartment from "./SelectedDepartment.vue";
+    import ComparisonChart from "./ComparisonChart.vue";
+
+    import { colors } from "@/assets/echarts/colors.json";
+
+    import { useNumberFormatter } from "@/composables/useNumberFormatter.js";
 
     import usePayloadStore from "@/stores/payloads.js";
-    const payloadsStore = usePayloadStore();
-    const { departments, composition } = storeToRefs(payloadsStore);
-
     import useSettingsStore from "@/stores/settings.js";
+    import useLocalizationsStore from "@/stores/localizations.js";
+
+    const payloadsStore = usePayloadStore();
     const settingsStore = useSettingsStore();
+    const localizationsStore = useLocalizationsStore();
+
+    const { departments, composition } = storeToRefs(payloadsStore);
+    const { language, strings } = storeToRefs(localizationsStore);
     const {
         start_quarter,
         start_year,
@@ -334,16 +337,18 @@
         end_quarter,
         preferredGranularity,
     } = storeToRefs(settingsStore);
+
     const showAllDepartments = computed({
         get: () => settingsStore.showAllDepartments,
         set: (value) => settingsStore.setShowAllDepartments(value),
     });
+
     const route = useRoute();
     const router = useRouter();
+
     const cumulativeQueryKey = "cumulative";
 
     const selectedDepartment = ref(null);
-    const numberFormatter = numberFormatterMixin.methods.numberFormatter;
     const selectedDepartmentMeta = ref([]);
     const highlightedDepartmentId = ref(null);
     const selectedQuarter = ref(end_quarter.value);

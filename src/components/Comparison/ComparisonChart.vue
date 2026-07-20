@@ -29,7 +29,7 @@
     import useLocalizationsStore from "@/stores/localizations.js";
     import useSettingsStore from "@/stores/settings.js";
     import usePayloadsStore from "@/stores/payloads.js";
-    import numberFormatterMixin from "@/mixins/numberFormatter.js";
+    import { useNumberFormatter } from "@/composables/useNumberFormatter";
 
     import {
         GeneralChartSettings,
@@ -78,8 +78,6 @@
     } = storeToRefs(useSettingsStore());
 
     const payloadsStore = usePayloadsStore();
-
-    const numberFormatter = numberFormatterMixin.methods.numberFormatter;
 
     const uniqueId = `chart-${Math.random().toString(36).slice(2, 11)}`;
     const componentRoot = useTemplateRef("componentRoot");
@@ -262,8 +260,6 @@
     });
 
     const chartOptions = computed(() => {
-        const formatter = numberFormatter;
-
         const options = {
             aria: {
                 enabled: true,
@@ -281,7 +277,7 @@
                         return "N/A";
                     }
 
-                    return formatter(value);
+                    return useNumberFormatter(value);
                 },
             },
             xAxis: {
