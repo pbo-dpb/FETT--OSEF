@@ -15,38 +15,31 @@
                     <TrendIndicator :datapoint="allDepartmentsAbsoluteDiff" />
                 </p>
             </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+            <div
+                v-for="tenure in tenures"
+                :key="tenure.key"
+                class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">
-                    {{ strings.indeterminate_label }}
+                    {{ strings[tenure.label] }}
                 </h4>
                 <p class="text-xl">
-                    {{ useNumberFormatter(indeterminateAbsoluteDiff) }}
-                    ({{ useNumberFormatter(indeterminateRelativeDiff, true) }}%)
-                    <TrendIndicator :datapoint="indeterminateAbsoluteDiff" />
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.term_label }}</h4>
-                <p class="text-xl">
-                    {{ useNumberFormatter(termAbsoluteDiff) }}
-                    ({{ useNumberFormatter(termRelativeDiff, true) }}%)
-                    <TrendIndicator :datapoint="termAbsoluteDiff" />
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.casual_label }}</h4>
-                <p class="text-xl">
-                    {{ useNumberFormatter(casualAbsoluteDiff) }}
-                    ({{ useNumberFormatter(casualRelativeDiff, true) }}%)
-                    <TrendIndicator :datapoint="casualAbsoluteDiff" />
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.student_label }}</h4>
-                <p class="text-xl">
-                    {{ useNumberFormatter(studentAbsoluteDiff) }}
-                    ({{ useNumberFormatter(studentRelativeDiff, true) }}%)
-                    <TrendIndicator :datapoint="studentAbsoluteDiff" />
+                    {{
+                        useNumberFormatter(
+                            generalComparison.tenures?.[tenure.key]
+                                .absoluteDiff,
+                        )
+                    }}
+                    ({{
+                        useNumberFormatter(
+                            generalComparison.tenures?.[tenure.key]
+                                .relativeDiff,
+                            true,
+                        )
+                    }}%)
+                    <TrendIndicator
+                        :datapoint="
+                            generalComparison.tenures?.[tenure.key].absoluteDiff
+                        " />
                 </p>
             </div>
         </div>
@@ -104,35 +97,10 @@
         () => generalComparison.value?.relativeDiff,
     );
 
-    const indeterminateAbsoluteDiff = computed(
-        () => generalComparison.value?.tenures?.indeterminate?.absoluteDiff,
-    );
-
-    const indeterminateRelativeDiff = computed(
-        () => generalComparison.value?.tenures?.indeterminate?.relativeDiff,
-    );
-
-    const termAbsoluteDiff = computed(
-        () => generalComparison.value?.tenures?.term?.absoluteDiff,
-    );
-
-    const termRelativeDiff = computed(
-        () => generalComparison.value?.tenures?.term?.relativeDiff,
-    );
-
-    const casualAbsoluteDiff = computed(
-        () => generalComparison.value?.tenures?.casual?.absoluteDiff,
-    );
-
-    const casualRelativeDiff = computed(
-        () => generalComparison.value?.tenures?.casual?.relativeDiff,
-    );
-
-    const studentAbsoluteDiff = computed(
-        () => generalComparison.value?.tenures?.student?.absoluteDiff,
-    );
-
-    const studentRelativeDiff = computed(
-        () => generalComparison.value?.tenures?.student?.relativeDiff,
-    );
+    const tenures = [
+        { key: "indeterminate", label: "indeterminate_label" },
+        { key: "term", label: "term_label" },
+        { key: "student", label: "student_label" },
+        { key: "casual", label: "casual_label" },
+    ];
 </script>

@@ -11,30 +11,19 @@
                     {{ useNumberFormatter(allDepartmentsLatestNumber) }}
                 </p>
             </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
+            <div
+                v-for="tenure in tenures"
+                :key="tenure.key"
+                class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
                 <h4 class="font-semibold">
-                    {{ strings.indeterminate_label }}
+                    {{ strings[tenure.label] }}
                 </h4>
                 <p class="text-xl">
-                    {{ useNumberFormatter(indeterminateLatestNumber) }}
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.term_label }}</h4>
-                <p class="text-xl">
-                    {{ useNumberFormatter(termLatestNumber) }}
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.casual_label }}</h4>
-                <p class="text-xl">
-                    {{ useNumberFormatter(casualLatestNumber) }}
-                </p>
-            </div>
-            <div class="3xl:col-span-1 col-span-full text-center lg:col-span-2">
-                <h4 class="font-semibold">{{ strings.student_label }}</h4>
-                <p class="text-xl">
-                    {{ useNumberFormatter(studentLatestNumber) }}
+                    {{
+                        useNumberFormatter(
+                            generalComparison.tenures?.[tenure.key]?.to,
+                        )
+                    }}
                 </p>
             </div>
         </div>
@@ -70,6 +59,8 @@
     });
 
     const comparisonData = computed(() => {
+        console.log(overview.value);
+
         return overview.value?.quarterly?.comparisons?.[
             settingsStore.selectedComparisonPeriod
         ];
@@ -85,19 +76,10 @@
         () => generalComparison.value?.to,
     );
 
-    const indeterminateLatestNumber = computed(
-        () => generalComparison.value?.tenures?.indeterminate?.to,
-    );
-
-    const termLatestNumber = computed(
-        () => generalComparison.value?.tenures?.term?.to,
-    );
-
-    const studentLatestNumber = computed(
-        () => generalComparison.value?.tenures?.student?.to,
-    );
-
-    const casualLatestNumber = computed(
-        () => generalComparison.value?.tenures?.casual?.to,
-    );
+    const tenures = [
+        { key: "indeterminate", label: "indeterminate_label" },
+        { key: "term", label: "term_label" },
+        { key: "student", label: "student_label" },
+        { key: "casual", label: "casual_label" },
+    ];
 </script>
