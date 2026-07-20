@@ -59,8 +59,6 @@
     });
 
     const comparisonData = computed(() => {
-        console.log(overview.value);
-
         return overview.value?.quarterly?.comparisons?.[
             settingsStore.selectedComparisonPeriod
         ];
