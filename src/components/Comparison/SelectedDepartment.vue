@@ -29,45 +29,14 @@
             </span>
         </th>
         <td
+            v-for="tenure in tenures"
+            :key="tenure"
             class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.indeterminate_label }}</span>
+            <span class="md:hidden">{{ strings[tenure.label] }}</span>
             <span class="text-right md:text-center">
                 {{
                     hasBreakdown
-                        ? useNumberFormatter(selectedValues?.indeterminate || 0)
-                        : "N/A"
-                }}
-            </span>
-        </td>
-        <td
-            class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.term_label }}</span>
-            <span class="text-right md:text-center">
-                {{
-                    hasBreakdown
-                        ? useNumberFormatter(selectedValues?.term || 0)
-                        : "N/A"
-                }}
-            </span>
-        </td>
-        <td
-            class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.casual_label }}</span>
-            <span class="text-right md:text-center">
-                {{
-                    hasBreakdown
-                        ? useNumberFormatter(selectedValues?.casual || 0)
-                        : "N/A"
-                }}
-            </span>
-        </td>
-        <td
-            class="block flex items-center justify-between p-2 text-center md:table-cell">
-            <span class="md:hidden">{{ strings.student_label }}</span>
-            <span class="text-right md:text-center">
-                {{
-                    hasBreakdown
-                        ? useNumberFormatter(selectedValues?.student || 0)
+                        ? useNumberFormatter(selectedValues?.[tenure.key] || 0)
                         : "N/A"
                 }}
             </span>
@@ -239,4 +208,11 @@
 
         return "10";
     });
+
+    const tenures = [
+        { key: "indeterminate", label: "indeterminate_label" },
+        { key: "term", label: "term_label" },
+        { key: "student", label: "student_label" },
+        { key: "casual", label: "casual_label" },
+    ];
 </script>
