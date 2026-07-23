@@ -125,11 +125,23 @@
     const shouldSplitByTenure = ref(true);
     const useDarkTheme = ref(false);
 
-    const selectedTenures = ref([...allTenures]);
+    const selectedTenures = ref([...tenuresToBeDisplayed]);
 
-    const activeTenures = computed(() =>
-        shouldSplitByTenure.value ? selectedTenures.value : allTenures,
+    const includeUnknown = computed(() =>
+        tenuresToBeDisplayed.every((tenure) => {
+            return selectedTenures.value.includes(tenure);
+        }),
     );
+
+    const activeTenures = computed(() => {
+        if (!shouldSplitByTenure.value) {
+            return allTenures;
+        }
+
+        return includeUnknown.value
+            ? [...selectedTenures.value, "unknown"]
+            : selectedTenures.value;
+    });
 
     // Colors
     const palette = computed(() =>
@@ -205,21 +217,25 @@
 
         if (!shouldSplitByTenure.value) {
             return {
-                dimensions: ["timestamp", "value"],
-                source: baseData.value.map((item) => ({
-                    timestamp:
-                        preferredGranularity.value === "fiscal_year"
-                            ? `${item.year - 1}-${item.year}`
-                            : `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`,
-                    value: shouldIncludeCombinedData.value
-                        ? Math.round(item.combined)
-                        : Math.round(
-                              allTenures.reduce(
-                                  (sum, t) => sum + Number(item[t] || 0),
-                                  0,
-                              ),
-                          ),
-                })),
+                dimensions: [
+                    "timestamp",
+                    "allTenures",
+                    ...(shouldIncludeCombinedData.value ? ["combined"] : []),
+                ],
+                source: baseData.value.map((item) => {
+                    const allTenuresTotal = allTenures.reduce((sum, tenure) => {
+                        return sum + item[tenure] || 0;
+                    }, 0);
+
+                    return {
+                        timestamp:
+                            preferredGranularity.value === "fiscal_year"
+                                ? `${item.year - 1}-${item.year}`
+                                : `${language.value === "fr" ? "T" : "Q"}${item.quarter} ${item.year}`,
+                        allTenures: Math.round(allTenuresTotal),
+                        combined: Math.round(item.combined),
+                    };
+                }),
             };
         }
 
@@ -254,9 +270,22 @@
             return [
                 {
                     ...baseSerie,
-                    name: strings.value.total_label,
-                    encode: { x: "timestamp", y: "value" },
+                    name: strings.value.all_tenures_label,
+                    encode: { x: "timestamp", y: "allTenures" },
+                    itemStyle: { color: tenureColorMap.value.indeterminate },
                 },
+                ...(shouldIncludeCombinedData.value
+                    ? [
+                          {
+                              ...baseSerie,
+                              name: strings.value.combined_label,
+                              encode: { x: "timestamp", y: "combined" },
+                              itemStyle: {
+                                  color: tenureColorMap.value.combined,
+                              },
+                          },
+                      ]
+                    : []),
             ];
         }
 
@@ -288,6 +317,7 @@
             .replaceAll("<", "&lt;")
             .replaceAll(">", "&gt;")
             .replaceAll('"', "&quot;")
+            .replaceAll("’", "&apos;")
             .replaceAll("'", "&#39;");
 
     const formatTooltipNumber = (value) => {
@@ -339,16 +369,16 @@
         marginTop = 4,
     }) => {
         return `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:${marginTop}px;line-height:1.35;">
-        <span style="display:inline-flex;align-items:center;min-width:0;">
-            ${marker}
-            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                ${escapeHtml(label)}
+            <span style="display:inline-flex;align-items:center;min-width:0;">
+                ${marker}
+                <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    ${escapeHtml(label)}
+                </span>
             </span>
-        </span>
-        <span style="margin-left:12px;font-weight:${isBold ? 700 : 400};text-align:right;">
-            ${escapeHtml(value)}
-        </span>
-    </div>`;
+            <span style="margin-left:12px;font-weight:${isBold ? 700 : 400};text-align:right;">
+                ${escapeHtml(value)}
+            </span>
+        </div>`;
     };
 
     const tooltipFormatter = (rawParams) => {
@@ -360,22 +390,27 @@
         const timestamp = firstParam.axisValueLabel || firstParam.name || "";
 
         const getTotalForTooltip = (param) => {
-            const data = param?.data;
+            const data = param.data;
 
-            if (!data || typeof data !== "object") return 0;
-
-            const tenureTotal =
-                Number(data.indeterminate || 0) +
-                Number(data.term || 0) +
-                Number(data.casual || 0) +
-                Number(data.student || 0) +
-                Number(data.unknown || 0);
-
-            if (shouldIncludeCombinedData.value) {
-                return tenureTotal + data.combined || 0;
+            if (!shouldSplitByTenure.value) {
+                return (
+                    Number(data.allTenures || 0) +
+                    (shouldIncludeCombinedData.value
+                        ? Number(data.combined || 0)
+                        : 0)
+                );
             }
 
-            return tenureTotal;
+            const tenureTotal = activeTenures.value.reduce((total, tenure) => {
+                return total + Number(data[tenure] || 0);
+            }, 0);
+
+            return (
+                tenureTotal +
+                (shouldIncludeCombinedData.value
+                    ? Number(data.combined || 0)
+                    : 0)
+            );
         };
 
         const total = getTotalForTooltip(firstParam);
@@ -395,14 +430,14 @@
         });
 
         return `<div>
-        <div style="font-weight:400;line-height:1.35;">
-            ${escapeHtml(timestamp)}
-        </div>
-        ${rows.join("")}
-        <div style="border-top:1px solid rgba(255,255,255,0.2);">
-            ${totalRow}
-        </div>
-    </div>`;
+            <div style="font-weight:400;line-height:1.35;">
+                ${escapeHtml(timestamp)}
+            </div>
+            ${rows.join("")}
+            <div style="border-top:1px solid rgba(255,255,255,0.2);">
+                ${totalRow}
+            </div>
+        </div>`;
     };
 
     // ECharts
@@ -483,7 +518,7 @@
     );
 
     watch(shouldSplitByTenure, (v) => {
-        if (!v) selectedTenures.value = [...allTenures];
+        if (!v) selectedTenures.value = [...tenuresToBeDisplayed];
     });
 
     watch(
