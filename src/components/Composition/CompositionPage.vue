@@ -1,7 +1,7 @@
 <template>
-    <div class="flex grid-cols-5 flex-col gap-4 lg:grid">
+    <div class="flex flex-col gap-4">
         <template v-if="readyToRender">
-            <div class="flex w-full flex-col gap-8 lg:col-span-5">
+            <div class="flex w-full flex-col gap-8">
                 <PageHeader
                     :heading="strings.composition_heading"
                     :description="strings.composition_description" />
@@ -15,7 +15,7 @@
         </template>
         <LoadingIndicator
             v-else
-            class="col-span-5 size-8" />
+            class="size-8" />
     </div>
 </template>
 <script setup>
