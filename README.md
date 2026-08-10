@@ -1,4 +1,4 @@
-# Federal Employment Tracking Tool (FETT) // Outil de suivi de l’emploi dans la fonction publique fédérale (OSEFPF)
+# Federal Employment Tracking Tool (FETT) // Outil de suivi de l’emploi fédéral (OSEF)
 
 ## Description
 
