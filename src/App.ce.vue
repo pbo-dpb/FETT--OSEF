@@ -8,22 +8,11 @@
 </template>
 
 <script setup>
-    import {
-        defineAsyncComponent,
-        computed,
-        onMounted,
-        watch,
-        getCurrentInstance,
-    } from "vue";
+    import { computed, onMounted, watch, getCurrentInstance } from "vue";
     import WrapperEventDispatcher from "./WrapperEventDispatcher.js";
     import { storeToRefs } from "pinia";
     import useLocalizationsStore from "./stores/localizations.js";
-    import { TheAbout, Tabs } from "@/components/Shared";
-
-    const DebugBar = defineAsyncComponent(async () => {
-        const mod = await import("@/components/Shared");
-        return mod.DebugBar;
-    });
+    import { DebugBar, TheAbout, Tabs } from "@/components/Shared";
 
     const instance = getCurrentInstance();
 
