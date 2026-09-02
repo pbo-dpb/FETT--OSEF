@@ -44,6 +44,26 @@
                     class="sr-only" />
                 {{ strings.overview_compare_previous_quarter }}
             </label>
+            <label
+                for="cp-peakFederalEmployment"
+                :class="[
+                    ...toggleRadioBaseClasses,
+                    selectedComparisonPeriod === 'peakFederalEmployment'
+                        ? 'bg-primary text-white dark:bg-gray-100 dark:text-gray-700'
+                        : 'border border-solid border-gray-300 bg-white dark:bg-gray-950',
+                ]">
+                <input
+                    type="radio"
+                    name="preferred_comparison_period"
+                    id="cp-peakFederalEmployment"
+                    value="peakFederalEmployment"
+                    :checked="
+                        selectedComparisonPeriod === 'peakFederalEmployment'
+                    "
+                    @change="selectedComparisonPeriod = 'peakFederalEmployment'"
+                    class="sr-only" />
+                {{ strings.overview_compare_peak_federal_employment }}
+            </label>
         </div>
     </div>
 </template>

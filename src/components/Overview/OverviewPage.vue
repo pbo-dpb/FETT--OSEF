@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-    import { computed, onMounted } from "vue";
+    import { computed, onMounted, toRaw } from "vue";
     import { storeToRefs } from "pinia";
 
     import usePayloadsStore from "@/stores/payloads.js";
@@ -107,13 +107,23 @@
                 : strings.value.department_change_pops_between;
         let start_quarter, start_year;
 
-        if (selectedComparisonPeriod.value === "sameQuarterLastYear") {
-            start_quarter = end_quarter.value;
-            start_year = end_year.value - 1;
-        } else {
-            start_quarter = end_quarter.value === 1 ? 4 : end_quarter.value - 1;
-            start_year =
-                end_quarter.value === 1 ? end_year.value - 1 : end_year.value;
+        switch (selectedComparisonPeriod.value) {
+            case "sameQuarterLastYear":
+                start_quarter = end_quarter.value;
+                start_year = end_year.value - 1;
+                break;
+            case "previousQuarter":
+                start_quarter =
+                    end_quarter.value === 1 ? 4 : end_quarter.value - 1;
+                start_year =
+                    end_quarter.value === 1
+                        ? end_year.value - 1
+                        : end_year.value;
+                break;
+            case "peakFederalEmployment":
+                start_quarter = 2;
+                start_year = 2024;
+                break;
         }
 
         return baseString
@@ -135,9 +145,11 @@
         return overview.value !== false;
     });
 
-    onMounted(() => {
+    onMounted(async () => {
         if (overview.value === false) {
-            payloadsStore.fetchOverview();
+            await payloadsStore.fetchOverview();
         }
+
+        console.log(toRaw(overview.value));
     });
 </script>

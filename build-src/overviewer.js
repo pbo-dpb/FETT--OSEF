@@ -254,9 +254,15 @@ export default class Overviewer {
             latestQuarter === 1
                 ? { year: latestYear - 1, quarter: 4 }
                 : { year: latestYear, quarter: latestQuarter - 1 };
+
         const sameQuarterLastYear = {
             year: latestYear - 1,
             quarter: latestQuarter,
+        };
+
+        const peakFederalEmployment = {
+            year: 2024,
+            quarter: 2
         };
 
         return {
@@ -355,6 +361,52 @@ export default class Overviewer {
                         "pop",
                     ),
                 },
+                peakFederalEmployment: {
+                    year: peakFederalEmployment.year,
+                    quarter: peakFederalEmployment.quarter,
+                    general: this.compareTwoQuartersGeneral(
+                        peakFederalEmployment.year,
+                        peakFederalEmployment.quarter,
+                        latestYear,
+                        latestQuarter,
+                    ),
+                    generalPop: this.compareTwoQuartersGeneral(
+                        peakFederalEmployment.year,
+                        peakFederalEmployment.quarter,
+                        latestYear,
+                        latestQuarter,
+                        true,
+                        "pop",
+                    ),
+                    generalExcludingCombined: this.compareTwoQuartersGeneral(
+                        peakFederalEmployment.year,
+                        peakFederalEmployment.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                    ),
+                    generalExcludingCombinedPop: this.compareTwoQuartersGeneral(
+                        peakFederalEmployment.year,
+                        peakFederalEmployment.quarter,
+                        latestYear,
+                        latestQuarter,
+                        false,
+                        "pop",
+                    ),
+                    departments: this.compareTwoQuartersDepartments(
+                        peakFederalEmployment.year,
+                        peakFederalEmployment.quarter,
+                        latestYear,
+                        latestQuarter,
+                    ),
+                    departmentsPop: this.compareTwoQuartersDepartments(
+                        peakFederalEmployment.year,
+                        peakFederalEmployment.quarter,
+                        latestYear,
+                        latestQuarter,
+                        "pop",
+                    ),
+                }
             },
         };
     }
