@@ -145,11 +145,9 @@
         return overview.value !== false;
     });
 
-    onMounted(async () => {
+    onMounted(() => {
         if (overview.value === false) {
-            await payloadsStore.fetchOverview();
+            payloadsStore.fetchOverview();
         }
-
-        console.log(toRaw(overview.value));
     });
 </script>
