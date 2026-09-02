@@ -235,10 +235,11 @@ export default class Overviewer {
         // We will build an overview that includes:
         // - Comparison of tenures between latest quarter and previous quarter
         // - Comparison of tenures between latest quarter and same quarter last year
-        // - Top 3 departments with highest FTEs growth between latest quarter and previous quarter
-        // - Top 3 departments with highest FTEs growth between latest quarter and same quarter last year
-        // - Top 3 departments with highest FTEs decline between latest quarter and previous quarter
-        // - Top 3 departments with highest FTEs decline between latest quarter and same quarter last year
+        // - Comparison of tenures between latest quarter and 2024 Q2 (peak federal employment)
+        // - Top 5 departments with highest FTEs growth between latest quarter and previous quarter
+        // - Top 5 departments with highest FTEs growth between latest quarter and same quarter last year
+        // - Top 5 departments with highest FTEs decline between latest quarter and previous quarter
+        // - Top 5 departments with highest FTEs decline between latest quarter and same quarter last year
 
         const total_ftes_per_quarter = this.aggregator.totalFtesPerQuarter();
         const latestYear = Math.max(
