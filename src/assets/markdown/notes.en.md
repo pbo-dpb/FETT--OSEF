@@ -7,7 +7,7 @@ The Federal Employment Tracking Tool draws on staffing data from three sources, 
 There are two concepts to measure the size of these workforces:
 
 1. **Headcount:** Number of individuals employed, without adjusting for hours worked.
-2. **Full-time equivalents (FTEs):** Measure of employment based on total hours worked by all employees, expressed as the equivalent number of full-time positions. FTE counts are calculated by dividing total hours worked by the standard number of hours in a full-time position (typically 37.5 hours per week in the federal government). For example, a part-time employee working half of the standard hours of a full-time position counts as 0.5 FTE. 
+2. **Full-time equivalents (FTEs):** Measure of employment based on total hours worked by all employees, expressed as the equivalent number of full-time positions. FTE counts are calculated by dividing total hours worked by the standard number of hours in a full-time position (typically 37.5 hours per week in the federal government). For example, a part-time employee working half of the standard hours of a full-time position counts as 0.5 FTE.
 
 ## Federal Public Service
 
@@ -22,7 +22,7 @@ Federal public service staffing data is broken down by employment tenure, which 
 3. **Casual**: an employee appointed for a period not exceeding 90 working days in one calendar year
 4. **Student**: an employee appointed under one of the federal government’s student employment programs
 
-There is a small number of employees with missing employment tenure information in the federal pay systems data provided by TBS. Those employees are included in the total counts of FTEs in the tool but excluded from any breakdown by employment tenure. Therefore, numbers of FTEs by employment tenure may not add to the total number of FTEs in the federal public service shown in the tool.
+There is a small number of employees (less than 100 FTEs) with missing employment tenure information in the federal pay systems data provided by TBS. Those employees are excluded from the tool.
 
 ## Canadian Armed Forces and RCMP
 

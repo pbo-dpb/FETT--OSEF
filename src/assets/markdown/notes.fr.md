@@ -22,7 +22,7 @@ Les données sur la dotation de la fonction publique fédérale sont ventilées 
 3. **Occasionnel :** employé nommé pour une période ne dépassant pas 90 jours ouvrables par année civile.
 4. **Étudiant :** employé nommé dans le cadre d’un des programmes fédéraux d’emplois pour étudiants.
 
-Dans les données provenant des systèmes fédéraux de rémunération fournies par le SCT, il existe un petit nombre d’employés dont les données sur la durée d’emploi sont manquantes. Ces employés sont inclus dans les totaux d’ETP présentés dans l’outil, mais exclus de toute ventilation par durée d’emploi. Par conséquent, la somme des ETP par durée d’emploi peut ne pas correspondre au nombre total d’ETP au sein de la fonction publique fédérale affiché dans l’outil.
+Dans les données provenant des systèmes fédéraux de rémunération fournies par le SCT, il existe un petit nombre d’employés (moins de 100 ETP) dont les données sur la durée d’emploi sont manquantes. Ces employés sont exclus de l’outil.
 
 ## Forces armées canadiennes et GRC
 

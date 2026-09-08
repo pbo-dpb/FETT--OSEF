@@ -7,11 +7,7 @@
                     :description="strings.composition_description" />
                 <CompositionChart />
             </div>
-            <Footnotes
-                :footnotes="[
-                    strings.composition_footnote_1,
-                    strings.composition_footnote_2,
-                ]" />
+            <Footnotes :footnotes="[strings.composition_footnote_1]" />
         </template>
         <LoadingIndicator
             v-else

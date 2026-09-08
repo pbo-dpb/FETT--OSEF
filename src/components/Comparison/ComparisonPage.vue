@@ -293,11 +293,7 @@
                         " />
                 </tbody>
             </table>
-            <Footnotes
-                :footnotes="[
-                    strings.comparison_footnote_1,
-                    strings.comparison_footnote_2,
-                ]" />
+            <Footnotes :footnotes="[strings.comparison_footnote_1]" />
         </div>
     </div>
 </template>
