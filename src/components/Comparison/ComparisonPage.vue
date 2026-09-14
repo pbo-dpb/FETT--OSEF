@@ -364,13 +364,25 @@
     const selectedDepartmentMeta = ref([]);
     const highlightedDepartmentId = ref(null);
     const selectedQuarter = ref(end_quarter.value);
-    const selectedYear = ref(end_year.value);
+    const selectedYear = ref(
+        preferredGranularity.value === "quarter"
+            ? end_year.value
+            : end_quarter.value >= 2
+              ? end_year.value + 1
+              : end_year.value,
+    );
     const query = ref("");
 
     const availableYears = computed(() => {
         const years = [];
+        const maxYear =
+            preferredGranularity.value === "quarter"
+                ? end_year.value
+                : end_quarter.value >= 2
+                  ? end_year.value + 1
+                  : end_year.value;
 
-        for (let year = start_year.value; year <= end_year.value; year++) {
+        for (let year = start_year.value; year <= maxYear; year++) {
             years.push(year);
         }
 
@@ -634,6 +646,32 @@
         },
         { immediate: true },
     );
+
+    watch(
+        availableYears,
+        (years) => {
+            if (!years.length) {
+                return;
+            }
+
+            if (!years.includes(selectedYear.value)) {
+                selectedYear.value = years[years.length - 1];
+            }
+        },
+        { immediate: true },
+    );
+
+    watch(preferredGranularity, (granularity) => {
+        if (granularity !== "fiscal_year") {
+            return;
+        }
+
+        const latestYear =
+            availableYears.value[availableYears.value.length - 1];
+        if (latestYear !== undefined) {
+            selectedYear.value = latestYear;
+        }
+    });
 
     watch(showAllDepartments, async (enabled) => {
         const nextQuery = { ...route.query };
