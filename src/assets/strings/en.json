@@ -44,6 +44,7 @@
     "department_latest_ftes_combined_note": "Note: Detailed breakdown is not available.",
     "department_latest_pops_combined_note": "Note: Detailed breakdown is not available.",
     "department_fiscal_period_label": "Fiscal period",
+    "department_fiscal_year": "Fiscal year",
     "department_year": "Year",
     "department_quarter": "Quarter",
     "dep_card_remove_button_aria_label": "Remove from comparison",

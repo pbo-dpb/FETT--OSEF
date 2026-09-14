@@ -94,7 +94,11 @@
                         <label
                             for="year"
                             class="mb-1 font-semibold"
-                            >{{ strings.department_year }}</label
+                            >{{
+                                isQuarterlyGranularity
+                                    ? strings.department_year
+                                    : strings.department_fiscal_year
+                            }}</label
                         >
                         <select
                             id="year"
@@ -104,7 +108,11 @@
                                 v-for="year in availableYears"
                                 :key="year"
                                 :value="year">
-                                {{ year }}
+                                {{
+                                    isQuarterlyGranularity
+                                        ? year
+                                        : `${year - 1}-${year}`
+                                }}
                             </option>
                         </select>
                     </div>

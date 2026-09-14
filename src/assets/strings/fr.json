@@ -44,6 +44,7 @@
     "department_latest_ftes_combined_note": "Remarque : La ventilation détaillée n’est pas disponible.",
     "department_latest_pops_combined_note": "Remarque : La ventilation détaillée n’est pas disponible.",
     "department_fiscal_period_label": "Période fiscale",
+    "department_fiscal_year": "Année fiscale",
     "department_year": "Année",
     "department_quarter": "Trimestre",
     "dep_card_remove_button_aria_label": "Retirer de la comparaison",
