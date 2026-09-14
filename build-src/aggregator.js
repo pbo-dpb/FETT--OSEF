@@ -341,6 +341,20 @@ module.exports = class Aggregator {
         return this.paddedMonthlyDepartmentTotals[department_id] || [];
     };
 
+    reportedMonthsForFiscalYear = function (fiscalYear, department_id = null) {
+        return new Set(
+            this.datapoints
+                .filter((dp) =>
+                    department_id ? dp.department_id === department_id : true,
+                )
+                .filter(
+                    (dp) =>
+                        (dp.month >= 4 ? dp.year + 1 : dp.year) === fiscalYear,
+                )
+                .map((dp) => `${dp.year}-${dp.month}`),
+        );
+    };
+
     loopFunctionOverPeriod = function (settings, period, runnable) {
         const output = [];
 
@@ -418,6 +432,20 @@ module.exports = class Aggregator {
                 return fiscalYearForMonth === fiscalYearCursor;
             });
 
+            const reportedMonths = this.reportedMonthsForFiscalYear(
+                fiscalYearCursor,
+                department_id,
+            );
+            const reportedDatapointsForYear = datapointsForYear.filter((dp) =>
+                reportedMonths.has(`${dp.year}-${dp.month}`),
+            );
+            const isLastFiscalYear = fiscalYearCursor === endFY;
+            const isLastFiscalYearIncomplete =
+                isLastFiscalYear && reportedMonths.size < 12;
+            const datapointsForAverage = isLastFiscalYearIncomplete
+                ? reportedDatapointsForYear
+                : datapointsForYear;
+
             let totals = {};
             const sampleMonthlyRow = monthlyTotals.find((x) =>
                 Object.keys(x).some((key) => this.isMetricKey(key, metric)),
@@ -431,15 +459,16 @@ module.exports = class Aggregator {
             tenureTypes.forEach((tenureType) => {
                 const outputKey = this.normalizeMetricKey(tenureType, metric);
 
-                if (datapointsForYear.length === 0) {
+                if (datapointsForAverage.length === 0) {
                     totals[outputKey] = 0;
                     return;
                 }
 
                 totals[outputKey] =
-                    datapointsForYear
+                    datapointsForAverage
                         .map((val) => val[tenureType] || 0)
-                        .reduce((a, b) => a + b, 0) / datapointsForYear.length;
+                        .reduce((a, b) => a + b, 0) /
+                    datapointsForAverage.length;
             });
 
             fiscalYears.push({
