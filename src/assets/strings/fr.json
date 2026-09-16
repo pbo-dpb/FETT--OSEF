@@ -2,6 +2,7 @@
     "title": "Outil de suivi de l’emploi fédéral",
     "collapsible_component_handle_about": "À propos de cet outil",
     "last_updated": " Dernière mise à jour : ",
+    "tab_instructions": "Utilisez les options de navigation ci-dessous pour accéder aux différentes sections de l’outil.",
     "tab_navigation_aria_label": "Onglets de navigation principaux",
     "tab_navigation_overview_label": "Aperçu",
     "tab_navigation_composition_label": "Composition",

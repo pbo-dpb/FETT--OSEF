@@ -13,28 +13,52 @@
                 :value="selectedTabName"
                 @change="onMobileTabChange">
                 <option
-                    v-for="tab in tabs"
+                    v-for="tab in mobileTabs"
                     :key="tab.to.name"
                     :value="tab.to.name">
                     {{ tab.label }}
                 </option>
             </select>
         </div>
+        <div class="mt-3">
+            <a
+                :href="downloadLink.href"
+                class="tab-focus font-semibold text-gray-700 underline-offset-2 hover:underline">
+                {{ downloadLink.label }}
+            </a>
+        </div>
     </div>
     <nav
         :aria-label="strings.tab_navigation_aria_label"
-        class="hidden flex-row gap-2 rounded-sm bg-gray-100 p-1 md:flex">
-        <RouterLink
-            v-for="tab in tabs"
-            :key="tab.to.name"
-            :to="tab.to"
-            :class="[
-                'tab-focus rounded-sm px-4 py-2 font-semibold',
-                tab.selected ? 'bg-primary text-white' : 'text-gray-600',
-            ]"
-            :aria-current="tab.selected ? 'page' : undefined">
-            {{ tab.label }}
-        </RouterLink>
+        class="hidden rounded-sm md:block">
+        <div class="grid grid-cols-3 gap-2">
+            <RouterLink
+                v-for="tab in primaryTabs"
+                :key="tab.to.name"
+                :to="tab.to"
+                :class="[
+                    'tab-focus w-full rounded-sm px-4 py-8 text-center text-xl font-semibold',
+                    tab.selected
+                        ? 'bg-primary text-white'
+                        : 'border border-solid border-gray-300 text-gray-600',
+                ]"
+                :aria-current="tab.selected ? 'page' : undefined">
+                {{ tab.label }}
+            </RouterLink>
+        </div>
+        <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 px-1">
+            <RouterLink
+                :to="notesLink.to"
+                class="tab-focus font-semibold text-gray-700 underline-offset-2 hover:underline"
+                :aria-current="notesLink.selected ? 'page' : undefined">
+                {{ notesLink.label }}
+            </RouterLink>
+            <a
+                :href="downloadLink.href"
+                class="tab-focus font-semibold text-gray-700 underline-offset-2 hover:underline">
+                {{ downloadLink.label }}
+            </a>
+        </div>
     </nav>
 </template>
 <script setup>
@@ -52,10 +76,11 @@
         storeToRefs(settingsStore);
 
     import { useRoute, useRouter } from "vue-router";
+
     const route = useRoute();
     const router = useRouter();
 
-    const tabs = computed(() => {
+    const primaryTabs = computed(() => {
         const departmentsQuery = showAllDepartments.value
             ? { cumulative: "1" }
             : {};
@@ -96,24 +121,45 @@
                 },
                 selected: route.name === "departments",
             },
-            {
-                label: strings.value.tab_navigation_notes_label,
-                to: {
-                    name: "notes",
-                },
-                selected: route.name === "notes",
-            },
         ];
     });
 
+    const notesLink = computed(() => ({
+        label: strings.value.tab_navigation_notes_label,
+        to: {
+            name: "notes",
+        },
+        selected: route.name === "notes",
+    }));
+
+    const downloadLink = computed(() => ({
+        label: strings.value.overview_download_button,
+        href: "./FETT_publicdata.xlsx",
+    }));
+
+    const mobileTabs = computed(() => [
+        ...primaryTabs.value,
+        {
+            label: notesLink.value.label,
+            to: notesLink.value.to,
+            selected: notesLink.value.selected,
+        },
+    ]);
+
     const selectedTabName = computed(() => {
-        const current = tabs.value.find((tab) => tab.selected);
-        return current?.to.name ?? tabs.value[0]?.to.name;
+        const current = mobileTabs.value.find((tab) => tab.selected);
+
+        return (
+            current?.to.name ??
+            primaryTabs.value.find((tab) => tab.to.name === "overview")?.to
+                .name ??
+            mobileTabs.value[0]?.to.name
+        );
     });
 
     const onMobileTabChange = (event) => {
         const selectedName = event.target.value;
-        const selectedTab = tabs.value.find(
+        const selectedTab = mobileTabs.value.find(
             (tab) => tab.to.name === selectedName,
         );
 

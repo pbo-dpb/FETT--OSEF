@@ -30,15 +30,6 @@
             :header="strings.overview_largest_decrease_by_department"
             :metric="deltaMetric"
             :departments="departmentsWithLargestDecrease" />
-
-        <div class="col-span-full">
-            <a
-                href="./FETT_publicdata.xlsx"
-                class="bg-primary bg-primary-hover focus-outline-primary cursor-pointer rounded-sm px-4 py-2 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-solid"
-                >{{ strings.overview_download_button }}</a
-            >
-        </div>
-
         <Footnotes :footnotes="[strings.overview_footnote]" />
     </div>
     <div v-else>
@@ -47,7 +38,7 @@
 </template>
 
 <script setup>
-    import { computed, onMounted, toRaw } from "vue";
+    import { computed, onMounted } from "vue";
     import { storeToRefs } from "pinia";
 
     import usePayloadsStore from "@/stores/payloads.js";

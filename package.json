@@ -8,6 +8,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        
         "@headlessui/tailwindcss": "^0.2.2",
         "@headlessui/vue": "^1.7.23",
         "echarts": "^6.1.0",

@@ -1,3 +1,5 @@
+## Notes
+
 L’outil de suivi de l’emploi fédéral s’appuie sur des données sur la dotation provenant de trois sources, chacune ayant été fournie au BDPB dans le cadre d’une demande d’information :
 
 - Secrétariat du Conseil du Trésor du Canada (SCT), au moyen de la demande d’information <a href="https://www.pbo-dpb.ca/fr/information-requests--demandes-information/IR0822" target="_blank">IR0822</a>, pour la fonction publique fédérale (administration publique centrale et organismes distincts);
@@ -9,7 +11,7 @@ Deux notions sont utilisées afin de mesurer la taille de la fonction publique f
 1. **L’effectif** : Nombre de personnes employées, sans ajustement pour le nombre d’heures travaillées.
 2. **Les équivalents temps plein (ETP) :** Mesure de l’emploi fondée sur le nombre total d’heures travaillées par l’ensemble des employés, exprimée en nombre équivalent de postes à temps plein. Les effectifs en ETP sont calculés en divisant le total des heures travaillées par le nombre normalisé d’heures correspondant à un poste à temps plein (généralement 37,5 heures par semaine dans la fonction publique fédérale). Par exemple, un employé à temps partiel qui travaille la moitié des heures normales d’un poste à temps plein représente 0,5 ETP.
 
-## Fonction publique fédérale
+### Fonction publique fédérale
 
 L’administration publique centrale comprend les ministères et organismes qui figurent aux annexes I et IV de la _Loi sur la gestion des finances publiques (LGFP)_. Les organismes distincts figurent à l’annexe V de la Loi. Les employés en congé sans solde, ainsi que les employés engagés sur place à l’extérieur du Canada, ne sont pas pris en compte. La composition des ministères peut varier au fil du temps en raison de la création, de la restructuration ou du changement de nom d’organismes.
 
@@ -24,7 +26,7 @@ Les données sur la dotation de la fonction publique fédérale sont ventilées 
 
 Dans les données provenant des systèmes fédéraux de rémunération fournies par le SCT, il existe un petit nombre d’employés (moins de 100 ETP annuellement) dont les données sur la durée d’emploi sont manquantes. Ces employés sont inclus dans les totaux d’ETP présentés dans l’outil, mais exclus de toute ventilation par durée d’emploi. Par conséquent, la somme des ETP par durée d’emploi peut ne pas correspondre au nombre total d’ETP au sein de la fonction publique fédérale affiché dans l’outil.
 
-## Forces armées canadiennes et GRC
+### Forces armées canadiennes et GRC
 
 Pour la période allant de 2015-2016 à 2024-2025, les données sur la dotation de ces deux organismes se limitent à une observation par exercice : à la fin de l’exercice (31 mars) pour les FAC et au début de l’exercice (1er avril) pour la GRC. Les données trimestrielles pour ces deux organismes sont disponibles dans l’outil à partir de 2025-2026. Les catégories de durée d’emploi utilisées dans la fonction publique fédérale ne s’appliquent pas aux postes occupés par les membres des FAC et de la GRC. Le BDPB n’a pas pu calculer le nombre d’ETP pour ces organismes à partir des données fournies. Par conséquent, on suppose dans l’outil que tous les membres des FAC et de la GRC occupent des postes à temps plein.
 
@@ -32,7 +34,7 @@ Les données sur la dotation des FAC affichées dans l’outil excluent les memb
 
 Le nombre total de membres de la GRC indiqué dans l’outil comprend les membres réguliers, les membres civils, les réservistes et les gendarmes spéciaux.
 
-## Comparaisons
+### Comparaisons
 
 **Rapports sur les résultats ministériels :** Le nombre total d’ETP indiqué dans l’Outil de suivi de l’emploi fédéral pour un exercice donné peut différer de celui présenté dans <a href="tbs-sct.canada.ca/ems-sgd/edb-bdd/index-fra.html#rpb/.-.-(subject.-.-'gov_gov.-.-table.-.-'programFtes.-.-columns.-.-(.-.-'*7b*7bpa_last_year_5*7d*7d.-.-'*7b*7bpa_last_year_4*7d*7d.-.-'*7b*7bpa_last_year_3*7d*7d.-.-'*7b*7bpa_last_year_2*7d*7d.-.-'*7b*7bpa_last_year*7d*7d.-.-'*7b*7bplanning_year_1*7d*7d.-.-'*7b*7bplanning_year_2*7d*7d.-.-'*7b*7bplanning_year_3*7d*7d))" target="_blank">InfoBase du GC</a> dans les rapports sur les résultats ministériels en raison de différences dans la liste des ministères inclus. Des écarts peuvent également exister entre les totaux ministériels des deux bases de données en raison de différences méthodologiques dans le calcul des totaux annuels d’ETP.
 

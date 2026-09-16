@@ -1,3 +1,5 @@
+## Notes
+
 The Federal Employment Tracking Tool draws on staffing data from three sources, each provided to PBO through an information request:
 
 - Treasury Board of Canada Secretariat (TBS), through <a href="https://www.pbo-dpb.ca/en/information-requests--demandes-information/IR0822" target="_blank">IR0822</a>, for the Federal Public Service (Core Public Administration and Separate Agencies);
@@ -9,7 +11,7 @@ There are two concepts to measure the size of these workforces:
 1. **Headcount:** Number of individuals employed, without adjusting for hours worked.
 2. **Full-time equivalents (FTEs):** Measure of employment based on total hours worked by all employees, expressed as the equivalent number of full-time positions. FTE counts are calculated by dividing total hours worked by the standard number of hours in a full-time position (typically 37.5 hours per week in the federal government). For example, a part-time employee working half of the standard hours of a full-time position counts as 0.5 FTE.
 
-## Federal Public Service
+### Federal Public Service
 
 The Core Public Administration consists of the departments and agencies named in Schedules I and IV of the Financial Administration Act (FAA). Separate agencies are named in Schedule V of the Act. Employees on leave without pay, as well as employees locally engaged outside of Canada, are not included. The composition of departments may vary over time due to the creation, restructuring or renaming of organizations.
 
@@ -24,14 +26,14 @@ Federal public service staffing data is broken down by employment tenure, which 
 
 There is a small number of employees (less than 100 FTEs annually) with missing employment tenure information in the federal pay systems data provided by TBS. Those employees are included in the total counts of FTEs in the tool but excluded from any breakdown by employment tenure. Therefore, numbers of FTEs by employment tenure may not add to the total number of FTEs in the federal public service shown in the tool.
 
-## Canadian Armed Forces and RCMP
+### Canadian Armed Forces and RCMP
 
 For 2015-16 to 2024-25, staffing data for both organizations is limited to one observation per fiscal year — at the end of the fiscal year (March 31) for the CAF and the beginning of the fiscal year (April 1) for the RCMP. Quarterly data for both organizations is available in the tool from 2025-26 onward. The federal public service employment tenures are not applicable to positions held by members of the CAF and the RCMP. PBO could not calculate the number of FTEs for those organizations using the data provided; therefore, it is assumed that all members of the CAF and RCMP hold full-time positions in the tool.
 
 Staffing data related to the CAF displayed in the tool excludes the CAF Reserve Force due to the part-time nature of their service and the significant fluctuation in hours worked by reservists throughout the year.
 Total numbers of RCMP members shown in the tool include Regular Members, Civilian Members, Reservists and Special Constables.
 
-## Comparisons
+### Comparisons
 
 **Departmental Results Reports:** The total number of FTEs reported in the Federal Employment Tracking Tool for a given fiscal year may differ from those reported on <a href="https://www.tbs-sct.canada.ca/ems-sgd/edb-bdd/index-eng.html#rpb/.-.-(table.-.-'programFtes.-.-subject.-.-'gov_gov.-.-columns.-.-(.-.-'*7b*7bpa_last_year_5*7d*7d.-.-'*7b*7bpa_last_year_4*7d*7d.-.-'*7b*7bpa_last_year_3*7d*7d.-.-'*7b*7bpa_last_year_2*7d*7d.-.-'*7b*7bpa_last_year*7d*7d.-.-'*7b*7bplanning_year_1*7d*7d.-.-'*7b*7bplanning_year_2*7d*7d.-.-'*7b*7bplanning_year_3*7d*7d))" target="_blank">GC Infobase</a> from the Departmental Results Reports due to differences in the list of departments included. There may also be discrepancies between departmental totals in each database due to methodological differences in the calculation of annual FTE totals.
 
