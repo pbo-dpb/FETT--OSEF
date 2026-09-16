@@ -23,16 +23,14 @@
     </div>
     <nav
         :aria-label="strings.tab_navigation_aria_label"
-        class="hidden flex-row space-x-4 border-b border-solid border-gray-300 select-none md:flex">
+        class="hidden flex-row gap-2 rounded-sm bg-gray-100 p-1 md:flex">
         <RouterLink
             v-for="tab in tabs"
             :key="tab.to.name"
             :to="tab.to"
             :class="[
-                'tab-focus flex flex-row items-center gap-2 border-b-2 border-solid pb-2 font-semibold text-gray-700 dark:text-gray-100',
-                tab.selected
-                    ? 'border-primary dark:border-gray-100'
-                    : 'border-transparent',
+                'tab-focus rounded-sm px-4 py-2 font-semibold',
+                tab.selected ? 'bg-primary text-white' : 'text-gray-600',
             ]"
             :aria-current="tab.selected ? 'page' : undefined">
             {{ tab.label }}
